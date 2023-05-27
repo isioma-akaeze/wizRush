@@ -45,7 +45,7 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=4]
 radius = 20.4011
 
-[node name="Character" type="Node2D"]
+[node name="Character" type="Node2D" groups=["climber"]]
 position = Vector2( 1, -1 )
 
 [node name="CharacterBody2D" type="KinematicBody2D" parent="." groups=["climber"]]
