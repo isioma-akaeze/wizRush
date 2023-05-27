@@ -5,9 +5,8 @@
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_walk2.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_walk1.png" type="Texture" id=4]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 31.9445
-height = 47.8756
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 38.889, 58.8235 )
 
 [sub_resource type="Animation" id=2]
 length = 0.001
@@ -58,9 +57,9 @@ scale = Vector2( 0.9375, 0.963636 )
 texture = ExtResource( 1 )
 
 [node name="Fullbody" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2( 3, 17 )
+position = Vector2( 3, 9 )
 scale = Vector2( 0.719998, 0.68 )
-shape = SubResource( 1 )
+shape = SubResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 position = Vector2( 0, 7 )
