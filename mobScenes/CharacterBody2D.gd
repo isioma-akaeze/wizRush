@@ -11,71 +11,76 @@ var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Advent
 const GRAVITY := 300.0 #Rate at which the character vertically translate positively
 const CLIMB_GRAVITY := 100.0 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
-const velocity := Vector2.ZERO 
+const velocity := Vector2.ZERO #Used for movement calculation
 const JUMP_SPEED := -250.0 #Rate at which the character vertically translates negatively
 var doubleJump := false #Can the character press the jump button again?
-onready var walk := $AnimationPlayer
-export var climbing = false
-onready var fullbody := $Fullbody
-onready var crouchCollide := $Crouch
-var crouching := false
-onready var rayCast := $RayCast2D
-onready var rayCastFloor := $RayCast2D2
-var ceiling := false
-var floorTouched := true
-var isMoving := false
-onready var timer := $Timer
+onready var walk := $AnimationPlayer #Used to access animations, although it'd probably be better to change the variable name.
+export var climbing = false #Used to connect to LadderArea2D nodes, and to determine whether or not the movement behaviour should resemble climbing.
+onready var fullbody := $Fullbody #Accessing the fullbody collision box for crouching.
+onready var crouchCollide := $Crouch #Accessing the crouch collision box for crouching.
+var crouching := false #Determines whether or not the player is currently crouching.
+onready var rayCast := $RayCast2D #Used to detect the ceiling when _is_on_ceiling() isn't fast/accurate enough.
+onready var rayCastFloor := $RayCast2D2 #Used to detect the floor when _is_on_floor() is inconsistent/isn't fast enough.
+var ceiling := false #To send a signal for if the player is touching the ceiling from rayCast.
+var floorTouched := true #To send a signal for if the player is touching the floor from rayCastFloor.
+var isMoving := false #To detect if the player is moving or not. Don't remember if it's necesscary to use this, but I'll keep it just in case.
+onready var timer := $Timer #Self-explanatory.
 
+#Every frame...
 func _physics_process(delta):
+	#If the left key is pressed, play the walk animation.
 	if Input.is_action_pressed("left"):
 		if is_on_floor() and !is_on_wall():
 			if Input.is_action_pressed("down"):
 					walk.play("walk")
+	#Same thing but with the right key.
 	elif Input.is_action_pressed("right"):
 		if is_on_floor() and !is_on_wall():
 				walk.play("walk")
+	#Prevents the player from walking into walls.
 	if Input.is_action_just_released("left"):
 		walk.stop(true)
 		sprite.set_texture(idle)
 	elif Input.is_action_just_released("right"):
 		walk.stop(true)
+	#Helps make sure the player isn't walking into walls if the first system isn't working for whatever reason.
 	if is_on_wall() and !is_on_floor():
 		walk.stop(true)
 		velocity.x = 0
 
-		
+	#If the player isn't moving and is on the floor, set their texture to the idle one.
 	if velocity.x == 0 and is_on_floor():
 		sprite.set_texture(idle)
-		
+	#Yet ANOTHER failsafe to make sure the player doesn't walk into walls.
 	if velocity.x == 0 and is_on_wall() and floorTouched:
 		sprite.set_texture(idle)
-		
-	
-		
+	#
 	if is_on_floor():
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
 	elif !is_on_floor():
 		if climbing == true and Input.is_action_pressed("down"):
 			velocity.y -= delta * CLIMB_GRAVITY
 			sprite.set_texture(climb)
+		#Every frame, make the character fall gradually faster, and start the timer for the fall "animation".
 		else:
 			timer.start()
 			velocity.y += delta * GRAVITY 
-			#Every frame, remove a certain amound from the y value of velocity
-	var direction := Input.get_axis("left", "right") #The direction variable is equal to either what the left or right key provides
+	#The direction variable is equal to either what the left or right key provides.
+	var direction := Input.get_axis("left", "right")
+	#Walk animation stuff...
 	if Input.is_action_pressed("left"):
 		isMoving = true
-		sprite.flip_h = -1
+		sprite.flip_h = -1 #Flip the sprite
 		if floorTouched == true and !is_on_wall():
 			walk.play("walk")
 		elif is_on_wall() and floorTouched != true:
 			walk.stop(true)
-			#sprite.set_texture(idle)
+			#sprite.set_texture(idle) <--- probably don't need this, keeping it for the future just in-case.
 		elif floorTouched != true:
 			walk.stop(true)
 	elif Input.is_action_pressed("right"):
 		isMoving = true
-		sprite.flip_h = 0
+		sprite.flip_h = 0 #Flip the sprite
 		if is_on_floor() and !is_on_wall():
 			walk.play("walk")
 		elif floorTouched != true:
@@ -83,10 +88,11 @@ func _physics_process(delta):
 		elif is_on_wall() and !isMoving:
 			#sprite.set_texture(idle)
 			walk.stop(true)
+	#IIRC this is needed to signal to the code that velocity.x is inactive. Kind of seems useless but I'll keep it.
 	if Input.is_action_just_released("left") or Input.is_action_just_released("right"):
 		isMoving = false
-	
-	if Input.is_action_pressed("up") and floorTouched and crouching != true: #"is_action_just_pressed" is faster than is "is_action_pressed, allowing enough time for a double jump to be allowed.
+	#Code for jumping and double jumps.
+	if Input.is_action_pressed("up") and floorTouched and crouching != true: 
 		doubleJump = true #Allow a double jump
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
@@ -96,19 +102,12 @@ func _physics_process(delta):
 			velocity.y = JUMP_SPEED  #Same thing as in the jump code.
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.
 			walk.stop(true)
-#	elif is_on_floor() and not Input.is_action_just_pressed("up") and doubleJump and !isMoving:
-#		sprite.set_texture(idle)
-#	elif is_on_floor() and not Input.is_action_just_pressed("up") and !doubleJump and !isMoving:
-#		sprite.set_texture(idle)
-#	elif is_on_floor() and not Input.is_action_just_pressed("up") and !doubleJump and !isMoving:
-#		sprite.set_texture(idle)
-	#elif not Input.is_action_pressed("up") and floorTouched == false and climbing != true:
-		#PLACEHOLDER WAIT A CERTAIN AMOUNT OF SECONDS
-
+	#Detect if we're touching the ceiling quicker than is_on_ceiling().
 	if rayCast.is_colliding():
 		ceiling = true
 	elif not rayCast.is_colliding():
 		ceiling = false
+	#Detect if we're touching the floor quicker than is_on_floor().
 	if rayCastFloor.is_colliding():
 		floorTouched = true
 	elif not rayCastFloor.is_colliding():
@@ -116,22 +115,24 @@ func _physics_process(delta):
 	if Input.is_action_pressed("down") and is_on_floor() and crouching == false and climbing != true:
 		crouching = true
 	if Input.is_action_just_released("down") and is_on_floor() and crouching == true and climbing != true:
-		if ceiling == false:
+		if ceiling == false: #If NOT touching the ceiling while crouching...
 			crouching = false
-		elif ceiling == true:
-			#sprite.set_texture(dead)
-			print("YOU DIED!")
-			get_tree().quit()
+		elif ceiling == true: #If touching the ceiling while crouching...
+			#sprite.set_texture(dead) <---- WILL USE THIS IN FUTURE FOR HEALTH FUNCTIONALITY
+			print("YOU DIED!") #Just a placeholder to let me know things are working.
+			get_tree().quit() #Quit the app. Yet another placeholder for death.
 	if crouching == true and is_on_floor() and climbing != true:
 		walk.stop(true)
 		fullbody.set_deferred("disabled" , true)
 		sprite.set_texture(crouch)
 	elif crouching == false and is_on_floor() and climbing != true:
 		fullbody.set_deferred("disabled", false)
-		
+	
+	#Make the player move based on information provided to the code.
 	velocity.x = direction * WALK_SPEED #Every frame, add to the x value of velocity the direction value multiplied by walk speed
 	move_and_slide(velocity, Vector2.UP) #Here I added "Vector2.UP" because otherwise "is_on_floor() literally would not work. 
 
+#Whenever the timer for the fall animation runs out...
 func _on_Timer_timeout():
-	if !floorTouched and velocity.y > 0:
+	if !floorTouched and velocity.y > 0: #Had to use raycast floorTouched because it's faster, and had to use velocity.y to make sure the sprite doesn't change to falling too quickly after jumping.
 		sprite.set_texture(fall)
