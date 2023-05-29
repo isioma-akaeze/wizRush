@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="wizRush"
+config/name="Slash N' Dash"
 run/main_scene="res://levelScenes/Green Groves.tscn"
 config/icon="res://icon.png"
 
