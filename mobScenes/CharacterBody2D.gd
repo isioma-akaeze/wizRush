@@ -8,7 +8,7 @@ var fall := preload("res://assets/images/kenney_platformer-characters/PNG/Advent
 var crouch := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_duck.png")
 var climb := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_climb1.png")
 var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_hurt.png")
-const GRAVITY := 300.0 #Rate at which the character vertically translate positively
+const GRAVITY := 350.0 #Rate at which the character vertically translate positively
 const CLIMB_GRAVITY := 100.0 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
 const velocity := Vector2.ZERO #Used for movement calculation
@@ -55,6 +55,7 @@ func _physics_process(delta):
 	if velocity.x == 0 and is_on_wall() and floorTouched:
 		sprite.set_texture(idle)
 	#
+	
 	if is_on_floor():
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
 	elif !is_on_floor():

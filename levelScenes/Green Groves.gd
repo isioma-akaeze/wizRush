@@ -1,40 +1,19 @@
 extends Node2D
+#
+#onready var bush1 := load("res://randomScenes/Bush1.tscn")
+#var packedScene = PackedScene.new
+#onready packedScene.pack(bush1)
+#var bushInstance = bush1.instance()
+#var rootBush = bushInstance.get_node("path_to_sprite_node")
+#var bushTexture1 = rootBush.Texture
+#
+#
+#onready var bush2 := load("res://randomScenes/Bush2.tscn")
+#var bushInstance2 = bush2.instance()
+#var rootBush2 = bushInstance.get_node("path_to_sprite_node")
+#var bushTexture2 = rootBush2.Texture
+# Use the texture as needed
 
-#const BUSHES := [
-#	preload("res://randomScenes/Bush1.tscn"),
-#	preload("res://randomScenes/Bush2.tscn"),
-#]
-#
-#onready var world = $Map
-#
-#
-#const CELL_SIZE := Vector2(64, 0)
-#
-#func _ready() -> void:
-#	$Map/Vegetation.visible = false
-#	for i in world.get_children():
-#		if i == $Map/Vegetation:
-#			add_bushes_with_blue_noise(10)
-#
-#func add_bushes_with_blue_noise(rows: int) -> void:
-#	for row in range(rows):
-#		var cell := Vector2(row, 0)
-#		var bushScene: PackedScene = BUSHES[randi() % BUSHES.size()]
-#		var bush: Node2D = bushScene.instance()
-#		add_child(bush)
-#		var bush_size: Vector2 = bush.get_node("Sprite").texture.get_size() * bush.get_node("Sprite").scale
-#		var available_space := CELL_SIZE - bush_size
-#
-#		# Calculate a random x-axis offset within each bush's grid cell.
-#		var random_offset_x := rand_range(0, available_space.x)
-#		# Create a zero y-axis offset.
-#		var random_offset_y := 0
-#
-#		# Take the random offset into account when placing the bush.
-#		var position = CELL_SIZE * cell + Vector2(random_offset_x, random_offset_y)
-#
-#		# Set the position of the bush.
-#		bush.position = position
 
 
 const BUSHES := [
@@ -42,39 +21,59 @@ const BUSHES := [
 	preload("res://randomScenes/Bush2.tscn"),
 ]
 
-onready var vegetationTilemap: TileMap = $Map/Vegetation
-var clouds: Array = [
-	"Clouds",
-	"Clouds2",
-	"Clouds3",
-	"Clouds4",
-	"Clouds5",
-	"Clouds6",
-	"Clouds7"
-]
+onready var world = $Map/Vegetation
 
-const CELL_SIZE := Vector2(64, 64)
+
+const CELL_SIZE := Vector2(64, 0)
+
 
 func _ready() -> void:
-	vegetationTilemap.visible = true
+	randomize()
+	add_bushes_on_grid()
+	world.visible = false
 
-	for cloud_name in clouds:
-		var cloud: TextureRect = $Node2D.get_node(cloud_name)
-		if cloud != null:
-			cloud.set("z_index", 0)  # Set the z_index property of each TextureRect
-		else:
-			print("Invalid TextureRect node:", cloud_name)
 
-	add_bushes_with_blue_noise(10)
 
-func add_bushes_with_blue_noise(rows: int) -> void:
-	for row in range(rows):
-		var cell := Vector2(row, 0)
-		var bushScene: PackedScene = BUSHES[randi() % BUSHES.size()]
-		var bushInstance: Node = bushScene.instance()
-		var bush: Sprite = bushInstance as Sprite
-		if bush != null:
-			vegetationTilemap.add_child(bush)
-			bush.position = vegetationTilemap.map_to_world(CELL_SIZE * cell)
-		else:
-			print("Invalid bush scene or missing Sprite node.")
+
+
+func get_random_bush() -> Sprite:
+
+	var bush_random_index := randi() % BUSHES.size()
+
+	return BUSHES[bush_random_index].instance()
+
+
+
+
+
+# Generates rocks on drawn cells in the Mask tilemap and randomly offsets them
+
+# using blue noise.
+
+func add_bushes_on_grid() -> void:
+
+	# TileMap.get_used_cells() returns an array of Vector2 cell coordinates
+
+	# where we drew a tile.
+
+	for cell in world.get_used_cells():
+
+		var bush := get_random_bush()
+
+		add_child(bush)
+
+
+
+		var bush_size := bush.scale * bush.texture.get_size()
+
+		# Because the Mask node has a cell_size property, we use it instead of
+
+		# the previously hard-coded CELL_SIZE constant.
+
+		var available_space : Vector2 = world.cell_size - bush_size
+
+		var random_offset := Vector2(randf(), 0)*available_space
+
+		bush.position = world.position + world.map_to_world(cell) + random_offset + Vector2(36, 42)
+			
+			
