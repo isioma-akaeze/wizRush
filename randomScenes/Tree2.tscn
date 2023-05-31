@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/images/kenney_background-elements-redux/PNG/Default/treeLong.png" type="Texture" id=1]
+
+[node name="Bush3" type="Sprite"]
+show_behind_parent = true
+texture = ExtResource( 1 )
+offset = Vector2( -10, 0 )
