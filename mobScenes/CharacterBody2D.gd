@@ -28,19 +28,25 @@ var isMoving := false #To detect if the player is moving or not. Don't remember 
 onready var timer := $Timer #Self-explanatory.
 
 onready var swordBox := $Sword
+onready var swordJump := $Sword/JumpDetect
 onready var swordSprite := $Sword/Sprite
+var health := 100
+onready var healthBar := $ProgressBar
 
 
 func _process(delta) -> void:
-	print(swordBox.position)
-	print(swordSprite.position)
+	healthBar.max_value == 100
+	healthBar.set_value(health)
 	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
-		swordBox.position.x *= -1
+		swordBox.position.x *= -3
+		swordJump.position.x = swordBox.position.x + 139
+		swordJump.position.y = swordBox.position.y -52
 		swordBox.set_rotation_degrees(360)
 		swordSprite.flip_h = -1
 		#swordSprite.set_rotation_degrees(340.1)
-	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27):
-		swordBox.position.x *= -1
+	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27 * 3):
+		swordBox.position.x /= -3
+		swordJump.position.x = swordBox.position.x - 28
 		swordBox.set_rotation_degrees(0)
 		swordSprite.flip_h = 0
 		#swordSprite.set_rotation_degrees(19.9)
@@ -149,6 +155,9 @@ func _physics_process(delta):
 		sprite.set_texture(crouch)
 	elif crouching == false and is_on_floor() and climbing != true:
 		fullbody.set_deferred("disabled", false)
+		
+	if is_on_wall() and velocity.x == 0 and crouching:
+		sprite.set_texture(crouch)
 	
 	#Make the player move based on information provided to the code.
 	velocity.x = direction * WALK_SPEED #Every frame, add to the x value of velocity the direction value multiplied by walk speed

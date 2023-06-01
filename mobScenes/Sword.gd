@@ -6,7 +6,6 @@ onready var swordAnim := $Sprite/AnimationPlayer
 var floorTouched := false
 
 func _physics_process(delta) -> void:
-	print(swordSprite.rotation_degrees)
 	if rayCastFloor.is_colliding():
 		floorTouched = true
 	elif not rayCastFloor.is_colliding():

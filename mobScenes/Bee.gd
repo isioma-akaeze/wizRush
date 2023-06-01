@@ -13,7 +13,6 @@ var health := 25
 func _physics_process(delta) -> void:
 	healthBar.max_value == 25
 	healthBar.set_value(health)
-	print("Health: " + str(healthBar.is_percent_visible()))
 	var direction := Vector2(-3,0)
 	#If touching collision box, change direction:
 	if switchingDirection:
