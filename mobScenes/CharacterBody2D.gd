@@ -12,7 +12,7 @@ const GRAVITY := 350.0 #Rate at which the character vertically translate positiv
 const CLIMB_GRAVITY := 100.0 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
 const velocity := Vector2.ZERO #Used for movement calculation
-const JUMP_SPEED := -250.0 #Rate at which the character vertically translates negatively
+const JUMP_SPEED := -275.0 #Rate at which the character vertically translates negatively
 var doubleJump := false #Can the character press the jump button again?
 onready var walk := $AnimationPlayer #Used to access animations, although it'd probably be better to change the variable name.
 export var climbing = false #Used to connect to LadderArea2D nodes, and to determine whether or not the movement behaviour should resemble climbing.
@@ -25,6 +25,20 @@ var ceiling := false #To send a signal for if the player is touching the ceiling
 var floorTouched := true #To send a signal for if the player is touching the floor from rayCastFloor.
 var isMoving := false #To detect if the player is moving or not. Don't remember if it's necesscary to use this, but I'll keep it just in case.
 onready var timer := $Timer #Self-explanatory.
+onready var swordBox := $Sword
+onready var swordSprite := $Sword/SwordSprite
+
+
+func _process(delta) -> void:
+	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
+		swordBox.position.x *= -1
+		swordSprite.flip_h = -1
+		swordSprite.set_rotation_degrees(338.6)
+	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27):
+		swordBox.position.x *= -1
+		swordSprite.flip_h = 1
+		swordSprite.set_rotation_degrees(21.4)
+
 
 #Every frame...
 func _physics_process(delta):
@@ -54,7 +68,6 @@ func _physics_process(delta):
 	#Yet ANOTHER failsafe to make sure the player doesn't walk into walls.
 	if velocity.x == 0 and is_on_wall() and floorTouched:
 		sprite.set_texture(idle)
-	#
 	
 	if is_on_floor():
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
