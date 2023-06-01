@@ -46,7 +46,7 @@ extents = Vector2( 26.5, 18 )
 [node name="Bee" type="Node2D"]
 position = Vector2( 980, 25 )
 
-[node name="EnemyBody" type="KinematicBody2D" parent="." groups=["damageEnemy", "enemy"]]
+[node name="EnemyBody" type="KinematicBody2D" parent="." groups=["enemy"]]
 collision_layer = 4
 script = ExtResource( 3 )
 
@@ -65,11 +65,9 @@ anims/RESET = SubResource( 3 )
 
 [node name="DamageArea" type="Area2D" parent="EnemyBody"]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 2
 script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/DamageArea"]
 position = Vector2( 1.5, 0 )
 shape = SubResource( 4 )
-
-[connection signal="body_entered" from="EnemyBody/DamageArea" to="EnemyBody/DamageArea" method="_on_DamageArea_body_entered"]
