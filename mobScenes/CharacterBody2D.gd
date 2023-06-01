@@ -8,6 +8,7 @@ var fall := preload("res://assets/images/kenney_platformer-characters/PNG/Advent
 var crouch := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_duck.png")
 var climb := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_climb1.png")
 var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_hurt.png")
+var attack := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_action2.png")
 const GRAVITY := 350.0 #Rate at which the character vertically translate positively
 const CLIMB_GRAVITY := 100.0 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
@@ -35,15 +36,19 @@ func _process(delta) -> void:
 	print(swordSprite.position)
 	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
 		swordBox.position.x *= -1
+		swordBox.set_rotation_degrees(360)
 		swordSprite.flip_h = -1
-		swordSprite.set_rotation_degrees(340.1)
+		#swordSprite.set_rotation_degrees(340.1)
 	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27):
 		swordBox.position.x *= -1
-		swordSprite.flip_h = 1
-		swordSprite.set_rotation_degrees(19.9)
+		swordBox.set_rotation_degrees(0)
+		swordSprite.flip_h = 0
+		#swordSprite.set_rotation_degrees(19.9)
 
 #Every frame...
 func _physics_process(delta):
+	if Input.is_action_pressed("attack") and velocity.x == 0 and floorTouched:
+		sprite.set_texture(attack)
 	#If the left key is pressed, play the walk animation.
 	if Input.is_action_pressed("left"):
 		if is_on_floor() and !is_on_wall():
@@ -65,10 +70,10 @@ func _physics_process(delta):
 		velocity.x = 0
 
 	#If the player isn't moving and is on the floor, set their texture to the idle one.
-	if velocity.x == 0 and is_on_floor():
+	if velocity.x == 0 and is_on_floor() and not Input.is_action_pressed("attack"):
 		sprite.set_texture(idle)
 	#Yet ANOTHER failsafe to make sure the player doesn't walk into walls.
-	if velocity.x == 0 and is_on_wall() and floorTouched:
+	if velocity.x == 0 and is_on_wall() and floorTouched and not Input.is_action_pressed("attack"):
 		sprite.set_texture(idle)
 	#
 	

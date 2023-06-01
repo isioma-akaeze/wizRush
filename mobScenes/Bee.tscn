@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/bee.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/bee_fly.png" type="Texture" id=2]
 [ext_resource path="res://mobScenes/Bee.gd" type="Script" id=3]
 [ext_resource path="res://mobScenes/DamageArea.gd" type="Script" id=4]
+[ext_resource path="res://mobScenes/HealthBar.gd" type="Script" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 18.1343
@@ -71,3 +72,12 @@ script = ExtResource( 4 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/DamageArea"]
 position = Vector2( 1.5, 0 )
 shape = SubResource( 4 )
+
+[node name="HealthBar" type="ProgressBar" parent="EnemyBody"]
+margin_left = -19.0
+margin_top = -24.0
+margin_right = -15.0
+margin_bottom = -10.0
+rect_rotation = -90.0947
+rect_scale = Vector2( 2.28198, 2.79906 )
+script = ExtResource( 5 )

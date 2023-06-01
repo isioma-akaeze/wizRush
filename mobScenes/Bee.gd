@@ -5,6 +5,7 @@ export var switchingDirection = false
 onready var sprite := $Sprite
 
 var speed := 15.0
+var health := 25
 
 func _physics_process(delta) -> void:
 	var direction := Vector2(-3,0)
