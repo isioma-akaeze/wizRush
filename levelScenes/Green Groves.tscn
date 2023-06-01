@@ -673,7 +673,7 @@ position = Vector2( 1, -93 )
 shape = SubResource( 25 )
 
 [node name="Bee2" parent="." instance=ExtResource( 38 )]
-position = Vector2( 926, 1116 )
+position = Vector2( 572, 1176 )
 
 [node name="EnemySwitch3" type="Area2D" parent="." groups=["enemy"]]
 position = Vector2( 1204, 1209 )
@@ -690,6 +690,9 @@ script = ExtResource( 41 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySwitch4"]
 position = Vector2( 0, -178 )
 shape = SubResource( 27 )
+
+[node name="Bee3" parent="." instance=ExtResource( 38 )]
+position = Vector2( 1127, 1133 )
 
 [connection signal="body_entered" from="Ladder" to="Ladder" method="_on_Ladder_body_entered"]
 [connection signal="body_exited" from="Ladder" to="Ladder" method="_on_Ladder_body_exited"]

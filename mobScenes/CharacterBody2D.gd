@@ -26,6 +26,22 @@ var floorTouched := true #To send a signal for if the player is touching the flo
 var isMoving := false #To detect if the player is moving or not. Don't remember if it's necesscary to use this, but I'll keep it just in case.
 onready var timer := $Timer #Self-explanatory.
 
+onready var swordBox := $Sword
+onready var swordSprite := $Sword/Sprite
+
+
+func _process(delta) -> void:
+	print(swordBox.position)
+	print(swordSprite.position)
+	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
+		swordBox.position.x *= -1
+		swordSprite.flip_h = -1
+		swordSprite.set_rotation_degrees(340.1)
+	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27):
+		swordBox.position.x *= -1
+		swordSprite.flip_h = 1
+		swordSprite.set_rotation_degrees(19.9)
+
 #Every frame...
 func _physics_process(delta):
 	#If the left key is pressed, play the walk animation.
