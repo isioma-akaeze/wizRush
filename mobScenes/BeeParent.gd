@@ -6,11 +6,13 @@ onready var health := 25
 onready var animation := $EnemyBody/AnimationPlayer
 onready var timer := $EnemyBody/Timer2
 onready var timer2 := $EnemyBody/Timer3
-onready var bee := $EnemyBody
+onready var bee := $EnemyBody/Sprite
+onready var dead := preload("res://assets/images/Extra animations and enemies/Enemy sprites/bee_hit.png")
 
 func _on_DeathArea_body_entered(body):
 	if body.is_in_group("damageEnemy"):
 			health -= 10
+			bee.set_texture(dead)
 			
 func _physics_process(delta) -> void:
 	animation.play("Fly")
@@ -18,9 +20,9 @@ func _physics_process(delta) -> void:
 	healthBar.set_value(health)
 	if health <= 0:
 		animation.stop()
-		print("Play animation")
+		set_physics_process(false)
 		animation.play("death")
-		
+		bee.set_physics_process(false)
 
 		
 
@@ -35,4 +37,5 @@ func _on_Timer3_timeout():
 
 func _on_AnimationPlayer_animation_finished(anim_name: String):
 	if anim_name == "death":
+		
 		timer2.start()

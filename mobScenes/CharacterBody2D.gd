@@ -28,22 +28,27 @@ var ceiling := false #To send a signal for if the player is touching the ceiling
 var floorTouched := true #To send a signal for if the player is touching the floor from rayCastFloor.
 var isMoving := false #To detect if the player is moving or not. Don't remember if it's necesscary to use this, but I'll keep it just in case.
 onready var timer := $Timer #Self-explanatory.
-
+onready var secondTimer := $Timer2
 onready var swordBox := $Sword
 onready var swordJump := $Sword/JumpDetect
 onready var swordSprite := $Sword/Sprite
 export var health := 100
 onready var healthBar := $ProgressBar
 onready var heart := $Heart
+export var takingDamage := false
 
 
 func _process(delta) -> void:
 	if health <= 50:
 		heart.set_texture(heartHalf)
 	if health <= 0:
+		sprite.set_texture(dead)
 		heart.set_texture(heartEmpty)
-		get_tree().quit()
-		print("You died.")
+		walk.stop()
+		if is_on_floor():
+			set_physics_process(false)
+			set_process(false)
+			secondTimer.start()
 	healthBar.max_value == 100
 	healthBar.set_value(health)
 	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
@@ -62,6 +67,9 @@ func _process(delta) -> void:
 
 #Every frame...
 func _physics_process(delta):
+	if takingDamage == true:
+		print("takingDamage")
+	
 	if Input.is_action_pressed("attack") and velocity.x == 0 and $Sword/JumpDetect.is_colliding():
 		sprite.set_texture(attack)
 	#If the left key is pressed, play the walk animation.
@@ -155,9 +163,8 @@ func _physics_process(delta):
 		if ceiling == false: #If NOT touching the ceiling while crouching...
 			crouching = false
 		elif ceiling == true: #If touching the ceiling while crouching...
-			#sprite.set_texture(dead) <---- WILL USE THIS IN FUTURE FOR HEALTH FUNCTIONALITY
-			print("YOU DIED!") #Just a placeholder to let me know things are working.
-			get_tree().quit() #Quit the app. Yet another placeholder for death.
+			sprite.set_texture(dead)
+			health -= 100#Quit the app. Yet another placeholder for death.
 	if crouching == true and is_on_floor() and climbing != true:
 		walk.stop(true)
 		fullbody.set_deferred("disabled" , true)
@@ -176,3 +183,9 @@ func _physics_process(delta):
 func _on_Timer_timeout():
 	if !floorTouched and velocity.y > 0: #Had to use raycast floorTouched because it's faster, and had to use velocity.y to make sure the sprite doesn't change to falling too quickly after jumping.
 		sprite.set_texture(fall)
+
+func _on_Timer2_timeout():
+	print("You died.")
+	#self.position.y += 100
+	get_tree().quit()
+	

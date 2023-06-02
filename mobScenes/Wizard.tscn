@@ -233,4 +233,9 @@ position = Vector2( 277, -187 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 7 )
 
+[node name="Timer2" type="Timer" parent="CharacterBody2D"]
+process_mode = 0
+wait_time = 0.5
+
 [connection signal="timeout" from="CharacterBody2D/Timer" to="CharacterBody2D" method="_on_Timer_timeout"]
+[connection signal="timeout" from="CharacterBody2D/Timer2" to="CharacterBody2D" method="_on_Timer2_timeout"]
