@@ -636,7 +636,7 @@ script = ExtResource( 30 )
 position = Vector2( 303.5, -20 )
 shape = SubResource( 19 )
 
-[node name="WinArea" type="Area2D" parent="."]
+[node name="WinArea" type="Area2D" parent="." groups=["canWin"]]
 position = Vector2( 14624, 4544 )
 collision_layer = 0
 collision_mask = 2
