@@ -5,4 +5,4 @@ func _ready():
 
 func _on_body_entered(body: Node):
 	print("LEVEL COMPLETED!")
-	get_tree().quit()
+	get_tree().switch_scene("Ash Apocalypse.tscn")
