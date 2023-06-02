@@ -20,5 +20,5 @@ func _physics_process(delta) -> void:
 		direction.x = -3
 		sprite.flip_h = 0
 	var velocity := direction * speed
-	fly.play("Fly")
+	
 	move_and_slide(velocity)

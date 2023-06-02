@@ -13,13 +13,14 @@ func _on_DeathArea_body_entered(body):
 			health -= 10
 			
 func _physics_process(delta) -> void:
+	animation.play("Fly")
 	healthBar.max_value == 25
 	healthBar.set_value(health)
 	if health <= 0:
-		set_physics_process(false)
 		animation.stop()
+		print("Play animation")
 		animation.play("death")
-		timer2.start()
+		
 
 		
 
@@ -30,3 +31,8 @@ func _on_Timer_timeout():
 
 func _on_Timer3_timeout():
 	timer.start()
+
+
+func _on_AnimationPlayer_animation_finished(anim_name: String):
+	if anim_name == "death":
+		timer2.start()
