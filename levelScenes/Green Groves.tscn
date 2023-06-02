@@ -796,7 +796,7 @@ position = Vector2( 4, -194 )
 shape = SubResource( 26 )
 
 [node name="EnemySwitch22" type="Area2D" parent="." groups=["enemy"]]
-position = Vector2( 4626, 1152 )
+position = Vector2( 4672, 1150 )
 script = ExtResource( 40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySwitch22"]

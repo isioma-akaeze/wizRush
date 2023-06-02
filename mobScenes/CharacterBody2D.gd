@@ -55,14 +55,14 @@ func _process(delta) -> void:
 		#swordSprite.set_rotation_degrees(340.1)
 	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27 * 1.75):
 		swordBox.position.x /= -1.75
-		swordJump.position.x = swordBox.position.x - 27
+		swordJump.position.x = swordBox.position.x - 29
 		swordBox.set_rotation_degrees(0)
 		swordSprite.flip_h = 0
 		#swordSprite.set_rotation_degrees(19.9)
 
 #Every frame...
 func _physics_process(delta):
-	if Input.is_action_pressed("attack") and velocity.x == 0 and floorTouched:
+	if Input.is_action_pressed("attack") and velocity.x == 0 and $Sword/JumpDetect.is_colliding():
 		sprite.set_texture(attack)
 	#If the left key is pressed, play the walk animation.
 	if Input.is_action_pressed("left"):

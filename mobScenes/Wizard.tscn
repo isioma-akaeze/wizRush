@@ -185,7 +185,9 @@ collide_with_areas = true
 
 [node name="RayCast2D2" type="RayCast2D" parent="CharacterBody2D"]
 position = Vector2( 3, 6 )
+scale = Vector2( 3.12246, 1.55934 )
 enabled = true
+cast_to = Vector2( 0, 31.5 )
 
 [node name="Timer" type="Timer" parent="CharacterBody2D"]
 wait_time = 0.01
@@ -209,7 +211,8 @@ anims/slash = SubResource( 7 )
 anims/slashLeft = SubResource( 9 )
 
 [node name="JumpDetect" type="RayCast2D" parent="CharacterBody2D/Sword"]
-position = Vector2( -1, -12 )
+position = Vector2( -4, -12 )
+scale = Vector2( 3.52, 1 )
 enabled = true
 cast_to = Vector2( 0, 40 )
 
