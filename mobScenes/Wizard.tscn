@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_stand.png" type="Texture" id=1]
 [ext_resource path="res://mobScenes/CharacterBody2D.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_walk1.png" type="Texture" id=4]
 [ext_resource path="res://assets/images/Request pack/Tiles/swordSilver.png" type="Texture" id=5]
 [ext_resource path="res://mobScenes/Sword.gd" type="Script" id=6]
+[ext_resource path="res://assets/images/Base pack/HUD/hud_heartFull.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 33.3334, 62.5 )
@@ -126,14 +127,14 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 46, -35 ), Vector2( 33, -26 ) ]
+"values": [ Vector2( 21, -35 ), Vector2( 8, -26 ) ]
 }
 
 [sub_resource type="Animation" id=9]
 resource_name = "slashLeft"
 
 [sub_resource type="RectangleShape2D" id=12]
-extents = Vector2( 31, 17 )
+extents = Vector2( 14.5, 17 )
 
 [sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.129412, 0.8, 0.223529, 1 )
@@ -141,7 +142,7 @@ bg_color = Color( 0.129412, 0.8, 0.223529, 1 )
 [node name="Character" type="Node2D" groups=["climber"]]
 position = Vector2( 1, -1 )
 
-[node name="CharacterBody2D" type="KinematicBody2D" parent="." groups=["climber"]]
+[node name="CharacterBody2D" type="KinematicBody2D" parent="." groups=["climber", "damagePlayer"]]
 collision_layer = 2
 script = ExtResource( 2 )
 
@@ -207,7 +208,7 @@ enabled = true
 cast_to = Vector2( 0, 40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/Sword"]
-position = Vector2( 28, -30 )
+position = Vector2( 11.5, -30 )
 shape = SubResource( 12 )
 
 [node name="ProgressBar" type="ProgressBar" parent="CharacterBody2D"]
@@ -217,5 +218,10 @@ margin_right = 351.0
 margin_bottom = -181.0
 custom_styles/fg = SubResource( 11 )
 percent_visible = false
+
+[node name="Heart" type="Sprite" parent="CharacterBody2D"]
+position = Vector2( 277, -187 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
 
 [connection signal="timeout" from="CharacterBody2D/Timer" to="CharacterBody2D" method="_on_Timer_timeout"]

@@ -9,6 +9,8 @@ var crouch := preload("res://assets/images/kenney_platformer-characters/PNG/Adve
 var climb := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_climb1.png")
 var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_hurt.png")
 var attack := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_action2.png")
+var heartHalf := preload("res://assets/images/Base pack/HUD/hud_heartHalf.png")
+var heartEmpty := preload("res://assets/images/Base pack/HUD/hud_heartEmpty.png")
 const GRAVITY := 350.0 #Rate at which the character vertically translate positively
 const CLIMB_GRAVITY := 100.0 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
@@ -30,23 +32,30 @@ onready var timer := $Timer #Self-explanatory.
 onready var swordBox := $Sword
 onready var swordJump := $Sword/JumpDetect
 onready var swordSprite := $Sword/Sprite
-var health := 100
+export var health := 100
 onready var healthBar := $ProgressBar
+onready var heart := $Heart
 
 
 func _process(delta) -> void:
+	if health <= 50:
+		heart.set_texture(heartHalf)
+	if health <= 0:
+		heart.set_texture(heartEmpty)
+		get_tree().quit()
+		print("You died.")
 	healthBar.max_value == 100
 	healthBar.set_value(health)
 	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
-		swordBox.position.x *= -3
-		swordJump.position.x = swordBox.position.x + 139
-		swordJump.position.y = swordBox.position.y -52
+		swordBox.position.x *= -1.75
+		swordJump.position.x = swordBox.position.x + 73
+		#swordJump.position.y = swordBox.position.y -52
 		swordBox.set_rotation_degrees(360)
 		swordSprite.flip_h = -1
 		#swordSprite.set_rotation_degrees(340.1)
-	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27 * 3):
-		swordBox.position.x /= -3
-		swordJump.position.x = swordBox.position.x - 28
+	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27 * 1.75):
+		swordBox.position.x /= -1.75
+		swordJump.position.x = swordBox.position.x - 27
 		swordBox.set_rotation_degrees(0)
 		swordSprite.flip_h = 0
 		#swordSprite.set_rotation_degrees(19.9)

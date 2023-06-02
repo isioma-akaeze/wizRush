@@ -545,7 +545,7 @@ expand = true
 [node name="Character" parent="." instance=ExtResource( 9 )]
 position = Vector2( 160, 1160 )
 
-[node name="Lava" type="Area2D" parent="."]
+[node name="Lava" type="Area2D" parent="." groups=["damagePlayer"]]
 position = Vector2( 4744, 1928 )
 scale = Vector2( 1.14792, 0.281488 )
 collision_layer = 0
