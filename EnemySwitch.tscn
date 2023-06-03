@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://levelScenes/EnemySwitch.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=24]
+extents = Vector2( 4.5, 231.5 )
+
+[node name="EnemySwitch" type="Area2D" groups=["enemy"]]
+position = Vector2( 380, 1084 )
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -4, -146.5 )
+shape = SubResource( 24 )
+
+[connection signal="body_entered" from="." to="." method="_on_EnemySwitch_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_EnemySwitch_body_exited"]

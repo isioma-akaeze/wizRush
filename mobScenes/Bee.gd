@@ -4,13 +4,21 @@ onready var fly := $AnimationPlayer
 export var switchingDirection = false
 onready var sprite := $Sprite
 onready var healthBar := $ProgressBar
-
+onready var collision := $CollisionShape2D
+onready var deathArea := $DeathArea/CollisionShape2D
 var speed := 15.0
 #var health := 25
 
 
 
 func _physics_process(delta) -> void:
+	var health : float = get_parent().health
+	if health > 0:
+		collision.set_deferred("disabled", false)
+		deathArea.set_deferred("disabled", false)
+	elif health <= 0:
+		collision.set_deferred("disabled", true)
+		deathArea.set_deferred("disabled", true)
 	var direction := Vector2(-3,0)
 	#If touching collision box, change direction:
 	if switchingDirection:
@@ -20,5 +28,4 @@ func _physics_process(delta) -> void:
 		direction.x = -3
 		sprite.flip_h = 0
 	var velocity := direction * speed
-	
 	move_and_slide(velocity)

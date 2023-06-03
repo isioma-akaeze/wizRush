@@ -37,7 +37,6 @@ onready var healthBar := $ProgressBar
 onready var heart := $Heart
 export var takingDamage := false
 
-
 func _process(delta) -> void:
 	if health <= 50:
 		heart.set_texture(heartHalf)
@@ -54,28 +53,24 @@ func _process(delta) -> void:
 	if Input.is_action_just_pressed("left") and swordBox.position.x == (27):
 		swordBox.position.x *= -1.75
 		swordJump.position.x = swordBox.position.x + 73
-		#swordJump.position.y = swordBox.position.y -52
 		swordBox.set_rotation_degrees(360)
 		swordSprite.flip_h = -1
-		#swordSprite.set_rotation_degrees(340.1)
 	elif Input.is_action_just_pressed("right") and swordBox.position.x == (-27 * 1.75):
 		swordBox.position.x /= -1.75
 		swordJump.position.x = swordBox.position.x - 29
 		swordBox.set_rotation_degrees(0)
 		swordSprite.flip_h = 0
-		#swordSprite.set_rotation_degrees(19.9)
 
 #Every frame...
 func _physics_process(delta):
 	if takingDamage == true:
 		print("takingDamage")
-	
 	if Input.is_action_pressed("attack") and velocity.x == 0 and $Sword/JumpDetect.is_colliding():
 		sprite.set_texture(attack)
 	#If the left key is pressed, play the walk animation.
 	if Input.is_action_pressed("left"):
 		if is_on_floor() and !is_on_wall():
-			if Input.is_action_pressed("down"):
+			#if Input.is_action_pressed("down"):
 					walk.play("walk")
 	#Same thing but with the right key.
 	elif Input.is_action_pressed("right"):
@@ -84,7 +79,6 @@ func _physics_process(delta):
 	#Prevents the player from walking into walls.
 	if Input.is_action_just_released("left"):
 		walk.stop(true)
-		sprite.set_texture(idle)
 	elif Input.is_action_just_released("right"):
 		walk.stop(true)
 	#Helps make sure the player isn't walking into walls if the first system isn't working for whatever reason.
@@ -93,12 +87,11 @@ func _physics_process(delta):
 		velocity.x = 0
 
 	#If the player isn't moving and is on the floor, set their texture to the idle one.
-	if velocity.x == 0 and is_on_floor() and not Input.is_action_pressed("attack"):
+	if velocity.x == 0 and is_on_floor() and not Input.is_action_pressed("attack") and not Input.is_action_pressed("up"):
 		sprite.set_texture(idle)
 	#Yet ANOTHER failsafe to make sure the player doesn't walk into walls.
-	if velocity.x == 0 and is_on_wall() and floorTouched and not Input.is_action_pressed("attack"):
+	if velocity.x == 0 and is_on_wall() and floorTouched and not Input.is_action_pressed("attack") and not Input.is_action_pressed("up"):
 		sprite.set_texture(idle)
-	#
 	
 	if is_on_floor():
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
@@ -120,8 +113,9 @@ func _physics_process(delta):
 			walk.play("walk")
 		elif is_on_wall() and floorTouched != true:
 			walk.stop(true)
-			#sprite.set_texture(idle) <--- probably don't need this, keeping it for the future just in-case.
 		elif floorTouched != true:
+			walk.stop(true)
+		elif is_on_wall() and !isMoving:
 			walk.stop(true)
 	elif Input.is_action_pressed("right"):
 		isMoving = true
@@ -131,18 +125,17 @@ func _physics_process(delta):
 		elif floorTouched != true:
 			walk.stop(true)
 		elif is_on_wall() and !isMoving:
-			#sprite.set_texture(idle)
 			walk.stop(true)
 	#IIRC this is needed to signal to the code that velocity.x is inactive. Kind of seems useless but I'll keep it.
 	if Input.is_action_just_released("left") or Input.is_action_just_released("right"):
 		isMoving = false
 	#Code for jumping and double jumps.
-	if Input.is_action_pressed("up") and floorTouched and crouching != true: 
+	if Input.is_action_pressed("up") and is_on_floor() and crouching != true: 
 		doubleJump = true #Allow a double jump
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
 		walk.stop(true)
-	if Input.is_action_just_pressed("up") and !floorTouched and doubleJump: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
+	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
 			sprite.set_texture(jump)
 			velocity.y = JUMP_SPEED  #Same thing as in the jump code.
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.
@@ -186,6 +179,5 @@ func _on_Timer_timeout():
 
 func _on_Timer2_timeout():
 	print("You died.")
-	#self.position.y += 100
 	get_tree().quit()
 	
