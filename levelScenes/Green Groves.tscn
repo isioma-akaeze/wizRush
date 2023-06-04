@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://assets/images/Base pack/Tiles/grassHillRight.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/kenney_background-elements-redux/Backgrounds/backgroundEmpty.png" type="Texture" id=2]
@@ -39,6 +39,7 @@
 [ext_resource path="res://EnemySwitch2.tscn" type="PackedScene" id=37]
 [ext_resource path="res://mobScenes/Bee.tscn" type="PackedScene" id=38]
 [ext_resource path="res://EnemySwitch.tscn" type="PackedScene" id=39]
+[ext_resource path="res://mobScenes/Spider.tscn" type="PackedScene" id=40]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -1087,6 +1088,17 @@ scale = Vector2( 2.18759, 0.191421 )
 [node name="EnemySwitch61" parent="." instance=ExtResource( 39 )]
 position = Vector2( 11536, 875 )
 scale = Vector2( 1, 0.199995 )
+
+[node name="Spider" parent="." instance=ExtResource( 40 )]
+position = Vector2( 6306, 2533 )
+
+[node name="EnemySwitch62" parent="." instance=ExtResource( 39 )]
+position = Vector2( 6079, 2544 )
+scale = Vector2( 1, 0.221716 )
+
+[node name="EnemySwitch63" parent="." instance=ExtResource( 37 )]
+position = Vector2( 6535, 2545 )
+scale = Vector2( 1, 0.12 )
 
 [connection signal="body_entered" from="Ladder" to="Ladder" method="_on_Ladder_body_entered"]
 [connection signal="body_exited" from="Ladder" to="Ladder" method="_on_Ladder_body_exited"]
