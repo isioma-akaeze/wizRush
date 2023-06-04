@@ -97,8 +97,9 @@ func _physics_process(delta):
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
 	elif !is_on_floor():
 		if climbing == true and Input.is_action_pressed("down"):
-			velocity.y -= delta * CLIMB_GRAVITY
 			sprite.set_texture(climb)
+			velocity.y -= delta * CLIMB_GRAVITY
+			
 		#Every frame, make the character fall gradually faster, and start the timer for the fall "animation".
 		else:
 			timer.start()

@@ -1,10 +1,10 @@
 extends KinematicBody2D
 
 const GRAVITY := 10500.0
-const JUMP_SPEED := -540.0
+const JUMP_SPEED := -540
 export var switchingDirection := false
 var targetAcquired := false
-var hasToJump := false
+export var hasToJump := false
 var speed := 35.0 
 onready var animation := $AnimationPlayer
 var direction := Vector2(-3,0)
@@ -34,11 +34,11 @@ func _physics_process(delta):
 		sprite.flip_h = 0
 	
 	var velocity := direction * speed
-	print(velocity.x)
+	print(hasToJump)
 	if !is_on_floor() and !hasToJump:
 		velocity.y += delta * GRAVITY
 	elif hasToJump:
-		velocity.y -= JUMP_SPEED
+		velocity.y = JUMP_SPEED
 	if round(velocity.x) == 0:
 			animation.stop()
 			sprite.set_texture(idle)

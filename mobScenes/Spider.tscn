@@ -60,8 +60,7 @@ anims/walk = SubResource( 3 )
 [node name="EngageArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EngageArea"]
-visible = false
-scale = Vector2( 20, 4 )
+scale = Vector2( 20, 6.5 )
 shape = SubResource( 4 )
 
 [connection signal="body_entered" from="EngageArea" to="." method="_on_EngageArea_body_entered"]
