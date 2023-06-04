@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-const GRAVITY := 10500.0
+const GRAVITY := 12000.0
 const JUMP_SPEED := -540
 export var switchingDirection := false
 var targetAcquired := false
@@ -14,7 +14,7 @@ onready var idle := preload("res://assets/images/Extra animations and enemies/En
 
 func _physics_process(delta):
 	if targetAcquired:
-		speed = 105.0
+		speed = 175.0
 		direction = global_position.direction_to(bodyX.global_position)
 		direction.y = 0
 		if direction.x >= 0:
