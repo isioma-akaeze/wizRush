@@ -10,7 +10,7 @@ func _ready():
 func _on_body_entered(body: Node):
 	if body.is_in_group("canWin"):
 		if body.hasKey == true:
-			winText.rect_position.x = body.global_position.x - 60
+			winText.rect_position.x = body.global_position.x - 60 
 			winText.show()
 			timer.start()
 			
