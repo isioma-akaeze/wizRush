@@ -99,7 +99,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_Timer3_timeout():
 	if health > 0:
-		bodyToKill.health -= 25
+		bodyToKill.health -= 20
 
 
 func _on_DamageArea_body_entered(body):
@@ -113,6 +113,4 @@ func _on_DamageArea_body_entered(body):
 func _on_DamageArea_body_exited(body):
 	if body.is_in_group("damagePlayer"):
 		body.takingDamage = false
-		timer3.stop()
-		
 		timer3.stop()

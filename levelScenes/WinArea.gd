@@ -5,5 +5,9 @@ func _ready():
 
 func _on_body_entered(body: Node):
 	if body.is_in_group("canWin"):
-		print("LEVEL COMPLETED!")
-		get_tree().switch_scene("Ash Apocalypse.tscn")
+		if body.hasKey == true:
+			print("LEVEL COMPLETED!")
+			get_tree().quit()
+		elif body.hasKey != true:
+			body.position.x -= 135
+			

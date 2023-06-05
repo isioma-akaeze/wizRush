@@ -37,8 +37,15 @@ export var health := 100
 onready var healthBar := $ProgressBar
 onready var heart := $Heart
 export var takingDamage := false
+onready var key := $Sprite/Sprite
+var hasKey := false
 
 func _process(delta) -> void:
+	if hasKey == true:
+		key.show()
+	elif hasKey != true:
+		key.hide()
+		
 	if health >50:
 		heart.set_texture(heartFull)
 	

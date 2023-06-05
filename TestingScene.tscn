@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://mobScenes/Wizard.tscn" type="PackedScene" id=1]
 [ext_resource path="res://mobScenes/Spider.tscn" type="PackedScene" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://EnemySwitch2.tscn" type="PackedScene" id=25]
 [ext_resource path="res://enemyJump.tscn" type="PackedScene" id=26]
 [ext_resource path="res://potion.tscn" type="PackedScene" id=27]
+[ext_resource path="res://Key.tscn" type="PackedScene" id=28]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -406,3 +407,6 @@ scale = Vector2( 1, 0.88 )
 
 [node name="Potion" parent="." instance=ExtResource( 27 )]
 position = Vector2( 1253, 416 )
+
+[node name="Key" parent="." instance=ExtResource( 28 )]
+position = Vector2( 1375, 419 )
