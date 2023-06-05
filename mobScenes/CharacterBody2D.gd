@@ -11,6 +11,7 @@ var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Advent
 var attack := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_action2.png")
 var heartHalf := preload("res://assets/images/Base pack/HUD/hud_heartHalf.png")
 var heartEmpty := preload("res://assets/images/Base pack/HUD/hud_heartEmpty.png")
+var heartFull := preload("res://assets/images/Base pack/HUD/hud_heartFull.png")
 const GRAVITY := 475.0 #Rate at which the character vertically translate positively
 const CLIMB_GRAVITY := 37.5 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
@@ -38,6 +39,9 @@ onready var heart := $Heart
 export var takingDamage := false
 
 func _process(delta) -> void:
+	if health >50:
+		heart.set_texture(heartFull)
+	
 	if health <= 50:
 		heart.set_texture(heartHalf)
 	if health <= 0:
@@ -114,8 +118,9 @@ func _physics_process(delta):
 			walk.play("walk")
 		elif is_on_wall() and floorTouched != true:
 			walk.stop(true)
-		elif floorTouched != true:
+		elif floorTouched != true and !is_on_wall() and !is_on_floor():
 			walk.stop(true)
+			sprite.set_texture(jump)
 		elif is_on_wall() and !isMoving:
 			walk.stop(true)
 	elif Input.is_action_pressed("right"):

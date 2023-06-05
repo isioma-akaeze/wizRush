@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=63 format=2]
 
 [ext_resource path="res://assets/images/Base pack/Tiles/grassHillRight.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/kenney_background-elements-redux/Backgrounds/backgroundEmpty.png" type="Texture" id=2]
@@ -41,6 +41,8 @@
 [ext_resource path="res://EnemySwitch.tscn" type="PackedScene" id=39]
 [ext_resource path="res://mobScenes/Spider.tscn" type="PackedScene" id=40]
 [ext_resource path="res://enemyJump.tscn" type="PackedScene" id=41]
+[ext_resource path="res://potion.tscn" type="PackedScene" id=42]
+[ext_resource path="res://coin.tscn" type="PackedScene" id=43]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -1136,6 +1138,69 @@ position = Vector2( 7181, 2595 )
 
 [node name="enemyJump10" parent="." instance=ExtResource( 41 )]
 position = Vector2( 7245, 2660 )
+
+[node name="Potion" parent="." instance=ExtResource( 42 )]
+position = Vector2( 1419, 1185 )
+
+[node name="Potion2" parent="." instance=ExtResource( 42 )]
+position = Vector2( 2371, 1186 )
+
+[node name="Potion3" parent="." instance=ExtResource( 42 )]
+position = Vector2( 3431, 864 )
+
+[node name="Potion4" parent="." instance=ExtResource( 42 )]
+position = Vector2( 5149, 866 )
+
+[node name="Potion5" parent="." instance=ExtResource( 42 )]
+position = Vector2( 5090, 1696 )
+
+[node name="Coin" parent="." instance=ExtResource( 43 )]
+position = Vector2( 420, 1061 )
+
+[node name="Coin2" parent="." instance=ExtResource( 43 )]
+position = Vector2( 478, 1061 )
+
+[node name="Coin3" parent="." instance=ExtResource( 43 )]
+position = Vector2( 664, 1096 )
+
+[node name="Coin4" parent="." instance=ExtResource( 43 )]
+position = Vector2( 744, 1096 )
+
+[node name="Coin5" parent="." instance=ExtResource( 43 )]
+position = Vector2( 960, 1184 )
+
+[node name="Coin6" parent="." instance=ExtResource( 43 )]
+position = Vector2( 1440, 1056 )
+
+[node name="Coin7" parent="." instance=ExtResource( 43 )]
+position = Vector2( 1096, 1144 )
+
+[node name="Coin8" parent="." instance=ExtResource( 43 )]
+position = Vector2( 1384, 1056 )
+
+[node name="Coin9" parent="." instance=ExtResource( 43 )]
+position = Vector2( 1152, 1088 )
+
+[node name="Coin10" parent="." instance=ExtResource( 43 )]
+position = Vector2( 576, 1096 )
+
+[node name="Coin11" parent="." instance=ExtResource( 43 )]
+position = Vector2( 2072, 1056 )
+
+[node name="Coin12" parent="." instance=ExtResource( 43 )]
+position = Vector2( 2144, 1056 )
+
+[node name="Coin13" parent="." instance=ExtResource( 43 )]
+position = Vector2( 2216, 1056 )
+
+[node name="Coin14" parent="." instance=ExtResource( 43 )]
+position = Vector2( 2256, 1000 )
+
+[node name="Coin15" parent="." instance=ExtResource( 43 )]
+position = Vector2( 2336, 928 )
+
+[node name="Coin16" parent="." instance=ExtResource( 43 )]
+position = Vector2( 2400, 928 )
 
 [connection signal="body_entered" from="Ladder" to="Ladder" method="_on_Ladder_body_entered"]
 [connection signal="body_exited" from="Ladder" to="Ladder" method="_on_Ladder_body_exited"]
