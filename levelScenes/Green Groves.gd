@@ -56,3 +56,4 @@ func add_trees_on_grid() -> void:
 			tree.position = worldTrees.position + worldTrees.map_to_world(cell) + random_offset + Vector2(0, 72)
 
 
+

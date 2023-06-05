@@ -38,6 +38,8 @@ tracks/0/keys = {
 }
 
 [node name="Potion" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

@@ -90,12 +90,8 @@ func _on_Timer_timeout():
 	queue_free()
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	print(anim_name)
 	if anim_name == "die":
 		timer.start()
-
-
-
 
 func _on_Timer3_timeout():
 	if health > 0:

@@ -154,6 +154,7 @@ func _physics_process(delta):
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.
 			walk.stop(true)
 	#Detect if we're touching the ceiling quicker than is_on_ceiling().
+	rayCast.set_collision_mask(1)
 	if rayCast.is_colliding():
 		ceiling = true
 	elif not rayCast.is_colliding():
@@ -192,5 +193,5 @@ func _on_Timer_timeout():
 
 func _on_Timer2_timeout():
 	print("You died.")
-	get_tree().quit()
+	get_tree().reload_current_scene()
 	
