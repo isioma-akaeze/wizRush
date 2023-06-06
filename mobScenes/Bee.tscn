@@ -120,6 +120,7 @@ radius = 18.816
 
 [node name="Bee" type="Node2D" groups=["damageEnemy"]]
 position = Vector2( 980, 25 )
+z_index = 1
 script = ExtResource( 6 )
 
 [node name="EnemyBody" type="KinematicBody2D" parent="." groups=["enemy"]]
