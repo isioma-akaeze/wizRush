@@ -172,6 +172,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=16]
 resource_name = "fadeAway"
+length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:self_modulate")
 tracks/0/interp = 1
@@ -179,7 +180,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
+"times": PoolRealArray( 0, 1.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
@@ -276,6 +277,7 @@ percent_visible = false
 [node name="Heart" type="Sprite" parent="CharacterBody2D"]
 position = Vector2( 277, -187 )
 scale = Vector2( 0.5, 0.5 )
+z_index = 2
 texture = ExtResource( 7 )
 
 [node name="Timer2" type="Timer" parent="CharacterBody2D"]

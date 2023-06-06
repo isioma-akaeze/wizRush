@@ -423,6 +423,7 @@ points = PoolVector2Array( 0, 0, 70, 0, 70, 25, 0, 25 )
 [node name="World" type="Node2D"]
 
 [node name="Map" type="TileMap" parent="."]
+show_behind_parent = true
 z_index = 2
 tile_set = SubResource( 1 )
 show_collision = true
