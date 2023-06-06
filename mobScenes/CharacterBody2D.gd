@@ -39,16 +39,20 @@ onready var heart := $Heart
 export var takingDamage := false
 onready var key := $Sprite/Sprite
 var hasKey := false
+export var hasWon := false
+export var passageBlocked := false
+onready var winText := $WinText
+onready var blockedText := $BlockedText
+onready var blockedAnimation := $BlockedText/AnimationPlayer
+onready var timer3 := $Timer3
 
 func _process(delta) -> void:
 	if hasKey == true:
 		key.show()
 	elif hasKey != true:
 		key.hide()
-		
-	if health >50:
+	if health > 50:
 		heart.set_texture(heartFull)
-	
 	if health <= 50:
 		heart.set_texture(heartHalf)
 	if health <= 0:
@@ -74,6 +78,20 @@ func _process(delta) -> void:
 
 #Every frame...
 func _physics_process(delta):
+	if hasWon == true:
+		winText.show()
+		set_physics_process(false)
+	elif hasWon == false:
+		winText.hide()
+			
+	if passageBlocked == true:
+		blockedText.show()
+		blockedAnimation.play("fadeAway")
+	
+	elif passageBlocked == false:
+		blockedAnimation.stop()
+		blockedText.hide()
+		
 	if takingDamage == true:
 		print("takingDamage")
 	if Input.is_action_pressed("attack") and velocity.x == 0 and $Sword/JumpDetect.is_colliding():
@@ -195,3 +213,9 @@ func _on_Timer2_timeout():
 	print("You died.")
 	get_tree().reload_current_scene()
 	
+	
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "fadeAway":
+		passageBlocked = false

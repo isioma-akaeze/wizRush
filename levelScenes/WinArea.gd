@@ -8,12 +8,13 @@ func _ready():
 func _on_body_entered(body: Node):
 	if body.is_in_group("canWin"):
 		if body.hasKey == true:
+			body.hasWon = true
 			timer.start()
 			
 		elif body.hasKey != true:
-			#print("Passage locked.")
+			body.passageBlocked = true
 			body.position.x -= 135
 
 func _on_WinTimer_timeout():
-	#get_tree().change_scene("res://levelScenes/Ash Apocalypse.tscn")
-	get_tree().quit()
+	get_tree().change_scene("res://levelScenes/Ash Apocalypse.tscn")
+	#get_tree().quit()
