@@ -45,6 +45,11 @@ onready var winText := $WinText
 onready var blockedText := $BlockedText
 onready var blockedAnimation := $BlockedText/AnimationPlayer
 onready var timer3 := $Timer3
+var anim_return := "null"
+
+func _ready() -> void:
+	blockedText.hide()
+	winText.hide()
 
 func _process(delta) -> void:
 	if hasKey == true:
@@ -217,5 +222,7 @@ func _on_Timer2_timeout():
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
+	anim_return = anim_name
 	if anim_name == "fadeAway":
 		passageBlocked = false
+	return anim_return
