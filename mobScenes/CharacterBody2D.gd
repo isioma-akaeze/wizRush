@@ -41,17 +41,20 @@ onready var key := $Sprite/Sprite
 onready var trialKey := $Sprite/Sprite2
 var hasKey := false
 var hasTrialKey := false
+var coinCounter := 0
 export var hasWon := false
 export var passageBlocked := false
 onready var winText := $WinText
 onready var blockedText := $BlockedText
 onready var blockedAnimation := $BlockedText/AnimationPlayer
 onready var timer3 := $Timer3
+onready var coinDisplay := $CoinCounter/BlockedText
 var anim_return := "null"
 
 func _ready() -> void:
 	blockedText.hide()
 	winText.hide()
+	sprite.modulate = Color(1, 1, 1)
 
 func _process(delta) -> void:
 	if hasTrialKey == true:
@@ -68,6 +71,7 @@ func _process(delta) -> void:
 		trialKey.position.x = -20
 		key.position.x = 20
 		trialKey.show()
+	coinDisplay.text = str(coinCounter)
 		
 	if health > 50:
 		heart.set_texture(heartFull)
@@ -75,8 +79,10 @@ func _process(delta) -> void:
 		heart.set_texture(heartHalf)
 	if health <= 0:
 		sprite.set_texture(dead)
+		sprite.modulate = Color(0, 0, 0, 1)
 		heart.set_texture(heartEmpty)
 		walk.stop()
+		GRAVITY *= 1.175
 		if is_on_floor():
 			set_physics_process(false)
 			set_process(false)
@@ -111,7 +117,9 @@ func _physics_process(delta):
 		blockedText.hide()
 		
 	if takingDamage == true:
-		print("takingDamage")
+		sprite.modulate = Color(1, 0, 0, 1)
+	elif takingDamage != true:
+		sprite.modulate = Color(1, 1, 1)
 	if Input.is_action_pressed("attack") and velocity.x == 0 and $Sword/JumpDetect.is_colliding():
 		sprite.set_texture(attack)
 	#If the left key is pressed, play the walk animation.
@@ -143,7 +151,7 @@ func _physics_process(delta):
 	if is_on_floor():
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
 	elif !is_on_floor():
-		if climbing == true and Input.is_action_pressed("down"):
+		if climbing == true and Input.is_action_pressed("down") and !health <= 0:
 			sprite.set_texture(climb)
 			velocity.y -= delta * CLIMB_GRAVITY
 			
@@ -179,7 +187,7 @@ func _physics_process(delta):
 	if Input.is_action_just_released("left") or Input.is_action_just_released("right"):
 		isMoving = false
 	#Code for jumping and double jumps.
-	if Input.is_action_pressed("up") and is_on_floor() and crouching != true: 
+	if Input.is_action_pressed("up") and is_on_floor() and crouching != true and !health <= 0: 
 		doubleJump = true #Allow a double jump
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
@@ -200,7 +208,7 @@ func _physics_process(delta):
 		floorTouched = true
 	elif not rayCastFloor.is_colliding():
 		floorTouched = false	
-	if Input.is_action_pressed("down") and is_on_floor() and crouching == false and climbing != true:
+	if Input.is_action_pressed("down") and is_on_floor() and crouching == false and climbing != true and !health <= 0:
 		crouching = true
 	if Input.is_action_just_released("down") and is_on_floor() and crouching == true and climbing != true:
 		if ceiling == false: #If NOT touching the ceiling while crouching...
@@ -230,9 +238,6 @@ func _on_Timer_timeout():
 func _on_Timer2_timeout():
 	get_tree().reload_current_scene()
 	
-	
-
-
 func _on_AnimationPlayer_animation_finished(anim_name):
 	anim_return = anim_name
 	if anim_name == "fadeAway":

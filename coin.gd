@@ -7,4 +7,5 @@ func _process(delta):
 
 func _on_Coin_body_entered(body):
 	if body.is_in_group("player"):
+		body.coinCounter += 1
 		queue_free()
