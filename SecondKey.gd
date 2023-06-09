@@ -4,9 +4,8 @@ onready var animation := $AnimationPlayer
 
 func _process(delta):
 	animation.play("hover")
-	
 
-func _on_Key_body_entered(body):
+func _on_SecondKey_body_entered(body):
 	if body.is_in_group("player"):
-		body.hasKey = true
+		body.hasTrialKey = true
 		queue_free()

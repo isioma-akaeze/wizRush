@@ -52,5 +52,5 @@ func add_caves_on_grid() -> void:
 		var available_space : Vector2 = worldCaves.cell_size - cave_size
 		var random_offset := Vector2(randf(), 0)*available_space
 		if coinFlip >= 5:
-			cave.position = worldCaves.position + worldCaves.map_to_world(cell) + random_offset + Vector2(41, 32)
+			cave.position = worldCaves.position + worldCaves.map_to_world(cell) + random_offset + Vector2(33, 32)
 			

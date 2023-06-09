@@ -6,7 +6,7 @@ func _on_ClimbArea_body_entered(body):
 	if body.is_in_group("climber"):
 			body.climbing = true
 			body.CLIMB_GRAVITY *= (7/3)
-			body.GRAVITY /= 2
+			body.GRAVITY /= 2.5
 
 
 func _on_ClimbArea_body_exited(body):
@@ -14,4 +14,4 @@ func _on_ClimbArea_body_exited(body):
 	if body.is_in_group("climber"):
 			body.climbing = false
 			body.CLIMB_GRAVITY /= (7/3)
-			body.GRAVITY *= 2
+			body.GRAVITY *= 2.5

@@ -38,7 +38,9 @@ onready var healthBar := $ProgressBar
 onready var heart := $Heart
 export var takingDamage := false
 onready var key := $Sprite/Sprite
+onready var trialKey := $Sprite/Sprite2
 var hasKey := false
+var hasTrialKey := false
 export var hasWon := false
 export var passageBlocked := false
 onready var winText := $WinText
@@ -52,10 +54,21 @@ func _ready() -> void:
 	winText.hide()
 
 func _process(delta) -> void:
-	if hasKey == true:
+	if hasTrialKey == true:
+		trialKey.show()
+	elif hasTrialKey != true:
+		trialKey.hide()
+	if hasKey == true and hasTrialKey != true:
 		key.show()
 	elif hasKey != true:
 		key.hide()
+	elif hasKey == true and hasTrialKey == true:
+		key.show()
+		trialKey.position.y = -47
+		trialKey.position.x = -20
+		key.position.x = 20
+		trialKey.show()
+		
 	if health > 50:
 		heart.set_texture(heartFull)
 	if health <= 50:
