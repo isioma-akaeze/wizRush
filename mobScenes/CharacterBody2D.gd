@@ -228,7 +228,6 @@ func _on_Timer_timeout():
 		sprite.set_texture(fall)
 
 func _on_Timer2_timeout():
-	print("You died.")
 	get_tree().reload_current_scene()
 	
 	
