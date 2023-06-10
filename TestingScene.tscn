@@ -26,8 +26,8 @@
 [ext_resource path="res://EnemySwitch.tscn" type="PackedScene" id=24]
 [ext_resource path="res://EnemySwitch2.tscn" type="PackedScene" id=25]
 [ext_resource path="res://enemyJump.tscn" type="PackedScene" id=26]
-[ext_resource path="res://potion.tscn" type="PackedScene" id=27]
-[ext_resource path="res://Key.tscn" type="PackedScene" id=28]
+[ext_resource path="res://randomScenes/potion.tscn" type="PackedScene" id=27]
+[ext_resource path="res://randomScenes/Key.tscn" type="PackedScene" id=28]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )

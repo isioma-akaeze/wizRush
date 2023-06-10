@@ -57,8 +57,9 @@ func _ready() -> void:
 	sprite.modulate = Color(1, 1, 1)
 
 func _process(delta) -> void:
-	if hasTrialKey == true:
+	if hasTrialKey == true and hasKey == false:
 		trialKey.show()
+		trialKey.position.y = -47
 	elif hasTrialKey != true:
 		trialKey.hide()
 	if hasKey == true and hasTrialKey != true:
@@ -159,6 +160,7 @@ func _physics_process(delta):
 		else:
 			timer.start()
 			velocity.y += delta * GRAVITY 
+			crouching = false
 	#The direction variable is equal to either what the left or right key provides.
 	var direction := Input.get_axis("left", "right")
 	#Walk animation stuff...
@@ -198,7 +200,7 @@ func _physics_process(delta):
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.
 			walk.stop(true)
 	#Detect if we're touching the ceiling quicker than is_on_ceiling().
-	rayCast.set_collision_mask(1)
+	rayCast.set_collision_mask(4)
 	if rayCast.is_colliding():
 		ceiling = true
 	elif not rayCast.is_colliding():
@@ -229,6 +231,9 @@ func _physics_process(delta):
 	#Make the player move based on information provided to the code.
 	velocity.x = direction * WALK_SPEED #Every frame, add to the x value of velocity the direction value multiplied by walk speed
 	move_and_slide(velocity, Vector2.UP) #Here I added "Vector2.UP" because otherwise "is_on_floor() literally would not work. 
+	
+
+
 
 #Whenever the timer for the fall animation runs out...
 func _on_Timer_timeout():
