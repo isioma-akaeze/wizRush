@@ -10,6 +10,10 @@ var swimSpeed := 120
 onready var sprite := $Sprite
 onready var raygunSprite := $Sprite/Sprite
 onready var animation := $AnimationPlayer
+onready var rayTimer := $RayTimer
+var rayCanShoot = true
+var goingDown := false
+var goingUp := false
 
 func _physics_process(delta) -> void:
 	sprite.modulate = Color(0.498039, 1, 0.831373, 1)
@@ -21,6 +25,8 @@ func _physics_process(delta) -> void:
 	velocity.x = direction * swimSpeed
 	
 	if Input.is_action_pressed("up"):
+		goingUp = true
+		goingDown = false
 		if sprite.flip_h == false:
 			sprite.set_rotation_degrees(-7.5)
 		elif sprite.flip_h == true:
@@ -28,6 +34,8 @@ func _physics_process(delta) -> void:
 		if velocity.y > maximumSwimGravity:
 			velocity.y += swimGravity * delta
 	elif Input.is_action_pressed("down"):
+		goingDown = true
+		goingUp = false
 		if sprite.flip_h == false:
 			sprite.set_rotation_degrees(7.5)
 		elif sprite.flip_h == true:
@@ -35,6 +43,8 @@ func _physics_process(delta) -> void:
 		if velocity.y < maximumVoluntarySink:
 			velocity.y -= (maximumVoluntarySink * -1) * delta
 	else:
+		goingUp = false
+		goingDown = false
 		sprite.set_rotation_degrees(0)
 		if velocity.y < maximumSinkGravity:
 			velocity.y += (sinkGravity * delta) 
@@ -54,6 +64,39 @@ func _physics_process(delta) -> void:
 		animation.stop()
 		
 	if Input.is_action_pressed("attack"):
-		print("SHOOT")
+		if rayCanShoot:
+			var ray : Area2D = preload("res://mobScenes/Ray.tscn").instance()
+			var raySpeed := 150.0
+			add_child(ray)
+			if sprite.flip_h == false:
+				ray.global_position.x = raygunSprite.global_position.x + 35
+				if goingDown:
+					ray.global_position.y = raygunSprite.global_position.y + 5
+				elif goingUp:
+					ray.global_position.y = raygunSprite.global_position.y - 5
+				else:
+					ray.global_position.y = raygunSprite.global_position.y
+				ray.rotation_degrees = sprite.rotation_degrees
+				ray.flipped = false
+				rayCanShoot = false
+				rayTimer.start()
+			elif sprite.flip_h == true:
+				ray.global_position.x = raygunSprite.global_position.x - 35
+				if goingDown:
+					ray.global_position.y = raygunSprite.global_position.y + 5
+				elif goingUp:
+					ray.global_position.y = raygunSprite.global_position.y - 5
+				else:
+					ray.global_position.y = raygunSprite.global_position.y
+				ray.rotation_degrees = sprite.rotation_degrees
+				ray.flipped = true
+				rayCanShoot = false
+				rayTimer.start()
+
+		
 		
 	move_and_slide(velocity, Vector2.UP)
+
+
+func _on_RayTimer_timeout():
+	rayCanShoot = true
