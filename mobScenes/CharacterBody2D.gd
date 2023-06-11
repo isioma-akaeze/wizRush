@@ -200,7 +200,7 @@ func _physics_process(delta):
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.
 			walk.stop(true)
 	#Detect if we're touching the ceiling quicker than is_on_ceiling().
-	rayCast.set_collision_mask(4)
+	rayCast.set_collision_mask(2)
 	if rayCast.is_colliding():
 		ceiling = true
 	elif not rayCast.is_colliding():

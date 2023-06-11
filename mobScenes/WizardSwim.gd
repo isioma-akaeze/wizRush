@@ -14,11 +14,11 @@ onready var rayTimer := $RayTimer
 var rayCanShoot = true
 var goingDown := false
 var goingUp := false
+var swimDirection := "right"
 
 func _physics_process(delta) -> void:
 	sprite.modulate = Color(0.498039, 1, 0.831373, 1)
 	raygunSprite.modulate = Color(0.498039, 1, 0.831373, 1)
-	
 	
 	var direction := Input.get_axis("left", "right")
 	
@@ -50,12 +50,14 @@ func _physics_process(delta) -> void:
 			velocity.y += (sinkGravity * delta) 
 	
 	if Input.is_action_pressed("left"):
+			swimDirection = "left"
 			animation.play("swim")
 			sprite.flip_h = -1 #Flip the sprite
 			raygunSprite.flip_h = -1
 			raygunSprite.position.x = -40
 	
 	elif Input.is_action_pressed("right"):
+			swimDirection = "right"
 			animation.play("swim")
 			sprite.flip_h = 0 #Flip the sprite
 			raygunSprite.flip_h = 0
@@ -67,7 +69,8 @@ func _physics_process(delta) -> void:
 		if rayCanShoot:
 			var ray : Area2D = preload("res://mobScenes/Ray.tscn").instance()
 			var raySpeed := 150.0
-			add_child(ray)
+			if get_parent() != null:
+				get_parent().add_child(ray)
 			if sprite.flip_h == false:
 				ray.global_position.x = raygunSprite.global_position.x + 35
 				if goingDown:

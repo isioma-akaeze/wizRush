@@ -42,7 +42,7 @@
 [ext_resource path="res://assets/images/Base pack/Tiles/lock_blue.png" type="Texture" id=40]
 [ext_resource path="res://randomScenes/SecondKey.tscn" type="PackedScene" id=41]
 [ext_resource path="res://randomScenes/potion.tscn" type="PackedScene" id=42]
-[ext_resource path="res://levelScenes/ProgressArea2.tscn" type="PackedScene" id=43]
+[ext_resource path="res://ProgressArea2.tscn" type="PackedScene" id=43]
 [ext_resource path="res://mobScenes/JumpFish.tscn" type="PackedScene" id=44]
 [ext_resource path="res://randomScenes/coin.tscn" type="PackedScene" id=45]
 [ext_resource path="res://assets/images/Base pack/Tiles/castleCenter.png" type="Texture" id=46]

@@ -4,7 +4,7 @@ var interacting := false
 
 func _on_EnemySwitch_body_entered(body):
 	interacting = true
-	if body.is_in_group("enemy"):
+	if body.is_in_group("enemy") or body.is_in_group("passive"):
 			body.switchingDirection = true
 			
 #func _on_EnemySwitch_body_exited(body):
