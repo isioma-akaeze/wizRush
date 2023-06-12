@@ -6,7 +6,7 @@ var maximumSwimGravity := -100
 var maximumSinkGravity := 80
 var maximumVoluntarySink := 125
 var velocity := Vector2.ZERO
-var swimSpeed := 120
+var swimSpeed := 150
 onready var sprite := $Sprite
 onready var raygunSprite := $Sprite/Sprite
 onready var animation := $AnimationPlayer
@@ -25,6 +25,8 @@ func _physics_process(delta) -> void:
 	velocity.x = direction * swimSpeed
 	
 	if Input.is_action_pressed("up"):
+		if velocity.y > 0:
+			velocity.y = 0
 		goingUp = true
 		goingDown = false
 		if sprite.flip_h == false:
@@ -46,6 +48,8 @@ func _physics_process(delta) -> void:
 		goingUp = false
 		goingDown = false
 		sprite.set_rotation_degrees(0)
+		if velocity.y < 0:
+			velocity.y = 0
 		if velocity.y < maximumSinkGravity:
 			velocity.y += (sinkGravity * delta) 
 	
