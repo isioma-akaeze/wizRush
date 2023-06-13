@@ -49,14 +49,29 @@ onready var blockedText := $BlockedText
 onready var blockedAnimation := $BlockedText/AnimationPlayer
 onready var timer3 := $Timer3
 onready var coinDisplay := $CoinCounter/BlockedText
+onready var objective := $Objective
+onready var objective2 := $Objective2
 var anim_return := "null"
 
 func _ready() -> void:
+	objective.hide()
+	objective2.hide()
 	blockedText.hide()
 	winText.hide()
 	sprite.modulate = Color(1, 1, 1)
 
 func _process(delta) -> void:
+	var currentScene := (get_tree().get_current_scene().filename)
+	if currentScene == "res://levelScenes/Green Groves.tscn":
+		objective.show()
+		objective2.hide()
+	elif currentScene == "res://levelScenes/Ash Apocalypse.tscn":
+		objective2.show()
+		objective.hide()
+	else:
+		objective.hide()
+		objective2.hide()
+	
 	if hasTrialKey == true and hasKey == false:
 		trialKey.show()
 		trialKey.position.y = -47

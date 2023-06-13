@@ -34,7 +34,7 @@ func _process(delta) -> void:
 func _physics_process(delta):
 	if targetAcquired:
 		speed = 175.0
-		direction = global_position.direction_to(bodyX.global_position * -1)
+		direction = global_position.direction_to(bodyX.global_position)
 		direction.y = 0
 		if direction.x >= 0:
 			sprite.flip_h = -1

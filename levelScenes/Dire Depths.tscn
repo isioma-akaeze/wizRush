@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://assets/images/Base pack/Tiles/liquidWater.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/Base pack/Tiles/castleCenter.png" type="Texture" id=2]
@@ -9,6 +9,12 @@
 [ext_resource path="res://EnemySwitch2.tscn" type="PackedScene" id=7]
 [ext_resource path="res://EnemySwitch.tscn" type="PackedScene" id=8]
 [ext_resource path="res://mobScenes/Fish.tscn" type="PackedScene" id=9]
+[ext_resource path="res://randomScenes/SecondKey.tscn" type="PackedScene" id=10]
+[ext_resource path="res://levelScenes/FirstProgress.tscn" type="PackedScene" id=11]
+[ext_resource path="res://randomScenes/Key.tscn" type="PackedScene" id=12]
+[ext_resource path="res://randomScenes/DemoKey.tscn" type="PackedScene" id=13]
+[ext_resource path="res://levelScenes/SecondProgress.tscn" type="PackedScene" id=14]
+[ext_resource path="res://levelScenes/ThirdProgress.tscn" type="PackedScene" id=15]
 
 [sub_resource type="ConvexPolygonShape2D" id=23]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -724,3 +730,24 @@ position = Vector2( 3982, 2890 )
 
 [node name="Fish25" parent="." instance=ExtResource( 9 )]
 position = Vector2( 4661, 112 )
+
+[node name="SecondKey" parent="." instance=ExtResource( 10 )]
+position = Vector2( 168, 871 )
+
+[node name="FirstProgress" parent="." instance=ExtResource( 11 )]
+position = Vector2( 1025, 1440 )
+scale = Vector2( 3.16, 1.48 )
+
+[node name="Key" parent="." instance=ExtResource( 12 )]
+position = Vector2( 4761, 1705 )
+
+[node name="DemoKey" parent="." instance=ExtResource( 13 )]
+position = Vector2( 1817, 2669 )
+
+[node name="SecondProgress" parent="." instance=ExtResource( 14 )]
+position = Vector2( 3134, 225 )
+scale = Vector2( 3.24, 1.64 )
+
+[node name="ThirdProgress" parent="." instance=ExtResource( 15 )]
+position = Vector2( 5568, 2977 )
+scale = Vector2( 3.20008, 1.64002 )

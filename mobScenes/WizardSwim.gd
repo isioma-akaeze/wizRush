@@ -6,7 +6,7 @@ var maximumSwimGravity := -100
 var maximumSinkGravity := 80
 var maximumVoluntarySink := 125
 var velocity := Vector2.ZERO
-var swimSpeed := 150
+var swimSpeed := 120
 onready var sprite := $Sprite
 onready var raygunSprite := $Sprite/Sprite
 onready var animation := $AnimationPlayer
@@ -15,8 +15,50 @@ var rayCanShoot = true
 var goingDown := false
 var goingUp := false
 var swimDirection := "right"
+onready var trialKeySprite := $TrialKey
+onready var demoKeySprite := $DemoKey
+onready var keySprite := $Key
+var hasTrialKey := false
+var hasDemoKey := false
+var hasKey := false
+var passageBlocked := false
+onready var healthBar := $ProgressBar
+onready var coinDisplay := $CoinCounter/BlockedText
+var coinCounter := 0
+var health := 100
+
+func _ready():
+	healthBar.max_value = 100
 
 func _physics_process(delta) -> void:
+	coinDisplay.text = str(coinCounter)
+	healthBar.set_value(health)
+	if hasTrialKey and !hasDemoKey and !hasKey:
+		trialKeySprite.show()
+	elif hasTrialKey and hasDemoKey and !hasKey:
+		trialKeySprite.show()
+		trialKeySprite.position.x = -20
+		demoKeySprite.show()
+		demoKeySprite.position = Vector2(17, -53)
+	elif hasTrialKey and hasDemoKey and hasKey:
+		trialKeySprite.show()
+		trialKeySprite.position.x = -34
+		demoKeySprite.show()
+		demoKeySprite.position = Vector2(0, -53)
+		keySprite.show()
+		keySprite.position = Vector2(34, -53)
+	elif !hasTrialKey:
+		trialKeySprite.hide()
+	if !hasDemoKey:
+		demoKeySprite.hide()
+	if !hasKey:
+		keySprite.hide()
+	
+	if passageBlocked:
+		print("BLOCKED")
+	elif !passageBlocked:
+		pass
+	
 	sprite.modulate = Color(0.498039, 1, 0.831373, 1)
 	raygunSprite.modulate = Color(0.498039, 1, 0.831373, 1)
 	

@@ -21,16 +21,38 @@ var inputAxis := 0
 var green := preload("res://assets/images/Extra animations and enemies/Enemy sprites/fishGreen.png")
 var pink := preload("res://assets/images/Extra animations and enemies/Enemy sprites/fishPink.png")
 var isOnWall := false
+var colorSelected := "null"
+onready var animation := $AnimationPlayer
+var health := 15
+onready var healthBar := $ProgressBar
 
 func _ready():
+	healthBar.max_value = 15
 	pathTimer.start()
+	
 	var randText := (randi() % 2)
 	if randText == 0:
 		sprite.set_texture(green)
+		colorSelected = "green"
 	elif randText == 1:
 		sprite.set_texture(pink)
+		colorSelected = "pink"
 
-func _physics_process(delta):
+func _process(delta):
+	healthBar.set_value(health)
+	if health <= 0:
+		if colorSelected == "green":
+			set_physics_process(false)
+			animation.play("greenDeath")
+		elif colorSelected == "pink":
+			set_physics_process(false)
+			animation.play("pinkDeath")
+
+func _physics_process(delta):	
+	if colorSelected == "pink":
+		animation.play("pinkSwim")
+	elif colorSelected == "green":
+		animation.play("greenSwim")
 	var inputAxis = Input.get_axis("left", "right")
 	if !dangerSpotted and !switchingDirection:
 		sprite.flip_h = 0
@@ -72,7 +94,7 @@ func _on_PathTimer_timeout():
 
 
 func _on_Area2D_body_entered(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and health != 0:
 		if body.global_position.x > global_position.x:
 			direction.x = -3
 			sprite.flip_h = 0
@@ -116,3 +138,8 @@ func _on_DangerSwitch_timeout():
 			sprite.flip_h = 0
 		elif sprite.flip_h == false:
 			sprite.flip_h = -1
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "greenDeath" or anim_name == "pinkDeath":
+		queue_free()
