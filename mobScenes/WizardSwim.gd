@@ -83,7 +83,7 @@ func _physics_process(delta) -> void:
 					ray.global_position.y = raygunSprite.global_position.y - 5
 				else:
 					ray.global_position.y = raygunSprite.global_position.y
-				ray.rotation_degrees = sprite.rotation_degrees
+				ray.rotation_degrees = sprite.rotation_degrees *(2/3)
 				ray.flipped = false
 				rayCanShoot = false
 				rayTimer.start()
@@ -95,7 +95,7 @@ func _physics_process(delta) -> void:
 					ray.global_position.y = raygunSprite.global_position.y - 5
 				else:
 					ray.global_position.y = raygunSprite.global_position.y
-				ray.rotation_degrees = sprite.rotation_degrees
+				ray.rotation_degrees = sprite.rotation_degrees * (2/3)
 				ray.flipped = true
 				rayCanShoot = false
 				rayTimer.start()
