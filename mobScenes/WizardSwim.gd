@@ -34,6 +34,7 @@ onready var stopwatchText := $Stopwatch
 
 func _ready():
 	healthBar.max_value = 100
+	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 	
 func _physics_process(delta) -> void:
 	stopwatch += delta

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_swim1.png" type="Texture" id=1]
 [ext_resource path="res://mobScenes/WizardSwim.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://assets/images/KiriFont.otf" type="DynamicFontData" id=9]
 [ext_resource path="res://assets/images/Base pack/HUD/hud_coins.png" type="Texture" id=10]
 [ext_resource path="res://assets/images/Buildings expansion/Tiles/clock.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/KiriFont - Copy.otf" type="DynamicFontData" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 29, 9.1 )
@@ -152,6 +153,9 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
+[sub_resource type="DynamicFont" id=14]
+font_data = ExtResource( 12 )
+
 [sub_resource type="Animation" id=12]
 length = 0.001
 tracks/0/type = "value"
@@ -285,7 +289,7 @@ margin_left = 13.0
 margin_top = -203.0
 margin_right = 83.0
 margin_bottom = -183.0
-custom_fonts/normal_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 14 )
 text = "NULL"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Stopwatch"]
