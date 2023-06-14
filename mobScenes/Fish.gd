@@ -94,7 +94,7 @@ func _on_PathTimer_timeout():
 
 
 func _on_Area2D_body_entered(body):
-	if body.is_in_group("player") and health != 0:
+	if body.is_in_group("player") and health != 0 or body.is_in_group("enemy") and health != 0:
 		if body.global_position.x > global_position.x:
 			direction.x = -3
 			sprite.flip_h = 0
@@ -115,7 +115,7 @@ func _on_Area2D_body_entered(body):
 	
 
 func _on_Area2D_body_exited(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player") or body.is_in_group("enemy"):
 		scaredTimer.start()
 
 func _on_Timer_timeout():

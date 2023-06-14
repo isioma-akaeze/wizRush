@@ -52,6 +52,8 @@ onready var coinDisplay := $CoinCounter/BlockedText
 onready var objective := $Objective
 onready var objective2 := $Objective2
 var anim_return := "null"
+var stopwatch := 0.00
+onready var stopwatchText := $Stopwatch
 
 func _ready() -> void:
 	objective.hide()
@@ -59,6 +61,7 @@ func _ready() -> void:
 	blockedText.hide()
 	winText.hide()
 	sprite.modulate = Color(1, 1, 1)
+	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 
 func _process(delta) -> void:
 	var currentScene := (get_tree().get_current_scene().filename)
@@ -117,7 +120,9 @@ func _process(delta) -> void:
 		swordSprite.flip_h = 0
 
 #Every frame...
-func _physics_process(delta):
+func _physics_process(delta) -> void:
+	stopwatch += delta
+	stopwatchText.text = str(stopwatch).pad_decimals(1)
 	if hasWon == true:
 		winText.show()
 		set_physics_process(false)
