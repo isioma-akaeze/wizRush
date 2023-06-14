@@ -11,3 +11,7 @@ func _on_body_entered(body: Node):
 		elif body.hasKey != true:
 			body.passageBlocked = true
 			body.global_position.y -= 40
+	if body.is_in_group("passive"):
+		body.global_position.y -= 150
+		if body.randomY < 0:
+			body.randomY *= -1

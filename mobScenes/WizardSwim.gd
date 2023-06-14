@@ -26,11 +26,25 @@ onready var healthBar := $ProgressBar
 onready var coinDisplay := $CoinCounter/BlockedText
 var coinCounter := 0
 var health := 100
+onready var blockedText := $BlockedText
+onready var blockedAnimation := $BlockedText/AnimationPlayer
+var anim_return := "null"
+var stopwatch := 0.00
+onready var stopwatchText := $Stopwatch
 
 func _ready():
 	healthBar.max_value = 100
-
+	
 func _physics_process(delta) -> void:
+	stopwatch += delta
+	stopwatchText.text = str(stopwatch).pad_decimals(1)
+
+	if passageBlocked == true:
+		blockedText.show()
+		blockedAnimation.play("fadeAway")
+	elif passageBlocked == false:
+		blockedAnimation.stop()
+		blockedText.hide()
 	coinDisplay.text = str(coinCounter)
 	healthBar.set_value(health)
 	if hasTrialKey and !hasDemoKey and !hasKey:
@@ -149,3 +163,10 @@ func _physics_process(delta) -> void:
 
 func _on_RayTimer_timeout():
 	rayCanShoot = true
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	anim_return = anim_name
+	if anim_name == "fadeAway":
+		passageBlocked = false
+	return anim_return

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/images/Base pack/Tiles/liquidWater.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/Base pack/Tiles/castleCenter.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://randomScenes/DemoKey.tscn" type="PackedScene" id=13]
 [ext_resource path="res://levelScenes/SecondProgress.tscn" type="PackedScene" id=14]
 [ext_resource path="res://levelScenes/ThirdProgress.tscn" type="PackedScene" id=15]
+[ext_resource path="res://randomScenes/coin.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=23]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -751,3 +752,9 @@ scale = Vector2( 3.24, 1.64 )
 [node name="ThirdProgress" parent="." instance=ExtResource( 15 )]
 position = Vector2( 5568, 2977 )
 scale = Vector2( 3.20008, 1.64002 )
+
+[node name="Coin" parent="." instance=ExtResource( 16 )]
+position = Vector2( 182, 796 )
+
+[node name="Coin2" parent="." instance=ExtResource( 16 )]
+position = Vector2( 294, 796 )
