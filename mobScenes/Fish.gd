@@ -25,6 +25,8 @@ var colorSelected := "null"
 onready var animation := $AnimationPlayer
 var health := 15
 onready var healthBar := $ProgressBar
+var takingDamage := false
+var hurt := preload("res://assets/images/Extra animations and enemies/Enemy sprites/fishGreen_hit.png")
 
 func _ready():
 	healthBar.max_value = 15
@@ -40,7 +42,7 @@ func _ready():
 
 func _process(delta):
 	healthBar.set_value(health)
-	if health <= 0:
+	if health <= 0 and !takingDamage:
 		if colorSelected == "green":
 			set_physics_process(false)
 			animation.play("greenDeath")
@@ -49,6 +51,11 @@ func _process(delta):
 			animation.play("pinkDeath")
 
 func _physics_process(delta):	
+	if takingDamage:
+		pass
+	elif !takingDamage:
+		pass
+	
 	if colorSelected == "pink":
 		animation.play("pinkSwim")
 	elif colorSelected == "green":

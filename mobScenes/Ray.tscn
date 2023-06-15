@@ -21,4 +21,5 @@ process_mode = 0
 wait_time = 5.0
 
 [connection signal="body_entered" from="." to="." method="_on_Ray_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_Ray_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

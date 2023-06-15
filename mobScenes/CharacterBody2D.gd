@@ -54,6 +54,7 @@ onready var objective2 := $Objective2
 var anim_return := "null"
 var stopwatch := 0.00
 onready var stopwatchText := $Stopwatch
+onready var pauseMenu := $Camera2D/PauseMenu
 
 func _ready() -> void:
 	objective.hide()
@@ -64,6 +65,9 @@ func _ready() -> void:
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 
 func _process(delta) -> void:
+	if Input.is_action_just_pressed("pause"):
+		_when_pause_button_pressed()
+	
 	var currentScene := (get_tree().get_current_scene().filename)
 	if currentScene == "res://levelScenes/Green Groves.tscn":
 		objective.show()
@@ -141,7 +145,7 @@ func _physics_process(delta) -> void:
 		sprite.modulate = Color(1, 0, 0, 1)
 	elif takingDamage != true:
 		sprite.modulate = Color(1, 1, 1)
-	if Input.is_action_pressed("attack") and velocity.x == 0 and $Sword/JumpDetect.is_colliding():
+	if Input.is_action_pressed("attack") and velocity.x == 0 and is_on_floor():
 		sprite.set_texture(attack)
 	#If the left key is pressed, play the walk animation.
 	if Input.is_action_pressed("left"):
@@ -268,3 +272,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fadeAway":
 		passageBlocked = false
 	return anim_return
+	
+func _when_pause_button_pressed():
+	get_tree().paused = true
+
+

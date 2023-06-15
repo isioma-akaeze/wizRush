@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
 var sinkGravity := 80
-var swimGravity := -100
-var maximumSwimGravity := -100
+var swimGravity := -120
+var maximumSwimGravity := -120
 var maximumSinkGravity := 80
 var maximumVoluntarySink := 125
 var velocity := Vector2.ZERO
@@ -31,10 +31,36 @@ onready var blockedAnimation := $BlockedText/AnimationPlayer
 var anim_return := "null"
 var stopwatch := 0.00
 onready var stopwatchText := $Stopwatch
+var takingDamage := false
+onready var heart := $Heart
+var heartHalf := preload("res://assets/images/Base pack/HUD/hud_heartHalf.png")
+var heartEmpty := preload("res://assets/images/Base pack/HUD/hud_heartEmpty.png")
+var heartFull := preload("res://assets/images/Base pack/HUD/hud_heartFull.png")
+var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_hurt.png")
+onready var deathTimer := $DeathTimer
 
 func _ready():
 	healthBar.max_value = 100
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
+	keySprite.hide()
+	demoKeySprite.hide()
+	trialKeySprite.hide()
+	blockedText.hide()
+	
+func _process(delta):
+	if health > 50:
+		heart.set_texture(heartFull)
+	if health < 50 and health > 0:
+		heart.set_texture(heartHalf)
+	
+	if health <= 0:
+		sprite.set_texture(dead)
+		heart.set_texture(heartEmpty)
+		sprite.modulate = Color(0, 0, 0, 1)
+		animation.stop()
+		set_process(false)
+		set_physics_process(false)
+		deathTimer.start()
 
 func _physics_process(delta) -> void:
 	stopwatch += delta
@@ -73,9 +99,12 @@ func _physics_process(delta) -> void:
 		print("BLOCKED")
 	elif !passageBlocked:
 		pass
-	
-	sprite.modulate = Color(0.498039, 1, 0.831373, 1)
-	raygunSprite.modulate = Color(0.498039, 1, 0.831373, 1)
+	if takingDamage == true:
+		sprite.modulate = Color(1, 0, 0, 1)
+		raygunSprite.modulate = Color(1, 0, 0, 1)
+	elif takingDamage != true:
+		sprite.modulate = Color(0.498039, 1, 0.831373, 1)
+		raygunSprite.modulate = Color(0.498039, 1, 0.831373, 1)
 	
 	var direction := Input.get_axis("left", "right")
 	
@@ -171,3 +200,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fadeAway":
 		passageBlocked = false
 	return anim_return
+
+
+func _on_DeathTimer_timeout():
+	get_tree().reload_current_scene()

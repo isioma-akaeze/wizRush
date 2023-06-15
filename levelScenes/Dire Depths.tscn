@@ -179,8 +179,8 @@ position = Vector2( 4554, 1586 )
 scale = Vector2( 1.24, 0.161551 )
 
 [node name="EnemySwitch101" parent="." instance=ExtResource( 8 )]
-position = Vector2( 4100, 2211 )
-scale = Vector2( 1.24, 1.12157 )
+position = Vector2( 4117, 2211 )
+scale = Vector2( 2.64, 1.12157 )
 
 [node name="EnemySwitch126" parent="." instance=ExtResource( 8 )]
 position = Vector2( 4358, 2610 )
@@ -256,7 +256,7 @@ scale = Vector2( 1.14098, 0.41208 )
 
 [node name="EnemySwitch119" parent="." instance=ExtResource( 8 )]
 position = Vector2( 4873, 1792 )
-scale = Vector2( 1.14098, 0.41208 )
+scale = Vector2( 2.18098, 0.41208 )
 
 [node name="EnemySwitch120" parent="." instance=ExtResource( 8 )]
 position = Vector2( 4613, 2355 )
@@ -524,7 +524,7 @@ scale = Vector2( 1.88, 0.1464 )
 
 [node name="EnemySwitch70" parent="." instance=ExtResource( 7 )]
 position = Vector2( 5050, 2786 )
-scale = Vector2( 1.88, 0.70641 )
+scale = Vector2( -5.64, 0.70641 )
 
 [node name="EnemySwitch71" parent="." instance=ExtResource( 7 )]
 position = Vector2( 5628, 3181 )
@@ -556,7 +556,7 @@ scale = Vector2( 1.88, 0.146391 )
 
 [node name="EnemySwitch78" parent="." instance=ExtResource( 7 )]
 position = Vector2( 5050, 1736 )
-scale = Vector2( 1.88, 0.426391 )
+scale = Vector2( -4.32, 0.426391 )
 
 [node name="EnemySwitch79" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4795, 1672 )
@@ -568,23 +568,23 @@ scale = Vector2( 1.88, 0.146387 )
 
 [node name="EnemySwitch81" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4539, 1391 )
-scale = Vector2( 1.88, 0.146387 )
+scale = Vector2( 10, 0.146387 )
 
 [node name="EnemySwitch82" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4475, 1455 )
-scale = Vector2( 1.88, 0.146387 )
+scale = Vector2( 7.6, 0.146387 )
 
 [node name="EnemySwitch83" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4411, 1561 )
-scale = Vector2( 1.88, 0.266387 )
+scale = Vector2( 6.8, 0.266387 )
 
 [node name="EnemySwitch84" parent="." instance=ExtResource( 7 )]
-position = Vector2( 4090, 1775 )
-scale = Vector2( 1.88, 0.146387 )
+position = Vector2( 4086, 1772 )
+scale = Vector2( 3.72, 0.146387 )
 
 [node name="EnemySwitch85" parent="." instance=ExtResource( 7 )]
-position = Vector2( 4026, 2155 )
-scale = Vector2( 1.88, 1.14639 )
+position = Vector2( 4009, 2155 )
+scale = Vector2( 8.47395, 1.14639 )
 
 [node name="EnemySwitch86" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4731, 2440 )
@@ -592,11 +592,11 @@ scale = Vector2( 1.88, 0.426386 )
 
 [node name="EnemySwitch87" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4795, 1900 )
-scale = Vector2( 1.88, 0.146396 )
+scale = Vector2( -4.12, 0.146396 )
 
 [node name="EnemySwitch88" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4729, 1836 )
-scale = Vector2( 1.88, 0.146396 )
+scale = Vector2( -4.56, 0.146396 )
 
 [node name="EnemySwitch89" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4090, 2348 )
@@ -604,11 +604,11 @@ scale = Vector2( 1.88, 0.146396 )
 
 [node name="EnemySwitch90" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4282, 2543 )
-scale = Vector2( 1.88, 0.146396 )
+scale = Vector2( -4.68, 0.146396 )
 
 [node name="EnemySwitch91" parent="." instance=ExtResource( 7 )]
 position = Vector2( 4025, 1202 )
-scale = Vector2( 1.88, 0.586396 )
+scale = Vector2( 6.04, 0.586396 )
 
 [node name="EnemySwitch95" parent="." instance=ExtResource( 7 )]
 position = Vector2( 5874, 1000 )
@@ -761,4 +761,79 @@ position = Vector2( 182, 796 )
 position = Vector2( 294, 796 )
 
 [node name="Piranha" parent="." instance=ExtResource( 17 )]
-position = Vector2( 422, 268 )
+position = Vector2( 300, 726 )
+
+[node name="Piranha2" parent="." instance=ExtResource( 17 )]
+position = Vector2( 509, 848 )
+
+[node name="Piranha3" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1012, 1863 )
+
+[node name="Piranha6" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1013, 2393 )
+
+[node name="Piranha7" parent="." instance=ExtResource( 17 )]
+position = Vector2( 633, 2704 )
+
+[node name="Piranha8" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1400, 2704 )
+
+[node name="Piranha9" parent="." instance=ExtResource( 17 )]
+position = Vector2( 3126, 375 )
+
+[node name="Piranha11" parent="." instance=ExtResource( 17 )]
+position = Vector2( 3884, 1105 )
+
+[node name="Piranha12" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4214, 1445 )
+
+[node name="Piranha14" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4608, 1697 )
+
+[node name="Piranha17" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4308, 2009 )
+
+[node name="Piranha18" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4928, 2017 )
+
+[node name="Piranha19" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4618, 2235 )
+
+[node name="Piranha20" parent="." instance=ExtResource( 17 )]
+position = Vector2( 5534, 1635 )
+
+[node name="Piranha21" parent="." instance=ExtResource( 17 )]
+position = Vector2( 5545, 1963 )
+
+[node name="Piranha22" parent="." instance=ExtResource( 17 )]
+position = Vector2( 5531, 2396 )
+
+[node name="Piranha24" parent="." instance=ExtResource( 17 )]
+position = Vector2( 5540, 2771 )
+
+[node name="Piranha25" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4283, 830 )
+
+[node name="Piranha26" parent="." instance=ExtResource( 17 )]
+position = Vector2( 4979, 382 )
+
+[node name="Piranha27" parent="." instance=ExtResource( 17 )]
+position = Vector2( 5627, 1022 )
+
+[node name="Piranha28" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1379, 206 )
+
+[node name="Piranha29" parent="." instance=ExtResource( 17 )]
+position = Vector2( 2371, 590 )
+
+[node name="Piranha30" parent="." instance=ExtResource( 17 )]
+position = Vector2( 331, 1390 )
+
+[node name="Piranha31" parent="." instance=ExtResource( 17 )]
+position = Vector2( 2707, 1454 )
+
+[node name="Piranha32" parent="." instance=ExtResource( 17 )]
+position = Vector2( 3355, 2246 )
+
+[node name="Piranha33" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1243, 2990 )
