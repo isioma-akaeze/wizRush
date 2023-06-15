@@ -6,7 +6,7 @@ func _ready():
 func _on_body_entered(body: Node):
 	if body.is_in_group("player"):
 		if body.hasKey == true:
-			get_tree().quit()
+			get_tree().change_scene("res://MainMenu.tscn")
 			
 		elif body.hasKey != true:
 			body.passageBlocked = true

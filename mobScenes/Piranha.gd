@@ -25,6 +25,7 @@ var bodyToKill : Node = null
 var takingDamage = false
 var hurt := preload("res://assets/images/Extra animations and enemies/Enemy sprites/piranha_hit.png")
 var normal := preload("res://assets/images/Extra animations and enemies/Enemy sprites/piranha.png")
+onready var wallCheck := $RayCast2D
 
 func _ready():
 	healthBar.max_value = 45
@@ -46,6 +47,7 @@ func _physics_process(delta) -> void:
 		sprite.flip_h = 0
 		speed = 60.0
 		direction = Vector2(-3, randomY)
+		wallCheck.cast_to = Vector2(-55, 0)
 		var velocity := direction * speed
 		if velocity.y < MAXIMUM_SINK_GRAVITY:
 			velocity.y += SINK_GRAVITY * delta
@@ -59,6 +61,7 @@ func _physics_process(delta) -> void:
 		sprite.flip_h = -1
 		speed = 60.0
 		direction = Vector2(3, randomY)
+		wallCheck.cast_to = Vector2(55, 0)
 		var velocity := direction * speed
 		if velocity.y < 0:
 			velocity.y = 0
@@ -69,13 +72,15 @@ func _physics_process(delta) -> void:
 		move_and_slide(velocity, Vector2.UP)
 		if round(velocity.x) > 0:
 			animation.play("swim")
-	elif targetAcquired:
-		speed = 103.75
+	elif targetAcquired and !wallCheck.is_colliding():
+		speed = 110.25
 		direction = global_position.direction_to(bodyX.global_position)
 		if direction.x >= 0:
+			wallCheck.cast_to = Vector2(55, 0)
 			sprite.set_rotation_degrees(90)
 			sprite.flip_h = -1
 		elif direction.x < 0:
+			wallCheck.cast_to = Vector2(-55, 0)
 			sprite.set_rotation_degrees(270)
 			sprite.flip_h = 0
 		elif round(direction.x) == 0:
@@ -90,7 +95,8 @@ func _physics_process(delta) -> void:
 			sprite.set_texture(hurt)
 		elif takingDamage == false:
 			sprite.set_texture(normal)
-
+	elif targetAcquired and wallCheck.is_colliding():
+		targetAcquired = false
 
 func _on_PathTimer_timeout():
 	coinFlip = rand_range(0, 1)
@@ -101,7 +107,7 @@ func _on_PathTimer_timeout():
 	pathTimer.start()
 
 func _on_ChaseArea_body_entered(body):
-	if body.is_in_group("player") and body.health > 0:
+	if body.is_in_group("player") and body.health > 0 and !wallCheck.is_colliding():
 		targetAcquired = true
 		bodyX = body
 		return bodyX

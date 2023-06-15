@@ -54,9 +54,10 @@ onready var objective2 := $Objective2
 var anim_return := "null"
 var stopwatch := 0.00
 onready var stopwatchText := $Stopwatch
-onready var pauseMenu := $Camera2D/PauseMenu
+onready var pauseMenu := $PauseMenu
 
 func _ready() -> void:
+	pauseMenu.hide()
 	objective.hide()
 	objective2.hide()
 	blockedText.hide()
@@ -275,5 +276,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	
 func _when_pause_button_pressed():
 	get_tree().paused = true
+	pauseMenu.show()
+
 
 

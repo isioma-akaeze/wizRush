@@ -38,8 +38,10 @@ var heartEmpty := preload("res://assets/images/Base pack/HUD/hud_heartEmpty.png"
 var heartFull := preload("res://assets/images/Base pack/HUD/hud_heartFull.png")
 var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_hurt.png")
 onready var deathTimer := $DeathTimer
+onready var pauseMenu := $PauseMenu
 
 func _ready():
+	pauseMenu.hide()
 	healthBar.max_value = 100
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 	keySprite.hide()
@@ -48,6 +50,8 @@ func _ready():
 	blockedText.hide()
 	
 func _process(delta):
+	if Input.is_action_just_pressed("pause"):
+		_when_pause_button_pressed()
 	if health > 50:
 		heart.set_texture(heartFull)
 	if health < 50 and health > 0:
@@ -96,7 +100,7 @@ func _physics_process(delta) -> void:
 		keySprite.hide()
 	
 	if passageBlocked:
-		print("BLOCKED")
+		pass
 	elif !passageBlocked:
 		pass
 	if takingDamage == true:
@@ -204,3 +208,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_DeathTimer_timeout():
 	get_tree().reload_current_scene()
+
+func _when_pause_button_pressed():
+	get_tree().paused = true
+	pauseMenu.show()
