@@ -1,8 +1,8 @@
 extends Area2D
 
 onready var timer := $Timer
-onready var bee := $EnemyBody
 onready var box := $CollisionShape2D
+onready var difficulty := get_node("/root/GlobalOptionButton")
 
 func _process(delta) -> void:
 	var beeParent : float = get_parent().get_parent().health
@@ -30,6 +30,9 @@ func _on_body_exited(body: Node):
 
 func _on_Timer_timeout():
 	var beeParent : float = get_parent().get_parent().health
-	if beeParent > 0:
+	if beeParent > 0 and difficulty.difficulty == 0:
 		bodyToKill.health -= 20
+		bodyToKill.takingDamage = true
+	elif beeParent > 0 and difficulty.difficulty == 1:
+		bodyToKill.health -= 35
 		bodyToKill.takingDamage = true

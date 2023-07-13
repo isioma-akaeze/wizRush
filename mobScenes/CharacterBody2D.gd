@@ -16,7 +16,7 @@ var GRAVITY := 475.0 #Rate at which the character vertically translate positivel
 var CLIMB_GRAVITY := 37.5 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
 const velocity := Vector2.ZERO #Used for movement calculation
-const JUMP_SPEED := -350.0 #Rate at which the character vertically translates negatively
+var JUMP_SPEED := -350.0 #Rate at which the character vertically translates negatively
 var doubleJump := false #Can the character press the jump button again?
 onready var walk := $AnimationPlayer #Used to access animations, although it'd probably be better to change the variable name.
 export var climbing = false #Used to connect to LadderArea2D nodes, and to determine whether or not the movement behaviour should resemble climbing.
@@ -55,8 +55,15 @@ var anim_return := "null"
 var stopwatch := 0.00
 onready var stopwatchText := $Stopwatch
 onready var pauseMenu := $PauseMenu
+onready var difficulty := get_node("/root/GlobalOptionButton")
 
 func _ready() -> void:
+	if difficulty.difficulty == 0:
+		JUMP_SPEED = -350.0
+		GRAVITY = 475.0
+	elif difficulty.difficulty == 1:
+		JUMP_SPEED = -420.0
+		GRAVITY = 546.25
 	pauseMenu.hide()
 	objective.hide()
 	objective2.hide()
@@ -219,7 +226,7 @@ func _physics_process(delta) -> void:
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
 		walk.stop(true)
-	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
+	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump and difficulty.difficulty == 0: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
 			sprite.set_texture(jump)
 			velocity.y = JUMP_SPEED  #Same thing as in the jump code.
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.

@@ -18,6 +18,16 @@ onready var timer := $Timer
 onready var timer2 := $Timer2
 onready var timer3 := $Timer3
 var bodyToKill : Node = null
+onready var EngageArea := $EngageArea/CollisionShape2D
+onready var difficulty := get_node("/root/GlobalOptionButton")
+
+func _ready():
+	if difficulty.difficulty == 0:
+		EngageArea.scale.x = 20
+		EngageArea.scale.y = 6.5
+	elif difficulty.difficulty == 1:
+		EngageArea.scale.x = 28
+		EngageArea.scale.y = 9.1
 
 func _process(delta) -> void:
 	healthBar.max_value = 35
@@ -33,7 +43,10 @@ func _process(delta) -> void:
 		
 func _physics_process(delta):
 	if targetAcquired:
-		speed = 175.0
+		if difficulty.difficulty == 0:
+			speed = 175.0
+		elif difficulty.difficulty == 1:
+			speed = 210.0
 		direction = global_position.direction_to(bodyX.global_position) 
 		direction.y = 0
 		if direction.x >= 0:
@@ -44,11 +57,17 @@ func _physics_process(delta):
 			sprite.flip_h = -1
 		
 	elif switchingDirection and !targetAcquired:
-		speed = 35.0
+		if difficulty.difficulty == 0:
+			speed = 35.0
+		elif difficulty.difficulty == 1:
+			speed = 42.0
 		direction = Vector2(3, 0)
 		sprite.flip_h = -1
 	elif !switchingDirection and !targetAcquired:
-		speed = 35.0
+		if difficulty.difficulty == 0:
+			speed = 35.0
+		elif difficulty.difficulty == 1:
+			speed = 42.0
 		direction = Vector2(-3, 0)
 		sprite.flip_h = 0
 	
@@ -82,7 +101,10 @@ func _on_EngageArea_body_exited(body):
 
 func _on_DeathArea_body_entered(body):
 	if body.is_in_group("damageEnemy"):
-		health -= 10
+		if difficulty.difficulty == 0:
+			health -= 10
+		elif difficulty.difficulty == 1:
+			health -= 5
 		sprite.set_texture(hit)
 		
 
@@ -96,7 +118,10 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 func _on_Timer3_timeout():
 	if health > 0:
 		bodyToKill.takingDamage = true
-		bodyToKill.health -= 20
+		if difficulty.difficulty == 0:
+			bodyToKill.health -= 20
+		elif difficulty.difficulty == 1:
+			bodyToKill.health -= 35
 
 
 func _on_DamageArea_body_entered(body):
