@@ -13,7 +13,7 @@ var heartHalf := preload("res://assets/images/Base pack/HUD/hud_heartHalf.png")
 var heartEmpty := preload("res://assets/images/Base pack/HUD/hud_heartEmpty.png")
 var heartFull := preload("res://assets/images/Base pack/HUD/hud_heartFull.png")
 var GRAVITY := 475.0 #Rate at which the character vertically translate positively
-var CLIMB_GRAVITY := 37.5 #Rate at which the character climbs ladders
+var CLIMB_GRAVITY := 75.0 #Rate at which the character climbs ladders
 const WALK_SPEED := 200 #Rate at which the character horizontally translates 
 const velocity := Vector2.ZERO #Used for movement calculation
 var JUMP_SPEED := -350.0 #Rate at which the character vertically translates negatively
@@ -52,18 +52,25 @@ onready var coinDisplay := $CoinCounter/BlockedText
 onready var objective := $Objective
 onready var objective2 := $Objective2
 var anim_return := "null"
-var stopwatch := 0.00
+var stopwatch := 5.00
 onready var stopwatchText := $Stopwatch
 onready var pauseMenu := $PauseMenu
 onready var difficulty := get_node("/root/GlobalOptionButton")
+onready var jumpSound := $Jump
+onready var slashTimer := $SlashTimer
+onready var cooldown = false
+var startClimbing := false
+export var canSlip := false
 
 func _ready() -> void:
 	if difficulty.difficulty == 0:
 		JUMP_SPEED = -350.0
 		GRAVITY = 475.0
+		stopwatch = 420.0
 	elif difficulty.difficulty == 1:
-		JUMP_SPEED = -420.0
-		GRAVITY = 546.25
+		JUMP_SPEED = -522.5
+		GRAVITY = 540.0
+		stopwatch = 240.0
 	pauseMenu.hide()
 	objective.hide()
 	objective2.hide()
@@ -73,6 +80,9 @@ func _ready() -> void:
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 
 func _process(delta) -> void:
+	if stopwatch <= 0:
+		get_tree().reload_current_scene()
+	
 	if Input.is_action_just_pressed("pause"):
 		_when_pause_button_pressed()
 	
@@ -133,7 +143,7 @@ func _process(delta) -> void:
 
 #Every frame...
 func _physics_process(delta) -> void:
-	stopwatch += delta
+	stopwatch -= delta
 	stopwatchText.text = str(stopwatch).pad_decimals(1)
 	if hasWon == true:
 		winText.show()
@@ -153,8 +163,11 @@ func _physics_process(delta) -> void:
 		sprite.modulate = Color(1, 0, 0, 1)
 	elif takingDamage != true:
 		sprite.modulate = Color(1, 1, 1)
-	if Input.is_action_pressed("attack") and velocity.x == 0 and is_on_floor():
-		sprite.set_texture(attack)
+	if Input.is_action_just_pressed("attack") and velocity.x == 0 and is_on_floor() and !cooldown:
+		cooldown = true
+		walk.stop()
+		walk.play("swing")
+		slashTimer.start()
 	#If the left key is pressed, play the walk animation.
 	if Input.is_action_pressed("left"):
 		if is_on_floor() and !is_on_wall():
@@ -184,15 +197,17 @@ func _physics_process(delta) -> void:
 	if is_on_floor():
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
 	elif !is_on_floor():
-		if climbing == true and Input.is_action_pressed("down") and !health <= 0:
-			sprite.set_texture(climb)
-			velocity.y -= delta * CLIMB_GRAVITY
-			
-		#Every frame, make the character fall gradually faster, and start the timer for the fall "animation".
-		else:
-			timer.start()
+#		pass
+#		if climbing == true and !Input.is_action_pressed("down") and !health <= 0:
+#			sprite.set_texture(climb)
+#			velocity.y -= delta * CLIMB_GRAVITY
+#
+#		#Every frame, make the character fall gradually faster, and start the timer for the fall "animation".
+		timer.start()
+		if !startClimbing:
 			velocity.y += delta * GRAVITY 
-			crouching = false
+		crouching = false
+		
 	#The direction variable is equal to either what the left or right key provides.
 	var direction := Input.get_axis("left", "right")
 	#Walk animation stuff...
@@ -221,12 +236,14 @@ func _physics_process(delta) -> void:
 	if Input.is_action_just_released("left") or Input.is_action_just_released("right"):
 		isMoving = false
 	#Code for jumping and double jumps.
-	if Input.is_action_pressed("up") and is_on_floor() and crouching != true and !health <= 0: 
+	if Input.is_action_just_pressed("up") and is_on_floor() and crouching != true and !health <= 0 and !climbing and !startClimbing: 
+		jumpSound.play()
 		doubleJump = true #Allow a double jump
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
 		walk.stop(true)
-	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump and difficulty.difficulty == 0: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
+	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump and difficulty.difficulty == 0 and !climbing and !startClimbing: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
+			jumpSound.play()
 			sprite.set_texture(jump)
 			velocity.y = JUMP_SPEED  #Same thing as in the jump code.
 			doubleJump = false #Restrict a double jump so that the player can't infinitely press jump and fly.
@@ -263,13 +280,53 @@ func _physics_process(delta) -> void:
 	#Make the player move based on information provided to the code.
 	velocity.x = direction * WALK_SPEED #Every frame, add to the x value of velocity the direction value multiplied by walk speed
 	move_and_slide(velocity, Vector2.UP) #Here I added "Vector2.UP" because otherwise "is_on_floor() literally would not work. 
+	print("Can Climb? " + str(climbing))
+	print("Is on floor? " + str(is_on_floor()))
 	
-
+	if climbing == true and !health <= 0:
+		_startClimbing()
+		
+	if climbing == false:
+		startClimbing = false
+		
+	if startClimbing and !canSlip:
+		if is_on_floor():
+			global_position.y -= 0.5
+		if !is_on_floor() and velocity.x == 0:
+			sprite.set_texture(climb)
+		velocity.y = 0
+		if Input.is_action_pressed("up"):
+			sprite.set_texture(climb)
+			velocity.y -= CLIMB_GRAVITY
+		elif Input.is_action_pressed("down"):
+			sprite.set_texture(climb)
+			velocity.y += CLIMB_GRAVITY
+	elif startClimbing and canSlip:
+		if is_on_floor():
+			global_position.y -= 0.5
+		if !is_on_floor()  and velocity.x == 0:
+			sprite.set_texture(climb)
+		velocity.y = 0
+		if Input.is_action_pressed("up"):
+			sprite.set_texture(climb)
+			if difficulty.difficulty == 0:
+				velocity.y -= CLIMB_GRAVITY * 3.5
+			elif difficulty.difficulty == 1:
+				velocity.y -= CLIMB_GRAVITY * 4.2
+		elif !Input.is_action_pressed("up"):
+			sprite.set_texture(climb)
+			if difficulty.difficulty == 0:
+				velocity.y += CLIMB_GRAVITY * 3.5
+			elif difficulty.difficulty == 1:
+				velocity.y += CLIMB_GRAVITY * 4.2
+			
+func _startClimbing():
+	startClimbing = true
 
 
 #Whenever the timer for the fall animation runs out...
 func _on_Timer_timeout():
-	if !floorTouched and velocity.y > 0: #Had to use raycast floorTouched because it's faster, and had to use velocity.y to make sure the sprite doesn't change to falling too quickly after jumping.
+	if !floorTouched and velocity.y > 0 and !climbing: #Had to use raycast floorTouched because it's faster, and had to use velocity.y to make sure the sprite doesn't change to falling too quickly after jumping.
 		sprite.set_texture(fall)
 
 func _on_Timer2_timeout():
@@ -286,4 +343,5 @@ func _when_pause_button_pressed():
 	pauseMenu.show()
 
 
-
+func _on_SlashTimer_timeout():
+	cooldown = false

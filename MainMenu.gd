@@ -5,6 +5,7 @@ onready var quit := $"Quit Program Button"
 onready var settings := $"Settings Button"
 var focus = 1
 
+
 func _process(delta):
 	if Input.is_action_just_pressed("ui_up"):
 		if focus == 1:

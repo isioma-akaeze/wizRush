@@ -13,9 +13,9 @@ onready var difficulty := get_node("/root/GlobalOptionButton")
 func _on_DeathArea_body_entered(body):
 	if body.is_in_group("damageEnemy"):
 		if difficulty.difficulty == 0:
-			health -= 10
+			health -= 12.5
 		elif difficulty.difficulty == 1:
-			health -= 5
+			health -= 8.34
 		bee.set_texture(dead)
 			
 func _physics_process(delta) -> void:

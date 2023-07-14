@@ -9,7 +9,10 @@ onready var deathArea := $DeathArea/CollisionShape2D
 var speed := 15.0
 #var health := 25
 onready var difficulty := get_node("/root/GlobalOptionButton")
+onready var buzz := $"Buzz Sound"
 
+func _ready():
+	buzz.play()
 
 
 func _physics_process(delta) -> void:
@@ -22,6 +25,7 @@ func _physics_process(delta) -> void:
 		collision.set_deferred("disabled", false)
 		deathArea.set_deferred("disabled", false)
 	elif health <= 0:
+		buzz.stop()
 		collision.set_deferred("disabled", true)
 		deathArea.set_deferred("disabled", true)
 	var direction := Vector2(-3,0)

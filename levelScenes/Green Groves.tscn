@@ -565,7 +565,7 @@ texture = ExtResource( 15 )
 expand = true
 
 [node name="Character" parent="." instance=ExtResource( 9 )]
-position = Vector2( 160, 1160 )
+position = Vector2( 224, 1152 )
 
 [node name="Lava" type="Area2D" parent="." groups=["damagePlayer"]]
 position = Vector2( 4744, 1928 )

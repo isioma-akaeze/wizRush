@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/BeeBuzz.mp3-0cf419cecb8a596e1c283fd80197a41a.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/BeeBuzz.mp3"
+dest_files=[ "res://.import/BeeBuzz.mp3-0cf419cecb8a596e1c283fd80197a41a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
