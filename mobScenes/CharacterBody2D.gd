@@ -61,6 +61,10 @@ onready var slashTimer := $SlashTimer
 onready var cooldown = false
 var startClimbing := false
 export var canSlip := false
+onready var fallSound := $Falling
+var jumping := false
+export var onStone := false
+onready var grassWalk := $GrassWalk
 
 func _ready() -> void:
 	if difficulty.difficulty == 0:
@@ -125,7 +129,7 @@ func _process(delta) -> void:
 		walk.stop()
 		GRAVITY *= 1.175
 		if is_on_floor():
-			set_physics_process(false)
+			set_physics_process(false) 
 			set_process(false)
 			secondTimer.start()
 	healthBar.max_value == 100
@@ -140,6 +144,9 @@ func _process(delta) -> void:
 		swordJump.position.x = swordBox.position.x - 29
 		swordBox.set_rotation_degrees(0)
 		swordSprite.flip_h = 0
+		
+		
+	
 
 #Every frame...
 func _physics_process(delta) -> void:
@@ -195,9 +202,27 @@ func _physics_process(delta) -> void:
 		sprite.set_texture(idle)
 	
 	if is_on_floor():
+		var currentGround := get_tree().get_current_scene().get_node("Map")
+		for i in get_slide_count():
+			var collidingWith := get_slide_collision(i)
+			if collidingWith.collider is TileMap:
+				pass
+		fallSound.stop()
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
+		if round(velocity.x) > 0 or round(velocity.x) < 0:
+			if not grassWalk.is_playing() and !crouching and !climbing and !onStone:
+				grassWalk.play()
+			elif crouching:
+				grassWalk.stop()
+			elif climbing:
+				grassWalk.stop()
+			elif onStone:
+				grassWalk.stop()
+		if round(velocity.x) == 0:
+			grassWalk.stop()
 	elif !is_on_floor():
-#		pass
+		grassWalk.stop()
+#		pass 
 #		if climbing == true and !Input.is_action_pressed("down") and !health <= 0:
 #			sprite.set_texture(climb)
 #			velocity.y -= delta * CLIMB_GRAVITY
@@ -206,6 +231,13 @@ func _physics_process(delta) -> void:
 		timer.start()
 		if !startClimbing:
 			velocity.y += delta * GRAVITY 
+			if !climbing:
+				if not fallSound.is_playing() and !jumping:
+					fallSound.play()
+				elif jumping:
+					fallSound.stop()
+			elif climbing:
+				fallSound.stop()
 		crouching = false
 		
 	#The direction variable is equal to either what the left or right key provides.
@@ -238,11 +270,13 @@ func _physics_process(delta) -> void:
 	#Code for jumping and double jumps.
 	if Input.is_action_just_pressed("up") and is_on_floor() and crouching != true and !health <= 0 and !climbing and !startClimbing: 
 		jumpSound.play()
+		jumping = true
 		doubleJump = true #Allow a double jump
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
 		walk.stop(true)
 	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump and difficulty.difficulty == 0 and !climbing and !startClimbing: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
+			jumping = true
 			jumpSound.play()
 			sprite.set_texture(jump)
 			velocity.y = JUMP_SPEED  #Same thing as in the jump code.
@@ -280,8 +314,7 @@ func _physics_process(delta) -> void:
 	#Make the player move based on information provided to the code.
 	velocity.x = direction * WALK_SPEED #Every frame, add to the x value of velocity the direction value multiplied by walk speed
 	move_and_slide(velocity, Vector2.UP) #Here I added "Vector2.UP" because otherwise "is_on_floor() literally would not work. 
-	print("Can Climb? " + str(climbing))
-	print("Is on floor? " + str(is_on_floor()))
+	
 	
 	if climbing == true and !health <= 0:
 		_startClimbing()
@@ -328,6 +361,7 @@ func _startClimbing():
 func _on_Timer_timeout():
 	if !floorTouched and velocity.y > 0 and !climbing: #Had to use raycast floorTouched because it's faster, and had to use velocity.y to make sure the sprite doesn't change to falling too quickly after jumping.
 		sprite.set_texture(fall)
+		jumping = false
 
 func _on_Timer2_timeout():
 	get_tree().reload_current_scene()
