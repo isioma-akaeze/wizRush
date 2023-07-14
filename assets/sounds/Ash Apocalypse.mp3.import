@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Ash Apocalypse.mp3-e594ca317b42b264b1ce5ca2b632ea09.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Ash Apocalypse.mp3"
+dest_files=[ "res://.import/Ash Apocalypse.mp3-e594ca317b42b264b1ce5ca2b632ea09.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

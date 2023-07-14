@@ -15,9 +15,11 @@ const CAVES := [
 
 onready var world = $Map/Rocks
 onready var worldCaves := $Map/Cave
+onready var ambientMusic := $"Cave Music"
 const CELL_SIZE := Vector2(64, 0)
 
 func _ready() -> void:
+	ambientMusic.play()
 	randomize()
 	add_rocks_on_grid()
 	world.visible = false

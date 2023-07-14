@@ -38,3 +38,7 @@ func _physics_process(delta) -> void:
 		sprite.flip_h = 0
 	var velocity := direction * speed
 	move_and_slide(velocity)
+	if health <= 0:
+		velocity.x = 0
+		velocity.y = 0
+		set_physics_process(false)
