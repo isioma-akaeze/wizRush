@@ -12,7 +12,7 @@ var bodyX : Node = null
 onready var hit := preload("res://assets/images/Extra animations and enemies/Enemy sprites/spider_hit.png")
 onready var sprite := $Sprite
 onready var idle := preload("res://assets/images/Extra animations and enemies/Enemy sprites/spider.png")
-var health := 35
+var health := 45
 onready var healthBar := $ProgressBar
 onready var timer := $Timer
 onready var timer2 := $Timer2
@@ -102,9 +102,9 @@ func _on_EngageArea_body_exited(body):
 func _on_DeathArea_body_entered(body):
 	if body.is_in_group("damageEnemy"):
 		if difficulty.difficulty == 0:
-			health -= 10
+			health -= 15
 		elif difficulty.difficulty == 1:
-			health -= 5
+			health -= 9
 		sprite.set_texture(hit)
 		
 
@@ -119,9 +119,9 @@ func _on_Timer3_timeout():
 	if health > 0:
 		bodyToKill.takingDamage = true
 		if difficulty.difficulty == 0:
-			bodyToKill.health -= 20
+			bodyToKill.health -= 30
 		elif difficulty.difficulty == 1:
-			bodyToKill.health -= 35
+			bodyToKill.health -= 45
 
 
 func _on_DamageArea_body_entered(body):

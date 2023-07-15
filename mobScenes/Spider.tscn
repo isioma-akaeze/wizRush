@@ -148,7 +148,7 @@ shape = SubResource( 10 )
 
 [node name="Timer3" type="Timer" parent="."]
 process_mode = 0
-wait_time = 0.2
+wait_time = 0.4
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="EngageArea" to="." method="_on_EngageArea_body_entered"]

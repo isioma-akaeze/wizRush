@@ -154,7 +154,7 @@ shape = SubResource( 4 )
 
 [node name="Timer" type="Timer" parent="EnemyBody/DamageArea"]
 process_mode = 0
-wait_time = 0.25
+wait_time = 0.4
 
 [node name="ProgressBar" type="ProgressBar" parent="EnemyBody"]
 margin_left = -21.0

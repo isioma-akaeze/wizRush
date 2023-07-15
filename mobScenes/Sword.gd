@@ -18,7 +18,7 @@ func _physics_process(delta) -> void:
 		floorTouched = true
 	elif not rayCastFloor.is_colliding():
 		floorTouched = false	
-	if Input.is_action_just_pressed("attack") and not Input.is_action_pressed("down") and player.is_on_floor() and not Input.is_action_pressed("right") and swordSprite.flip_h == false and !cooldown:
+	if Input.is_action_just_pressed("attack") and not Input.is_action_pressed("down") and player.is_on_floor() and not Input.is_action_pressed("right") and swordSprite.flip_h == false and !cooldown and player.health > 0:
 		cooldown = true
 		slashSound.stop()
 		slashSound.play()
@@ -27,7 +27,7 @@ func _physics_process(delta) -> void:
 		swordBox.set_deferred("disabled", false)
 		swordAnim.stop()
 		swordAnim.play("slash")
-	elif Input.is_action_just_pressed("attack") and not Input.is_action_pressed("down") and player.is_on_floor() and not Input.is_action_pressed("left") and swordSprite.flip_h == true and !cooldown:
+	elif Input.is_action_just_pressed("attack") and not Input.is_action_pressed("down") and player.is_on_floor() and not Input.is_action_pressed("left") and swordSprite.flip_h == true and !cooldown and player.health > 0:
 		cooldown = true
 		timer.start()
 		slashSound.stop()

@@ -208,13 +208,14 @@ func _physics_process(delta) -> void:
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
 			var currentGround := get_tree().get_current_scene().get_node("Map")
-			var cell = currentGround.world_to_map(collision.position - collision.normal - Vector2(1, 0))
-			var tileID : int = currentGround.get_cellv(cell)
-			var tileName : String = currentGround.get_tileset().tile_get_name(tileID)
-			if tileID == 0:
-				onStone = false
-			elif tileID == 7:
-				onStone = true
+			if currentGround != null:
+				var cell = currentGround.world_to_map(collision.position - collision.normal - Vector2(1, 0))
+				var tileID : int = currentGround.get_cellv(cell)
+				var tileName : String = currentGround.get_tileset().tile_get_name(tileID)
+				if tileID == 0:
+					onStone = false
+				elif tileID == 7:
+					onStone = true
 				
 		fallSound.stop()
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
@@ -255,9 +256,11 @@ func _physics_process(delta) -> void:
 		if !startClimbing:
 			velocity.y += delta * GRAVITY 
 			if !climbing:
-				if not fallSound.is_playing() and !jumping:
+				if not fallSound.is_playing() and !jumping and health > 0:
 					fallSound.play()
 				elif jumping:
+					fallSound.stop()
+				elif health <= 0:
 					fallSound.stop()
 			elif climbing:
 				fallSound.stop()
@@ -368,13 +371,13 @@ func _physics_process(delta) -> void:
 	velocity.x = direction * WALK_SPEED #Every frame, add to the x value of velocity the direction value multiplied by walk speed
 	move_and_slide(velocity, Vector2.UP) #Here I added "Vector2.UP" because otherwise "is_on_floor() literally would not work. 
 	
-	if climbing == true and !health <= 0:
+	if climbing == true and health > 0:
 		_startClimbing()
 		
 	if climbing == false:
 		startClimbing = false
 		
-	if startClimbing and !canSlip:
+	if startClimbing and !canSlip and health > 0:
 		if is_on_floor():
 			global_position.y -= 0.5
 		if !is_on_floor() and velocity.x == 0:
@@ -392,7 +395,7 @@ func _physics_process(delta) -> void:
 			velocity.y += CLIMB_GRAVITY
 		else:
 			ladderSound.stop()
-	elif startClimbing and canSlip:
+	elif startClimbing and canSlip and health > 0:
 		if is_on_floor():
 			global_position.y -= 0.5
 		velocity.y = 0

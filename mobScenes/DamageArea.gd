@@ -34,5 +34,5 @@ func _on_Timer_timeout():
 		bodyToKill.health -= 20
 		bodyToKill.takingDamage = true
 	elif beeParent > 0 and difficulty.difficulty == 1:
-		bodyToKill.health -= 35
+		bodyToKill.health -= 25
 		bodyToKill.takingDamage = true
