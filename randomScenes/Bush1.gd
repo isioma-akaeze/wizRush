@@ -20,5 +20,4 @@ func _physics_process(delta) -> void:
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name != "wind":
-		print(anim_name)
 		get_parent().queue_free()

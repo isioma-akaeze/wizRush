@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/images/KiriFont.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://assets/images/kenney_background-elements-redux/Backgrounds/backgroundCastles.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Settings.gd" type="Script" id=4]
 [ext_resource path="res://OptionButton.gd" type="Script" id=5]
 [ext_resource path="res://MusicOption.gd" type="Script" id=6]
+[ext_resource path="res://assets/sounds/ButtonClick.mp3" type="AudioStream" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 extra_spacing_top = 3
@@ -14,8 +15,22 @@ font_data = ExtResource( 1 )
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 1 )
 
+[sub_resource type="DynamicFont" id=4]
+size = 10
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=5]
+default_font = SubResource( 4 )
+
 [sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 10
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=7]
+default_font = SubResource( 6 )
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource( 4 )
@@ -58,6 +73,7 @@ margin_right = 381.0
 margin_bottom = 216.0
 rect_scale = Vector2( 3, 3 )
 focus_neighbour_bottom = NodePath("../../Music/MusicOption")
+theme = SubResource( 5 )
 custom_colors/font_color_focus = Color( 0.866667, 0.937255, 0.0470588, 1 )
 custom_colors/font_color_hover = Color( 0.933333, 0.941176, 0.0705882, 1 )
 custom_colors/font_color_pressed = Color( 0.109804, 0.105882, 0.105882, 1 )
@@ -78,6 +94,7 @@ margin_bottom = 351.0
 rect_scale = Vector2( 3, 3 )
 focus_neighbour_top = NodePath("../../Options/OptionButton")
 focus_neighbour_bottom = NodePath("../../Quit to Menu")
+theme = SubResource( 7 )
 custom_colors/font_color_focus = Color( 0.92549, 0.933333, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.921569, 0.972549, 0.0431373, 1 )
 custom_colors/font_color_pressed = Color( 0.105882, 0.101961, 0.101961, 1 )
@@ -87,7 +104,12 @@ items = [ "Music: Enabled", null, false, 1, null, "Music: Disabled", null, false
 selected = 0
 script = ExtResource( 6 )
 
+[node name="ButtonClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
 [connection signal="pressed" from="Quit to Menu" to="Quit to Menu" method="_on_Quit_to_Menu_pressed"]
 [connection signal="hide" from="Options/OptionButton" to="Options/OptionButton" method="_on_OptionButton_hide"]
 [connection signal="item_selected" from="Options/OptionButton" to="Options/OptionButton" method="_on_OptionButton_item_selected"]
+[connection signal="pressed" from="Options/OptionButton" to="Options/OptionButton" method="_on_OptionButton_pressed"]
 [connection signal="item_selected" from="Music/MusicOption" to="Music/MusicOption" method="_on_MusicOption_item_selected"]
+[connection signal="pressed" from="Music/MusicOption" to="Music/MusicOption" method="_on_MusicOption_pressed"]
