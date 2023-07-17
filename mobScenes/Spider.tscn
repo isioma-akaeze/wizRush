@@ -1,10 +1,13 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/spider.png" type="Texture" id=1]
 [ext_resource path="res://mobScenes/Spider.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/spider_walk1.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/spider_walk2.png" type="Texture" id=4]
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/spider_dead.png" type="Texture" id=5]
+[ext_resource path="res://assets/sounds/SpiderBite.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sounds/StoneWalk.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sounds/GrassWalk.wav" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 12, 8 )
@@ -149,6 +152,21 @@ shape = SubResource( 10 )
 [node name="Timer3" type="Timer" parent="."]
 process_mode = 0
 wait_time = 0.4
+
+[node name="VenomBite" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -5.5
+
+[node name="GrassWalk" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -17.0
+max_distance = 500.0
+
+[node name="StoneWalk" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = -15.0
+pitch_scale = 1.2
+max_distance = 500.0
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="EngageArea" to="." method="_on_EngageArea_body_entered"]

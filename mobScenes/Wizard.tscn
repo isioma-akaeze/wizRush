@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=58 format=2]
 
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_stand.png" type="Texture" id=1]
 [ext_resource path="res://mobScenes/CharacterBody2D.gd" type="Script" id=2]
@@ -24,9 +24,12 @@
 [ext_resource path="res://assets/sounds/StoneWalk.wav" type="AudioStream" id=22]
 [ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_duck.png" type="Texture" id=23]
 [ext_resource path="res://assets/sounds/ClimbLadder.wav" type="AudioStream" id=24]
+[ext_resource path="res://assets/sounds/PlayerDeath.mp3" type="AudioStream" id=25]
+[ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_climb1.png" type="Texture" id=26]
+[ext_resource path="res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_climb2.png" type="Texture" id=27]
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 33.3334, 62.5 )
+extents = Vector2( 33.3334, 61.7647 )
 
 [sub_resource type="Animation" id=30]
 length = 0.001
@@ -109,6 +112,22 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=32]
+resource_name = "climbLadder"
+length = 1.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterBody2D/Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.35, 0.7, 1.05, 1.4 ),
+"transitions": PoolRealArray( 1.7411, 1.46409, 2.21914, 1.46409, 2.21914 ),
+"update": 1,
+"values": [ ExtResource( 26 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 26 ) ]
 }
 
 [sub_resource type="Animation" id=29]
@@ -448,8 +467,8 @@ scale = Vector2( 0.5, 0.4 )
 texture = ExtResource( 10 )
 
 [node name="Fullbody" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2( 2, 12.5 )
-scale = Vector2( 0.719998, 0.68 )
+position = Vector2( 2, 12 )
+scale = Vector2( 0.72, 0.683 )
 shape = SubResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
@@ -464,13 +483,14 @@ anims/cameraShake = SubResource( 31 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D"]
 root_node = NodePath("../..")
 anims/RESET = SubResource( 2 )
+anims/climbLadder = SubResource( 32 )
 anims/crawl = SubResource( 29 )
 anims/swing = SubResource( 28 )
 anims/walk = SubResource( 3 )
 
 [node name="Crouch" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2( 3, 36 )
-scale = Vector2( 1.08462, -0.915192 )
+scale = Vector2( 1.085, -0.895 )
 shape = SubResource( 4 )
 
 [node name="RayCast2D" type="RayCast2D" parent="CharacterBody2D"]
@@ -483,7 +503,7 @@ collide_with_areas = true
 position = Vector2( 3, 6 )
 scale = Vector2( 3.12246, 1.55934 )
 enabled = true
-cast_to = Vector2( 0, 31.5 )
+cast_to = Vector2( 0, 33 )
 
 [node name="Timer" type="Timer" parent="CharacterBody2D"]
 wait_time = 0.01
@@ -700,6 +720,15 @@ volume_db = -8.0
 [node name="LadderClimb" type="AudioStreamPlayer2D" parent="CharacterBody2D"]
 stream = ExtResource( 24 )
 volume_db = -7.0
+
+[node name="Jump2" type="AudioStreamPlayer2D" parent="CharacterBody2D"]
+stream = ExtResource( 17 )
+volume_db = -10.0
+pitch_scale = 0.8
+
+[node name="Death" type="AudioStreamPlayer2D" parent="CharacterBody2D"]
+stream = ExtResource( 25 )
+volume_db = -12.0
 
 [connection signal="animation_finished" from="CharacterBody2D/AnimationPlayer" to="CharacterBody2D" method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="CharacterBody2D/Timer" to="CharacterBody2D" method="_on_Timer_timeout"]

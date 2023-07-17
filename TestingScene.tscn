@@ -370,7 +370,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Map" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 show_collision = true
 cell_clip_uv = true
