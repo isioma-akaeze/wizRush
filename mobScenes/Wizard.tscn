@@ -670,7 +670,7 @@ script = ExtResource( 15 )
 [node name="Quit Main" type="Button" parent="CharacterBody2D/PauseMenu/Control"]
 margin_left = -100.0
 margin_top = 125.0
-margin_bottom = 148.0
+margin_bottom = 151.0
 rect_scale = Vector2( 3, 3 )
 custom_colors/font_color_focus = Color( 0.901961, 0.792157, 0.0862745, 1 )
 custom_colors/font_color_hover = Color( 0.776471, 0.764706, 0.0745098, 1 )
@@ -696,6 +696,10 @@ margin_top = -200.0
 margin_right = 1125.0
 margin_bottom = 700.0
 mouse_filter = 2
+
+[node name="Timer" type="Timer" parent="CharacterBody2D/PauseMenu/Control"]
+process_mode = 0
+wait_time = 0.1
 
 [node name="Jump" type="AudioStreamPlayer2D" parent="CharacterBody2D"]
 stream = ExtResource( 17 )
@@ -738,4 +742,5 @@ volume_db = -12.0
 [connection signal="animation_finished" from="CharacterBody2D/BlockedText/AnimationPlayer" to="CharacterBody2D" method="_on_AnimationPlayer_animation_finished"]
 [connection signal="pressed" from="CharacterBody2D/PauseMenu/Control/Resume" to="CharacterBody2D/PauseMenu/Control/Resume" method="_on_Resume_pressed"]
 [connection signal="pressed" from="CharacterBody2D/PauseMenu/Control/Quit Main" to="CharacterBody2D/PauseMenu/Control/Quit Main" method="_on_Quit_Main_pressed"]
+[connection signal="timeout" from="CharacterBody2D/PauseMenu/Control/Timer" to="CharacterBody2D/PauseMenu/Control" method="_on_Timer_timeout"]
 [connection signal="timeout" from="CharacterBody2D/SlashTimer" to="CharacterBody2D" method="_on_SlashTimer_timeout"]

@@ -73,16 +73,18 @@ onready var cameraAnimation := $Camera2D/AnimationPlayer
 onready var ladderSound := $LadderClimb
 onready var deathSound := $Death
 var pressingDown := false
+var specialDeathCondition := false
 
 func _ready() -> void:
 	if difficulty.difficulty == 0:
 		JUMP_SPEED = -350.0
 		GRAVITY = 475.0
-		stopwatch = 450.0
+		stopwatch = 330.0
 	elif difficulty.difficulty == 1:
 		JUMP_SPEED = -522.5
 		GRAVITY = 540.0
-		stopwatch = 270.0
+		CLIMB_GRAVITY *= 2
+		stopwatch = 210.0
 	pauseMenu.hide()
 	objective.hide()
 	objective2.hide()
@@ -131,6 +133,8 @@ func _process(delta) -> void:
 	if health <= 50:
 		heart.set_texture(heartHalf)
 	if health <= 0:
+		grassWalk.stop()
+		stoneWalk.stop()
 		deathSound.play()
 		sprite.set_texture(dead)
 		sprite.modulate = Color(0, 0, 0, 1)
@@ -228,6 +232,7 @@ func _physics_process(delta) -> void:
 					onStone == true
 				elif tileID == 2:
 					onStone == false
+					
 		fallSound.stop()
 		velocity.y = 0 #Set the velocity to not change if I'm on the ground, otherwise if I slide off a collision box, the fall speed is way too fast (it's almost comical)
 		if abs(velocity.x) > 0.01 and floorTouched or abs(velocity.x) > 0.01 and is_on_floor():
@@ -391,8 +396,9 @@ func _physics_process(delta) -> void:
 	
 	if ceiling == true and floorTouched and velocity.x == 0 and !crouching and climbing != true or ceiling == true and is_on_floor() and velocity.x == 0 and !crouching and climbing != true:
 		sprite.set_texture(dead)
+		sprite.modulate = Color(0, 0, 0, 1)
 		health -= 100
-		#print("SPECIAL DEATH CONDITION")
+		specialDeathCondition = true
 		secondTimer.start()
 	
 	
@@ -460,6 +466,11 @@ func _physics_process(delta) -> void:
 		pressingDown = true
 	elif round(velocity.y) > 8:
 		pressingDown = false
+		
+	if specialDeathCondition:
+		sprite.set_texture(dead)
+		sprite.modulate = Color(0, 0, 0, 1)
+		get_tree().reload_current_scene()
 
 func _startClimbing():
 	startClimbing = true
@@ -487,9 +498,12 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	return anim_return
 	
 func _when_pause_button_pressed():
-	get_tree().paused = true
-	pauseMenu.show()
+	if pauseMenu.visible == false and get_tree().paused == false:
+		get_tree().paused = true
+		$PauseMenu/Control.paused = false
+		pauseMenu.show()
 
 
 func _on_SlashTimer_timeout():
 	cooldown = false
+

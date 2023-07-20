@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/KeyLocked.mp3-9d3248a103cd5a2b0dceafc231ea0b88.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/KeyLocked.mp3"
+dest_files=[ "res://.import/KeyLocked.mp3-9d3248a103cd5a2b0dceafc231ea0b88.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

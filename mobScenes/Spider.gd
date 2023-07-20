@@ -123,7 +123,9 @@ func _physics_process(delta):
 		elif attacking:
 			stoneWalk.stop()
 			grassWalk.stop()
-	
+		if health <= 0:
+			stoneWalk.stop()
+			grassWalk.stop()
 
 func _on_EngageArea_body_entered(body):
 	if body.is_in_group("player"):

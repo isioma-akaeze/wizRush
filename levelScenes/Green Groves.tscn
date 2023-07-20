@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=71 format=2]
 
 [ext_resource path="res://assets/images/Base pack/Tiles/grassHillRight.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/kenney_background-elements-redux/Backgrounds/backgroundEmpty.png" type="Texture" id=2]
@@ -49,6 +49,8 @@
 [ext_resource path="res://levelScenes/Map.gd" type="Script" id=47]
 [ext_resource path="res://assets/sounds/LavaBoil.wav" type="AudioStream" id=48]
 [ext_resource path="res://assets/sounds/BurntToDeath.wav" type="AudioStream" id=49]
+[ext_resource path="res://assets/sounds/KeyLocked.mp3" type="AudioStream" id=50]
+[ext_resource path="res://assets/sounds/KeyUnlock.mp3" type="AudioStream" id=51]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -574,7 +576,6 @@ script = ExtResource( 11 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lava"]
 position = Vector2( 0, -0.00146484 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 4 )
 
 [node name="LavaBoil" type="AudioStreamPlayer2D" parent="Lava"]
@@ -677,16 +678,15 @@ collision_mask = 2
 script = ExtResource( 25 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lava4"]
-visible = false
 position = Vector2( 1191, 8 )
 shape = SubResource( 18 )
 
 [node name="LavaBoil" type="AudioStreamPlayer2D" parent="Lava4"]
-position = Vector2( 400, 200 )
+position = Vector2( 624, 184 )
 scale = Vector2( 16, 6 )
 stream = ExtResource( 48 )
 volume_db = 6.0
-max_distance = 1086.0
+max_distance = 1195.0
 attenuation = 1.56917
 
 [node name="Burnt" type="AudioStreamPlayer2D" parent="Lava4"]
@@ -726,6 +726,14 @@ shape = SubResource( 20 )
 
 [node name="WinTimer" type="Timer" parent="WinArea"]
 wait_time = 1.375
+
+[node name="KeyLocked" type="AudioStreamPlayer2D" parent="WinArea"]
+stream = ExtResource( 50 )
+volume_db = 9.0
+
+[node name="KeyUnlocked" type="AudioStreamPlayer2D" parent="WinArea"]
+stream = ExtResource( 51 )
+volume_db = 4.0
 
 [node name="Second World Border" type="StaticBody2D" parent="."]
 position = Vector2( 11961, 194 )
