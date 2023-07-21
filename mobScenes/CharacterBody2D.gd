@@ -35,7 +35,7 @@ onready var secondTimer := $Timer2
 onready var swordBox := $Sword
 onready var swordJump := $Sword/JumpDetect
 onready var swordSprite := $Sword/Sprite
-export var health := 100
+export var health := 100 setget set_health, get_health
 onready var healthBar := $ProgressBar
 onready var heart := $Heart
 export var takingDamage := false
@@ -74,6 +74,8 @@ onready var ladderSound := $LadderClimb
 onready var deathSound := $Death
 var pressingDown := false
 var specialDeathCondition := false
+var healthChanged := false
+onready var hurtTimer := $HurtTimer
 
 func _ready() -> void:
 	if difficulty.difficulty == 0:
@@ -93,7 +95,14 @@ func _ready() -> void:
 	sprite.modulate = Color(1, 1, 1)
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 
-func _process(delta) -> void:	
+func set_health(value):
+	if value != health:
+		healthChanged = true
+		health = value
+func get_health():
+	return health
+
+func _process(delta) -> void:
 	if stopwatch <= 0:
 		get_tree().reload_current_scene()
 	
@@ -180,7 +189,13 @@ func _physics_process(delta) -> void:
 		blockedText.hide()
 		
 	if takingDamage == true:
-		sprite.modulate = Color(1, 0, 0, 1)
+		if healthChanged and health != 0:
+			sprite.modulate = Color(1, 0, 0, 1)
+			healthChanged = false
+		elif !healthChanged:
+			hurtTimer.start()
+		elif health == 0:
+			sprite.modulate = Color(0, 0, 0, 1)
 	elif takingDamage != true:
 		sprite.modulate = Color(1, 1, 1)
 	if Input.is_action_just_pressed("attack") and velocity.x == 0 and is_on_floor() and !cooldown:
@@ -507,3 +522,8 @@ func _when_pause_button_pressed():
 func _on_SlashTimer_timeout():
 	cooldown = false
 
+func _on_HurtTimer_timeout():
+	if health > 0:
+		sprite.modulate = Color(1, 1, 1)
+	elif health <= 0:
+		sprite.modulate = Color(0, 0, 0, 1)
