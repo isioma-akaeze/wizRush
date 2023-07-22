@@ -76,17 +76,29 @@ var pressingDown := false
 var specialDeathCondition := false
 var healthChanged := false
 onready var hurtTimer := $HurtTimer
+onready var ropeSound := $RopeClimb
 
 func _ready() -> void:
+	var sceneCheck := get_tree().get_current_scene().filename
 	if difficulty.difficulty == 0:
 		JUMP_SPEED = -350.0
 		GRAVITY = 475.0
-		stopwatch = 330.0
+		if sceneCheck == "res://levelScenes/Green Groves.tscn":
+			stopwatch = 330.0
+		elif sceneCheck == "res://levelScenes/Ash Apocalypse.tscn":
+			stopwatch = 450.0
+		else:
+			stopwatch = 3600.0
 	elif difficulty.difficulty == 1:
 		JUMP_SPEED = -522.5
 		GRAVITY = 540.0
 		CLIMB_GRAVITY *= 2
-		stopwatch = 210.0
+		if sceneCheck == "res://levelScenes/Green Groves.tscn":
+			stopwatch = 225.0
+		elif sceneCheck == "res://levelScenes/Ash Apocalypse.tscn":
+			stopwatch = 315.0
+		else:
+			stopwatch = 3600.0
 	pauseMenu.hide()
 	objective.hide()
 	objective2.hide()
@@ -142,6 +154,8 @@ func _process(delta) -> void:
 	if health <= 50:
 		heart.set_texture(heartHalf)
 	if health <= 0:
+		climbing = false
+		startClimbing = false
 		grassWalk.stop()
 		stoneWalk.stop()
 		deathSound.play()
@@ -335,7 +349,7 @@ func _physics_process(delta) -> void:
 		sprite.set_texture(jump)
 		velocity.y = JUMP_SPEED #Add the JUMP_SPEED value as long as the if statement requirements are truee
 		walk.stop(true)
-	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump and difficulty.difficulty == 0 and !climbing: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
+	if Input.is_action_just_pressed("up") and !is_on_floor() and doubleJump and !climbing: # Same thing but now we're checking for if the character is allowed to do a double jump and is not on the ground.
 			jumping = true
 			jumpSound.play()
 			stackJumpSound.play()
@@ -456,30 +470,52 @@ func _physics_process(delta) -> void:
 			global_position.y -= 0.5
 		velocity.y = 0
 		if Input.is_action_pressed("up"):
+			fallSound.stop()
+			if walk.current_animation != "climbRope" and !is_on_ceiling():
+				walk.play("climbRope")
+			elif is_on_ceiling() and walk.current_animation == "climbRope":
+				walk.stop()
+			if !is_on_ceiling():
+				cameraAnimation.play("cameraShake")
+			elif is_on_ceiling():
+				cameraAnimation.stop()
+			if !ropeSound.is_playing() and !is_on_ceiling():
+				ropeSound.play()
+			elif is_on_ceiling() and ropeSound.is_playing():
+				ropeSound.stop()
 			sprite.set_texture(hang)
 			if difficulty.difficulty == 0:
 				velocity.y -= CLIMB_GRAVITY * 3.5
 			elif difficulty.difficulty == 1:
-				velocity.y -= CLIMB_GRAVITY * 4.2
+				velocity.y -= (CLIMB_GRAVITY / 2) * 4.55
 		elif !Input.is_action_pressed("up"):
+			$Camera2D.offset = Vector2(0,0)
+			$Camera2D.rotation_degrees = 0
+			cameraAnimation.stop()
+			sprite.rotation_degrees = 0
+			walk.stop()
+			ropeSound.stop()
+			if !fallSound.is_playing():
+				fallSound.play()
 			sprite.set_texture(fall)
 			if Input.is_action_pressed("up"):
 				sprite.set_texture(hang)
 			if difficulty.difficulty == 0:
 				velocity.y += CLIMB_GRAVITY * 3.5
 			elif difficulty.difficulty == 1:
-				velocity.y += CLIMB_GRAVITY * 4.2
+				velocity.y += (CLIMB_GRAVITY / 2) * 4.55
 		else:
 			sprite.set_texture(fall)
 	elif !startClimbing:
 		ladderSound.stop()
+		ropeSound.stop()
 	
-	if Input.is_action_pressed("down") and round(velocity.y) <= 8:
+	if Input.is_action_pressed("down") and round(velocity.y) <= 0:
 		if is_on_wall():
 			cameraAnimation.stop()
 			$Camera2D.offset = Vector2(0,0)
 		pressingDown = true
-	elif round(velocity.y) > 8:
+	elif round(velocity.y) > 0:
 		pressingDown = false
 		
 	if specialDeathCondition:

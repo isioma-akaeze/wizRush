@@ -1,5 +1,6 @@
 extends Node2D
 
+
 const ROCKS := [
 	preload("res://randomScenes/Rock1.tscn"),
 	preload("res://randomScenes/Rock2.tscn")
