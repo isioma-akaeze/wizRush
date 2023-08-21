@@ -1,5 +1,6 @@
 extends Node2D
 
+
 const ROCKS := [
 	preload("res://randomScenes/Rock1.tscn"),
 	preload("res://randomScenes/Rock2.tscn")
@@ -15,9 +16,14 @@ const CAVES := [
 
 onready var world = $Map/Rocks
 onready var worldCaves := $Map/Cave
+onready var ambientMusic := $"Cave Music"
 const CELL_SIZE := Vector2(64, 0)
+onready var musicScene := get_node("/root/GlobalMusicScene")
 
 func _ready() -> void:
+	var previousMusic := musicScene.get_node("GreenGroves")
+	previousMusic.stop()
+	ambientMusic.play()
 	randomize()
 	add_rocks_on_grid()
 	world.visible = false

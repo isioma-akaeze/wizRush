@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://mobScenes/Wizard.tscn" type="PackedScene" id=1]
 [ext_resource path="res://mobScenes/Spider.tscn" type="PackedScene" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://enemyJump.tscn" type="PackedScene" id=26]
 [ext_resource path="res://randomScenes/potion.tscn" type="PackedScene" id=27]
 [ext_resource path="res://randomScenes/Key.tscn" type="PackedScene" id=28]
+[ext_resource path="res://mobScenes/Mouse.tscn" type="PackedScene" id=29]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 70, 0, 70, 70, 0, 70 )
@@ -370,7 +371,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Map" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 show_collision = true
 cell_clip_uv = true
@@ -387,7 +388,7 @@ position = Vector2( 2231, 489 )
 position = Vector2( 2028, 487 )
 
 [node name="Character" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1518, 389 )
+position = Vector2( 440, 395 )
 
 [node name="EnemySwitch" parent="." instance=ExtResource( 24 )]
 position = Vector2( 107, 427 )
@@ -410,3 +411,6 @@ position = Vector2( 1253, 416 )
 
 [node name="Key" parent="." instance=ExtResource( 28 )]
 position = Vector2( 1375, 419 )
+
+[node name="Mouse" parent="." instance=ExtResource( 29 )]
+position = Vector2( 787, 430 )

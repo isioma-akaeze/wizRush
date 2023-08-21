@@ -19,6 +19,11 @@ onready var worldTrees = $Map/Trees
 const CELL_SIZE := Vector2(64, 0)
 
 func _ready() -> void:
+	var mainMenu := get_node("/root/GlobalMusicScene")
+	var musicOption := get_node("/root/GlobalMusicOption")
+	mainMenu.get_node("LobbyMusic").stop()
+	if musicOption.musicOn == 0:
+		mainMenu.get_node("GreenGroves").play()
 	randomize()
 	add_bushes_on_grid()
 	world.visible = false
@@ -54,6 +59,4 @@ func add_trees_on_grid() -> void:
 		var random_offset := Vector2(randf(), 0)*available_space
 		if coinFlip >= 2.5:
 			tree.position = worldTrees.position + worldTrees.map_to_world(cell) + random_offset + Vector2(0, 72)
-
-
 
