@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/BushBreak.mp3-2172189abd9aee42572d36616379bd56.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/BushBreak.mp3"
+dest_files=[ "res://.import/BushBreak.mp3-2172189abd9aee42572d36616379bd56.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

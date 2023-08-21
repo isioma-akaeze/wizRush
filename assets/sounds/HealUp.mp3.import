@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/HealUp.mp3-829149aca64f5594a2555b9c50ed1a40.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/HealUp.mp3"
+dest_files=[ "res://.import/HealUp.mp3-829149aca64f5594a2555b9c50ed1a40.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

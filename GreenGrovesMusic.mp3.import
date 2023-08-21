@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/GreenGrovesMusic.mp3-2131bb867885ebe59b8d5df73fea1307.mp3str"
+
+[deps]
+
+source_file="res://GreenGrovesMusic.mp3"
+dest_files=[ "res://.import/GreenGrovesMusic.mp3-2131bb867885ebe59b8d5df73fea1307.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
