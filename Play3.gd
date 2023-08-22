@@ -9,9 +9,9 @@ func _ready():
 	timer.one_shot = true
 	timer.connect("timeout", self, "_on_timer_timeout")
 	
-func _on_Start_Button_pressed():
+func _on_Play3_pressed():
 	clickSound.play()
 	timer.start()
 	
 func _on_timer_timeout():
-	get_tree().change_scene("res://LevelSelect.tscn")
+	get_tree().change_scene("res://levelScenes/Dire Depths.tscn")

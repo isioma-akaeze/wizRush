@@ -21,7 +21,6 @@ func add_props_on_grid() -> void:
 	for cell in world.get_used_cells():
 		if cell.x != 0 and cell.y != 0:
 			var prop:= get_random_prop()
-			print(prop)
 			add_child(prop)
 			var prop_size := prop.scale * prop.texture.get_size()
 			var coinFlip = rand_range(1.0, 10.0)

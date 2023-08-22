@@ -21,7 +21,9 @@ const CELL_SIZE := Vector2(64, 0)
 onready var musicScene := get_node("/root/GlobalMusicScene")
 
 func _ready() -> void:
+	var menuMusic := get_node("/root/GlobalMusicScene")
 	var previousMusic := musicScene.get_node("GreenGroves")
+	menuMusic.get_node("LobbyMusic").stop()
 	previousMusic.stop()
 	ambientMusic.play()
 	randomize()
