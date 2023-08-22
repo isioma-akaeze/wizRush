@@ -17,8 +17,6 @@ func _on_Key_body_entered(body):
 		set_process(false)
 		animation.play("collect")
 		keyCollectSound.play()
-		
-
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "collect":

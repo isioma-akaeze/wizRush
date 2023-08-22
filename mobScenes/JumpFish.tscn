@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/piranha.png" type="Texture" id=1]
 [ext_resource path="res://mobScenes/JumpFish.gd" type="Script" id=2]
 [ext_resource path="res://mobScenes/DamageDealer2.gd" type="Script" id=3]
 [ext_resource path="res://mobScenes/DamageDealer.gd" type="Script" id=4]
 [ext_resource path="res://assets/sounds/WaterSplash.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/sounds/BiteSound.mp3" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 8.75 )
@@ -168,6 +169,9 @@ shape = SubResource( 4 )
 stream = ExtResource( 5 )
 volume_db = -10.0
 max_distance = 800.0
+
+[node name="BiteSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
