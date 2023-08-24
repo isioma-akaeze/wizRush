@@ -25,6 +25,7 @@ var onStone := false
 onready var grassWalk := $GrassWalk
 onready var stoneWalk := $StoneWalk
 onready var attacking := false
+onready var bodyToAward : Node = null
 
 func _ready():
 	if difficulty.difficulty == 0:
@@ -39,6 +40,7 @@ func _process(delta) -> void:
 	healthBar.set_value(health)
 	
 	if health <= 0:
+		bodyToAward.enemiesKilled += 1
 		animation.stop()
 		set_process(false)
 		animation.play("die")
@@ -148,6 +150,8 @@ func _on_DeathArea_body_entered(body):
 		elif difficulty.difficulty == 1:
 			health -= 11.24
 		sprite.set_texture(hit)
+		bodyToAward = body.get_parent()
+		return bodyToAward
 		
 
 func _on_Timer_timeout():

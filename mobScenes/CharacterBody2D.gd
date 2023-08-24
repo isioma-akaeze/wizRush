@@ -46,7 +46,7 @@ var hasTrialKey := false
 var coinCounter := 0
 export var hasWon := false
 export var passageBlocked := false
-onready var winText := $WinText
+onready var winText := $WinMenu
 onready var blockedText := $BlockedText
 onready var blockedAnimation := $BlockedText/AnimationPlayer
 onready var timer3 := $Timer3
@@ -77,8 +77,20 @@ var specialDeathCondition := false
 var healthChanged := false
 onready var hurtTimer := $HurtTimer
 onready var ropeSound := $RopeClimb
+onready var deathMenu := $DeathMenu
+onready var failSound := $DeathMenu/FailSound
+export var enemiesKilled := 0
+onready var killCountText := $"KillCount Text"
+onready var levelCheck := get_node("/root/LevelCheck")
+var winTimer := Timer.new()
+onready var stopwatchAnimation := $Stopwatch/AnimationPlayer
+onready var stopwatchSound := $Stopwatch/StopwatchSound
 
 func _ready() -> void:
+	add_child(winTimer)
+	winTimer.wait_time = 0.675
+	winTimer.one_shot = true
+	winTimer.connect("timeout", self, "_on_winTimer_timeout")
 	var sceneCheck := get_tree().get_current_scene().filename
 	if difficulty.difficulty == 0:
 		JUMP_SPEED = -350.0
@@ -104,6 +116,7 @@ func _ready() -> void:
 	objective2.hide()
 	blockedText.hide()
 	winText.hide()
+	deathMenu.hide()
 	sprite.modulate = Color(1, 1, 1)
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
 
@@ -116,7 +129,17 @@ func get_health():
 
 func _process(delta) -> void:
 	if stopwatch <= 0:
-		get_tree().reload_current_scene()
+		stopwatchSound.stop()
+		stopwatchAnimation.stop()
+		set_process(false)
+		get_tree().paused = true
+		deathMenu.show()
+		failSound.play()
+	if stopwatch <= 10.0 and stopwatch > 0:
+		stopwatchAnimation.play("pulsate")
+		if not stopwatchSound.is_playing():
+			stopwatchSound.play()
+		
 	
 	if Input.is_action_just_pressed("pause"):
 		_when_pause_button_pressed()
@@ -148,6 +171,7 @@ func _process(delta) -> void:
 		key.position.x = 20
 		trialKey.show()
 	coinDisplay.text = str(coinCounter)
+	killCountText.text = str(enemiesKilled)
 		
 	if health > 50:
 		heart.set_texture(heartFull)
@@ -189,8 +213,25 @@ func _physics_process(delta) -> void:
 	stopwatch -= delta
 	stopwatchText.text = str(stopwatch).pad_decimals(1)
 	if hasWon == true:
-		winText.show()
 		set_physics_process(false)
+		var currentScene := (get_tree().get_current_scene().filename)
+		if currentScene == "res://levelScenes/Green Groves.tscn": 
+			if difficulty.difficulty == 0:
+				$WinMenu/Clock/WinStopwatch.text = str(330.0 - (stopwatch)).pad_decimals(1)
+			elif difficulty.difficulty == 1:
+				$WinMenu/Clock/WinStopwatch.text = str(225.0 - (stopwatch)).pad_decimals(1)
+		elif currentScene == "res://levelScenes/Ash Apocalypse.tscn":
+			if difficulty.difficulty == 0:
+				$WinMenu/Clock/WinStopwatch.text = str(450.0 - (stopwatch)).pad_decimals(1)
+			elif difficulty.difficulty == 1:
+				$WinMenu/Clock/WinStopwatch.text = str(315.0 - (stopwatch)).pad_decimals(1)
+		$WinMenu/Control/WinCoinCounter/BlockedText.text = str(coinCounter)
+		$WinMenu/KillCounter/BlockedText.text = str(enemiesKilled)
+		winTimer.start()
+		if levelCheck.levelsCompleted <= 0:
+			levelCheck.levelsCompleted = 1
+		elif levelCheck.levelsCompleted > 0:
+			levelCheck.levelsCompleted = 2
 	elif hasWon == false:
 		winText.hide()
 			
@@ -540,7 +581,10 @@ func _on_Timer_timeout():
 
 
 func _on_Timer2_timeout():
-	get_tree().reload_current_scene()
+	get_tree().paused = true
+	deathMenu.show()
+	$DeathMenu/Control/ResumeDie.grab_focus()
+	failSound.play()
 	
 func _on_AnimationPlayer_animation_finished(anim_name):
 	anim_return = anim_name
@@ -563,3 +607,14 @@ func _on_HurtTimer_timeout():
 		sprite.modulate = Color(1, 1, 1)
 	elif health <= 0:
 		sprite.modulate = Color(0, 0, 0, 1)
+		
+func _on_winTimer_timeout():
+	var soundTimer := 1
+	get_tree().paused = true
+	$WinMenu/Control/NextLevelButton.grab_focus()
+	winText.show()
+	if soundTimer == 1:
+		$WinMenu/WinSound.play()
+		soundTimer = 2
+	
+

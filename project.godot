@@ -20,6 +20,7 @@ config/icon="res://assets/images/Request pack/Tiles/swordGold.png"
 GlobalOptionButton="res://OptionButton.gd"
 GlobalMusicOption="res://MusicOption.gd"
 GlobalMusicScene="res://MusicScene.tscn"
+LevelCheck="res://levelCheck.gd"
 
 [display]
 

@@ -16,4 +16,4 @@ func _on_body_entered(body: Node):
 			body.position.x -= 135
 
 func _on_Timer_timeout():
-	get_tree().change_scene("res://levelScenes/Dire Depths.tscn")
+	pass

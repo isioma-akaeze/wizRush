@@ -20,5 +20,4 @@ func _on_body_entered(body: Node):
 			lockSound.play()
 
 func _on_WinTimer_timeout():
-	get_tree().change_scene("res://levelScenes/Ash Apocalypse.tscn")
-	#get_tree().quit()
+	pass

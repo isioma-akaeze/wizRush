@@ -19,6 +19,7 @@ onready var difficulty := get_node("/root/GlobalOptionButton")
 onready var deleteTimer := $DeleteTimer
 onready var healthBar := $ProgressBar
 onready var biteSound := $MouseBite
+var bodyToAward : Node = null
 
 func _process(delta):
 	healthBar.max_value = 24
@@ -26,6 +27,7 @@ func _process(delta):
 	if health > 0:
 		pass
 	elif health <= 0:
+		bodyToAward.enemiesKilled += 1
 		animation.stop()
 		set_process(false)
 		if !switchingDirection:
@@ -121,6 +123,8 @@ func _on_DeathArea_body_entered(body):
 		elif difficulty.difficulty == 1:
 			health -= 4.8
 			sprite.set_texture(hit)
+		bodyToAward = body.get_parent()
+		return bodyToAward
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):

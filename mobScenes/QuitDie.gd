@@ -1,12 +1,13 @@
 extends Button
 
 onready var clickSound := get_parent().get_node("ButtonClick")
-onready var timer := Timer.new()
+var timer := Timer.new()
 
-func _on_Play1_pressed():
-	clickSound.play() 
+func _on_QuitDie_pressed():
+	get_tree().paused = false
 	timer.start()
-	
+	clickSound.play()
+
 func _ready():
 	add_child(timer)
 	timer.wait_time = 0.375
@@ -14,5 +15,5 @@ func _ready():
 	timer.connect("timeout", self, "_on_timer_timeout")
 	
 func _on_timer_timeout():
-	get_tree().change_scene("res://levelScenes/Green Groves.tscn")
-
+	get_tree().paused = false
+	get_tree().change_scene("res://MainMenu.tscn")
