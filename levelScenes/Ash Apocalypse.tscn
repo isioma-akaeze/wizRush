@@ -608,7 +608,7 @@ texture = ExtResource( 28 )
 expand = true
 
 [node name="Character" parent="." instance=ExtResource( 24 )]
-position = Vector2( 358, 327 )
+position = Vector2( 350, 326 )
 
 [node name="Spikes" type="TileMap" parent="."]
 position = Vector2( 5, 0 )

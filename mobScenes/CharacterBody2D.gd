@@ -104,7 +104,7 @@ func _ready() -> void:
 	elif difficulty.difficulty == 1:
 		JUMP_SPEED = -522.5
 		GRAVITY = 540.0
-		CLIMB_GRAVITY *= 2
+		CLIMB_GRAVITY *= 2.5
 		if sceneCheck == "res://levelScenes/Green Groves.tscn":
 			stopwatch = 225.0
 		elif sceneCheck == "res://levelScenes/Ash Apocalypse.tscn":
@@ -128,6 +128,25 @@ func get_health():
 	return health
 
 func _process(delta) -> void:
+	#x = 9365 to 9910 or 330 to 790
+	var checkScene := (get_tree().get_current_scene().filename)
+	if checkScene == "res://levelScenes/Ash Apocalypse.tscn":
+		if global_position.y < - 115 and global_position.x < 9910 and global_position.x > 9365:
+			$Crouch.scale.y = -0.945
+			if Input.is_action_pressed("down"):
+				sprite.set_texture(crouch)
+				if Input.is_action_pressed("left") or Input.is_action_pressed("right") and !is_on_wall():
+					if not walk.is_playing():
+						walk.play("crawl")
+		if global_position.y < 330 and global_position.x < 790 and global_position.x > 330:
+			$Crouch.scale.y = -0.9875
+			if Input.is_action_pressed("down"):
+				sprite.set_texture(crouch)
+				if Input.is_action_pressed("left") or Input.is_action_pressed("right") and !is_on_wall():
+					if not walk.is_playing():
+						walk.play("crawl")
+		else:
+			$Crouch.scale.y = -0.895
 	if stopwatch <= 0:
 		stopwatchSound.stop()
 		stopwatchAnimation.stop()
@@ -227,10 +246,13 @@ func _physics_process(delta) -> void:
 				$WinMenu/Clock/WinStopwatch.text = str(315.0 - (stopwatch)).pad_decimals(1)
 		$WinMenu/Control/WinCoinCounter/BlockedText.text = str(coinCounter)
 		$WinMenu/KillCounter/BlockedText.text = str(enemiesKilled)
+		var winTimerStart := $WinMenu.timer as Timer
+		winTimerStart.start()
 		winTimer.start()
+		var currentSceneLevel := (get_tree().get_current_scene().filename)
 		if levelCheck.levelsCompleted <= 0:
 			levelCheck.levelsCompleted = 1
-		elif levelCheck.levelsCompleted > 0:
+		elif levelCheck.levelsCompleted > 0 and currentSceneLevel == "res://levelScenes/Ash Apocalypse.tscn":
 			levelCheck.levelsCompleted = 2
 	elif hasWon == false:
 		winText.hide()
@@ -283,6 +305,7 @@ func _physics_process(delta) -> void:
 	#Yet ANOTHER failsafe to make sure the player doesn't walk into walls.
 	if velocity.x == 0 and is_on_wall() and floorTouched and not Input.is_action_pressed("attack") and not Input.is_action_pressed("up") and !crouching and !climbing:
 		sprite.set_texture(idle)
+
 	
 	if is_on_floor():
 		for i in get_slide_count():
@@ -360,24 +383,24 @@ func _physics_process(delta) -> void:
 		sprite.flip_h = -1 #Flip the sprite
 		if floorTouched == true and !is_on_wall() and !crouching:
 			walk.play("walk")
-		elif is_on_wall() and floorTouched != true:
+		elif is_on_wall() and floorTouched != true and !crouching:
 			walk.stop(true)
-		elif floorTouched != true and !is_on_wall() and !is_on_floor():
+		elif floorTouched != true and !is_on_wall() and !is_on_floor() and !crouching:
 			walk.stop(true)
 			if doubleJump:
 				sprite.set_texture(jump)
 			elif !doubleJump:
 				sprite.set_texture(doubleJumpSprite)
-		elif is_on_wall() and !isMoving:
+		elif is_on_wall() and !isMoving and !crouching:
 			walk.stop(true)
 	elif Input.is_action_pressed("right"):
 		isMoving = true
 		sprite.flip_h = 0 #Flip the sprite
 		if is_on_floor() and !is_on_wall() and !crouching:
 			walk.play("walk")
-		elif floorTouched != true:
+		elif floorTouched != true and !crouching:
 			walk.stop(true)
-		elif is_on_wall() and !isMoving:
+		elif is_on_wall() and !isMoving and !crouching:
 			walk.stop(true)
 	#IIRC this is needed to signal to the code that velocity.x is inactive. Kind of seems useless but I'll keep it.
 	if Input.is_action_just_released("left") or Input.is_action_just_released("right"):
@@ -596,6 +619,7 @@ func _when_pause_button_pressed():
 	if pauseMenu.visible == false and get_tree().paused == false:
 		get_tree().paused = true
 		$PauseMenu/Control.paused = false
+		$PauseMenu/Control/Resume.grab_focus()
 		pauseMenu.show()
 
 

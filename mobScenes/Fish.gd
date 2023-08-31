@@ -27,6 +27,7 @@ var health := 15
 onready var healthBar := $ProgressBar
 var takingDamage := false
 var hurt := preload("res://assets/images/Extra animations and enemies/Enemy sprites/fishGreen_hit.png")
+onready var swimSound := $SwimSound
 
 func _ready():
 	healthBar.max_value = 15
@@ -70,6 +71,13 @@ func _physics_process(delta):
 			velocity.y += SINK_GRAVITY * delta
 		elif velocity.y > MAXIMUM_SWIM_GRAVITY:
 			velocity.y += SWIM_GRAVITY * delta
+		if !swimSound.is_playing():
+			swimSound.pitch_scale = 3
+			swimSound.play()
+		if round(velocity.x) == 0:
+			swimSound.stop()
+		if round(velocity.y) == 0:
+			swimSound.stop()
 		move_and_slide(velocity, Vector2.UP)
 	elif !dangerSpotted and switchingDirection:
 		sprite.flip_h = -1
@@ -80,6 +88,13 @@ func _physics_process(delta):
 			velocity.y += SINK_GRAVITY * delta
 		elif velocity.y > MAXIMUM_SWIM_GRAVITY:
 			velocity.y += SWIM_GRAVITY * delta
+		if !swimSound.is_playing():
+			swimSound.pitch_scale = 3
+			swimSound.play()
+		if round(velocity.x) == 0:
+			swimSound.stop()
+		if round(velocity.y) == 0:
+			swimSound.stop()
 		move_and_slide(velocity, Vector2.UP)
 	
 	if dangerSpotted:
@@ -89,6 +104,13 @@ func _physics_process(delta):
 			velocity.y += SINK_GRAVITY * delta
 		elif velocity.y > MAXIMUM_SWIM_GRAVITY:
 			velocity.y += SWIM_GRAVITY * delta
+		if !swimSound.is_playing():
+			swimSound.pitch_scale = 5.51
+			swimSound.play()
+		if round(velocity.x) == 0:
+			swimSound.stop()
+		if round(velocity.y) == 0:
+			swimSound.stop()
 		move_and_slide(velocity, Vector2.UP)
 		
 func _on_PathTimer_timeout():

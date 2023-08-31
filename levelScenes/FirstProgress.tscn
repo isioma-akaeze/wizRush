@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://levelScenes/FirstProgress.gd" type="Script" id=1]
+[ext_resource path="res://assets/sounds/KeyUnlock.mp3" type="AudioStream" id=2]
+[ext_resource path="res://assets/sounds/KeyLocked.mp3" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -10,3 +12,11 @@ script = ExtResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 2, 2 )
 shape = SubResource( 1 )
+
+[node name="KeyLocked" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = 9.0
+
+[node name="KeyUnlocked" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = 4.0

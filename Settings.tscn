@@ -92,6 +92,7 @@ margin_top = 325.0
 margin_right = 396.0
 margin_bottom = 351.0
 rect_scale = Vector2( 3, 3 )
+focus_neighbour_left = NodePath("../../Quit to Menu")
 focus_neighbour_top = NodePath("../../Options/OptionButton")
 focus_neighbour_bottom = NodePath("../../Quit to Menu")
 theme = SubResource( 7 )

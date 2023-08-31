@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/images/KiriFont.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/images/kenney_background-elements-redux/Backgrounds/backgroundCastles.png" type="Texture" id=2]
+[ext_resource path="res://QuitMenuCredits.gd" type="Script" id=3]
+[ext_resource path="res://assets/images/fonts/kirifont/KiriFont.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://CreditsText.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 4 )
+
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 3 )
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 1024.0
+texture = ExtResource( 2 )
+
+[node name="QuitMenuCredits" type="Button" parent="."]
+margin_left = 25.0
+margin_top = 525.0
+margin_right = 125.0
+margin_bottom = 551.0
+rect_scale = Vector2( 2, 2 )
+focus_neighbour_top = NodePath("../CreditsText")
+focus_neighbour_right = NodePath("../CreditsText")
+custom_colors/font_color_focus = Color( 0.901961, 0.85098, 0.0627451, 1 )
+custom_colors/font_color_hover = Color( 0.905882, 0.917647, 0.0627451, 1 )
+custom_colors/font_color_pressed = Color( 0.176471, 0.164706, 0.164706, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "BACK"
+script = ExtResource( 3 )
+
+[node name="Menu Title" type="Label" parent="."]
+margin_left = 350.0
+margin_top = 20.0
+margin_right = 435.0
+margin_bottom = 37.0
+rect_scale = Vector2( 3.75, 3.75 )
+custom_fonts/font = SubResource( 2 )
+text = "CREDITS"
+
+[node name="CreditsText" type="RichTextLabel" parent="."]
+margin_left = 75.0
+margin_top = 100.0
+margin_right = 975.0
+margin_bottom = 500.0
+focus_neighbour_left = NodePath("../QuitMenuCredits")
+focus_neighbour_bottom = NodePath("../QuitMenuCredits")
+focus_mode = 1
+theme = SubResource( 4 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.333333 )
+text = "			 Programming: 
+			 Isioma Akaeze
+		
+			   Artwork:
+			Placeholder By: 
+	  Placeholder on Kenny.nl
+
+		Green Groves Music: 
+	Placeholder by: PlaceHolder
+
+		Ash Apocalypse Music:
+    Placeholder by: Placeholder
+
+			Dire Depths Music:
+	Placeholder by: Placeholder
+
+"
+script = ExtResource( 5 )
+
+[connection signal="pressed" from="QuitMenuCredits" to="QuitMenuCredits" method="_on_QuitMenuCredits_pressed"]

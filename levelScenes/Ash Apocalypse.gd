@@ -23,9 +23,13 @@ onready var musicScene := get_node("/root/GlobalMusicScene")
 func _ready() -> void:
 	var menuMusic := get_node("/root/GlobalMusicScene")
 	var previousMusic := musicScene.get_node("GreenGroves")
+	var musicOption := get_node("/root/GlobalMusicOption")
 	menuMusic.get_node("LobbyMusic").stop()
 	previousMusic.stop()
-	ambientMusic.play()
+	if musicOption.musicOn == 0:
+		ambientMusic.play()
+	else:
+		ambientMusic.stop()
 	randomize()
 	add_rocks_on_grid()
 	world.visible = false

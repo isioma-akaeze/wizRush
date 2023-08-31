@@ -4,10 +4,6 @@ onready var musicScene := get_node("/root/GlobalMusicScene")
 onready var clickSound := musicScene.get_node("ButtonClick")
 var timer := Timer.new()
 var lastScene := "res://MainMenu.tscn"
-
-func _on_Quit_to_Menu_pressed():
-	timer.start()
-	clickSound.play()
 	
 func _ready():
 	add_child(timer)
@@ -18,3 +14,7 @@ func _ready():
 
 func _on_timer_timeout() -> void:
 	get_tree().change_scene(lastScene)
+
+func _on_Quit_to_Menu_pressed():
+	timer.start()
+	clickSound.play()

@@ -7,8 +7,22 @@ const PROPS := [
 
 onready var world = $Water/Random
 const CELL_SIZE := Vector2(64, 0)
+onready var musicScene := get_node("/root/GlobalMusicScene")
+onready var ambientMusic := $"Underwater Music"
 
 func _ready() -> void:
+	var character := $CharacterSwim2D
+	var menuMusic := get_node("/root/GlobalMusicScene")
+	var previousMusic := musicScene.get_node("GreenGroves")
+	var musicOption := get_node("/root/GlobalMusicOption")
+	menuMusic.get_node("LobbyMusic").stop()
+	previousMusic.stop()
+	if musicOption.musicOn == 0 and character.health > 0:
+		ambientMusic.play()
+	elif character.health < 0:
+		ambientMusic.stop()
+	else:
+		ambientMusic.stop()
 	randomize()
 	add_props_on_grid()
 	world.visible = false

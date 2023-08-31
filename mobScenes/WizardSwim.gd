@@ -39,8 +39,20 @@ var heartFull := preload("res://assets/images/Base pack/HUD/hud_heartFull.png")
 var dead := preload("res://assets/images/kenney_platformer-characters/PNG/Adventurer/Poses/adventurer_hurt.png")
 onready var deathTimer := $DeathTimer
 onready var pauseMenu := $PauseMenu
+onready var difficulty := get_node("/root/GlobalOptionButton")
+onready var deathMenu := $DeathMenu
+onready var failSound := $DeathMenu/FailSound
+onready var breathingSound := $BreathingSound
+onready var swimSound := $SwimSound
+onready var killDisplay := $"KillCount Text"
+var enemiesKilled := 0
+onready var globalKillCount := get_node("/root/KillCountDepths")
+onready var deathSound := $Death
+onready var stopwatchAnimation := $Stopwatch/AnimationPlayer
+onready var stopwatchSound := $Stopwatch/StopwatchSound
 
 func _ready():
+	globalKillCount.enemiesKilled = 0
 	pauseMenu.hide()
 	healthBar.max_value = 100
 	stopwatchText.get_font("bold_font").extra_spacing_char = 6
@@ -48,8 +60,21 @@ func _ready():
 	demoKeySprite.hide()
 	trialKeySprite.hide()
 	blockedText.hide()
+	if difficulty.difficulty == 0:
+		stopwatch = 570.0
+		#stopwatch = 15.0
+		#stopwatch = 5.0
+	elif difficulty.difficulty == 1:
+		stopwatch = 395.0
+	deathMenu.hide()
 	
 func _process(delta):
+	enemiesKilled = globalKillCount.enemiesKilled
+	killDisplay.text = str(enemiesKilled)
+	if !breathingSound.is_playing() and health > 0:
+		breathingSound.play()
+	elif health <= 0:
+		breathingSound.stop()
 	if Input.is_action_just_pressed("pause"):
 		_when_pause_button_pressed()
 	if health > 50:
@@ -58,6 +83,7 @@ func _process(delta):
 		heart.set_texture(heartHalf)
 	
 	if health <= 0:
+		deathSound.play()
 		sprite.set_texture(dead)
 		heart.set_texture(heartEmpty)
 		sprite.modulate = Color(0, 0, 0, 1)
@@ -67,8 +93,20 @@ func _process(delta):
 		deathTimer.start()
 
 func _physics_process(delta) -> void:
-	stopwatch += delta
+	stopwatch -= delta
 	stopwatchText.text = str(stopwatch).pad_decimals(1)
+	
+	if stopwatch <= 0:
+		animation.stop()
+		set_physics_process(false)
+		set_process(false)
+		get_tree().paused = true
+		deathMenu.show()
+		failSound.play()
+	if stopwatch <= 10.0 and stopwatch > 0:
+		stopwatchAnimation.play("pulsate")
+		if not stopwatchSound.is_playing():
+			stopwatchSound.play()
 
 	if passageBlocked == true:
 		blockedText.show()
@@ -190,7 +228,16 @@ func _physics_process(delta) -> void:
 				rayCanShoot = false
 				rayTimer.start()
 
-		
+	if round(velocity.x) != 0 and health > 0 and !is_on_floor():
+		swimSound.pitch_scale = 1
+		if !swimSound.is_playing():
+			swimSound.play()
+	elif is_on_floor():
+		swimSound.pitch_scale = 0.8
+		if !swimSound.is_playing():
+			swimSound.play()
+	elif round(velocity.x) == 0:
+		swimSound.stop()
 		
 	move_and_slide(velocity, Vector2.UP)
 
@@ -207,8 +254,17 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 
 func _on_DeathTimer_timeout():
-	get_tree().reload_current_scene()
+	animation.stop()
+	set_physics_process(false)
+	set_process(false)
+	get_tree().paused = true
+	deathMenu.show()
+	$DeathMenu/Control/ResumeDie.grab_focus()
+	failSound.play()
 
 func _when_pause_button_pressed():
-	get_tree().paused = true
-	pauseMenu.show()
+	if pauseMenu.visible == false and get_tree().paused == false:
+		get_tree().paused = true
+		$PauseMenu/ControlDepths.paused = false
+		$PauseMenu/ControlDepths/Resume.grab_focus()
+		pauseMenu.show()

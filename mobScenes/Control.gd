@@ -3,21 +3,24 @@ extends Control
 onready var resume := $Resume
 onready var quit := $"Quit Main"
 onready var timer := $Timer
+onready var timerDepths := $TimerDepths
 
 var paused = true
 
-func _process(delta):
-	if Input.is_action_just_pressed("ui_up"):
-		resume.grab_focus()
-		quit.release_focus()
-	elif Input.is_action_just_pressed("ui_down"):
-		quit.grab_focus()
-		resume.release_focus()
+func _ready():
+	#resume.grab_focus()
+	pass
 
-func _physics_process(delta):
+func _physics_process(delta):	
+	var currentPlayer := get_parent().get_parent().get_parent().name
 	if Input.is_action_just_pressed("pause") and !paused:
-		paused = true
-		timer.start()
+		if currentPlayer != "res://mobScenes/WizardSwim.tscn":
+			paused = true
+			timer.start()
+		else:
+			paused = true
+			timerDepths.start()
+
 
 
 func _on_Timer_timeout():
