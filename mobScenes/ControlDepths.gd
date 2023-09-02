@@ -1,6 +1,6 @@
 extends Control
 
-onready var resume := $Resume
+onready var resume := $Resume2
 onready var quit := $"Quit Main"
 onready var timer := $TimerDepths
 

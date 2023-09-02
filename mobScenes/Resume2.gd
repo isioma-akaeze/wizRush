@@ -1,11 +1,7 @@
 extends Button
 
-onready var clickSound := get_parent().get_node("ButtonClick")
+onready var clickSound := get_node("/root/GlobalMusicScene").get_node("ButtonClick")
 var timer := Timer.new()
-
-func _on_ResumeDie_pressed():
-	clickSound.play()
-	timer.start()
 
 func _ready():
 	add_child(timer)
@@ -14,6 +10,10 @@ func _ready():
 	timer.connect("timeout", self, "_on_timer_timeout")
 	
 func _on_timer_timeout():
+	clickSound.play()
 	get_tree().paused = false
-	get_tree().reload_current_scene()
-
+	get_parent().get_parent().hide()
+	
+func _on_Resume2_pressed():
+	clickSound.play()
+	timer.start()

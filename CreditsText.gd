@@ -2,6 +2,7 @@ extends RichTextLabel
 
 var current_line = 0
 var focused := false
+onready var quitButton := get_parent().get_node("QuitMenuCredits")
 
 func _draw():
 	if focused:
@@ -23,3 +24,7 @@ func _physics_process(delta):
 		elif Input.is_action_pressed("scroll_down"):
 			current_line = min(current_line + 1, get_line_count() - 1)
 			scroll_to_line(current_line)
+		if Input.is_action_pressed("ui_cancel"):
+			focused = false
+			self.release_focus()
+			quitButton.grab_focus()

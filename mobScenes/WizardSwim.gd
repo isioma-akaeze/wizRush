@@ -50,8 +50,11 @@ onready var globalKillCount := get_node("/root/KillCountDepths")
 onready var deathSound := $Death
 onready var stopwatchAnimation := $Stopwatch/AnimationPlayer
 onready var stopwatchSound := $Stopwatch/StopwatchSound
+export var attackingBoss := false
+onready var bossBar:= $BossBar
 
 func _ready():
+	bossBar.hide()
 	globalKillCount.enemiesKilled = 0
 	pauseMenu.hide()
 	healthBar.max_value = 100
@@ -69,6 +72,10 @@ func _ready():
 	deathMenu.hide()
 	
 func _process(delta):
+	if attackingBoss == true:
+		bossBar.show()
+	else:
+		bossBar.hide()
 	enemiesKilled = globalKillCount.enemiesKilled
 	killDisplay.text = str(enemiesKilled)
 	if !breathingSound.is_playing() and health > 0:
@@ -259,12 +266,12 @@ func _on_DeathTimer_timeout():
 	set_process(false)
 	get_tree().paused = true
 	deathMenu.show()
-	$DeathMenu/Control/ResumeDie.grab_focus()
+	$DeathMenu/Control/ResumeDie2.grab_focus()
 	failSound.play()
 
 func _when_pause_button_pressed():
 	if pauseMenu.visible == false and get_tree().paused == false:
 		get_tree().paused = true
 		$PauseMenu/ControlDepths.paused = false
-		$PauseMenu/ControlDepths/Resume.grab_focus()
+		$PauseMenu/ControlDepths/Resume2.grab_focus()
 		pauseMenu.show()

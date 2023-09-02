@@ -10,19 +10,24 @@ const CELL_SIZE := Vector2(64, 0)
 onready var musicScene := get_node("/root/GlobalMusicScene")
 onready var ambientMusic := $"Underwater Music"
 
-func _ready() -> void:
-	var character := $CharacterSwim2D
+func _process(delta):
 	var menuMusic := get_node("/root/GlobalMusicScene")
 	var previousMusic := musicScene.get_node("GreenGroves")
 	var musicOption := get_node("/root/GlobalMusicOption")
+	var character := $CharacterSwim2D
 	menuMusic.get_node("LobbyMusic").stop()
 	previousMusic.stop()
-	if musicOption.musicOn == 0 and character.health > 0:
-		ambientMusic.play()
+	if musicOption.musicOn == 0 and character.health > 0 and character.attackingBoss == false:
+		if !ambientMusic.is_playing():
+			ambientMusic.play()
 	elif character.health < 0:
+		ambientMusic.stop()
+	elif character.attackingBoss == true:
 		ambientMusic.stop()
 	else:
 		ambientMusic.stop()
+
+func _ready() -> void:
 	randomize()
 	add_props_on_grid()
 	world.visible = false
