@@ -55,6 +55,7 @@ onready var bossBar:= $BossBar
 
 func _ready():
 	bossBar.hide()
+	bossBar.max_value = 300
 	globalKillCount.enemiesKilled = 0
 	pauseMenu.hide()
 	healthBar.max_value = 100

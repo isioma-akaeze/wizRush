@@ -34,6 +34,12 @@ func _on_Ray_body_entered(body):
 					shot = true
 				if body.health > 0:
 					shot = false
+			elif body.is_in_group("boss"):
+				if difficulty.difficulty == 0:
+					body.health -= 2
+				else:
+					body.health -= 1
+				body.takingDamage = true
 			animation.play("shrink")
 	inContact = true
 	return inContact
