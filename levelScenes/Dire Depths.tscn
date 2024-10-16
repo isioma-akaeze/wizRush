@@ -796,7 +796,6 @@ scale = Vector2( 3.24, 1.64 )
 [node name="ThirdProgress" parent="." instance=ExtResource( 15 )]
 position = Vector2( 5217, 2176 )
 scale = Vector2( 1.48008, 3.20001 )
-script = null
 
 [node name="Coin" parent="." instance=ExtResource( 16 )]
 position = Vector2( 182, 796 )
