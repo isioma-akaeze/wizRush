@@ -24,11 +24,17 @@ func _on_Ray_body_entered(body):
 	if !body.is_in_group("player"):
 		if is_instance_valid(body):
 			if body.is_in_group("enemy") or body.is_in_group("passive"):
-				if difficulty.difficulty == 0:
-					body.health -= 15
+				if body.isInvincible == false:
+					if difficulty.difficulty == 0:
+						body.health -= 15
+					else:
+						body.health -= 7.5
+						body.takingDamage = true
 				else:
-					body.health -= 7.5
-				body.takingDamage = true
+					if not body.startSlow:
+						body.startSlow = true
+					if not body.slowedDown:
+						body.slowedDown = true
 				if body.health == 0 and shot == false:
 					globalKillCount.enemiesKilled += 1
 					shot = true
@@ -38,7 +44,7 @@ func _on_Ray_body_entered(body):
 				if difficulty.difficulty == 0:
 					body.health -= 2
 				else:
-					body.health -= 1
+					body.health -= 2.5
 				body.takingDamage = true
 			animation.play("shrink")
 	inContact = true
@@ -60,6 +66,8 @@ func _on_Ray_body_exited(body):
 	if !body.is_in_group("player"):
 		if is_instance_valid(body):
 			if body.is_in_group("enemy") or body.is_in_group("passive"):
+				body.takingDamage = false
+			if body.is_in_group("boss"):
 				body.takingDamage = false
 
 

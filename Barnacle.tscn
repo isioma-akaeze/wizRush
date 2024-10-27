@@ -1,11 +1,14 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/barnacle.png" type="Texture" id=1]
-[ext_resource path="res://assets/images/Bubbles.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/Base pack/BubblesAnimated.tres" type="Texture" id=2]
 [ext_resource path="res://assets/images/Extra animations and enemies/Enemy sprites/barnacle_bite.png" type="Texture" id=3]
 [ext_resource path="res://Barnacle.gd" type="Script" id=4]
 [ext_resource path="res://assets/sounds/BiteSound.mp3" type="AudioStream" id=5]
 [ext_resource path="res://assets/sounds/BossFightMusic.mp3" type="AudioStream" id=6]
+[ext_resource path="res://assets/sounds/BossSpitSound.mp3" type="AudioStream" id=7]
+[ext_resource path="res://assets/sounds/BubblingSound.mp3" type="AudioStream" id=8]
+[ext_resource path="res://assets/sounds/BossDeathSound.mp3" type="AudioStream" id=9]
 
 [sub_resource type="Animation" id=7]
 length = 0.001
@@ -136,6 +139,30 @@ tracks/5/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath("Sprite:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Sprite:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "bite"
@@ -175,6 +202,46 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ true, false, true, false, true, false, true, false ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "death"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1.6245 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 65 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -222,11 +289,12 @@ tracks/1/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 10.7463, 9.925 )
+extents = Vector2( 9.1258, 26.803 )
 
 [sub_resource type="RectangleShape2D" id=4]
 
 [sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 9.15476, 10 )
 
 [node name="BarnacleBoss" type="KinematicBody2D" groups=["boss"]]
 scale = Vector2( 7, 7 )
@@ -253,6 +321,7 @@ anims/bubbles = SubResource( 8 )
 [node name="GeneralAnimation" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 2 )
 anims/bite = SubResource( 3 )
+anims/death = SubResource( 10 )
 anims/shake = SubResource( 6 )
 anims/spit = SubResource( 9 )
 
@@ -267,7 +336,7 @@ disabled = true
 [node name="TeethArea" type="Area2D" parent="."]
 
 [node name="TeethBox" type="CollisionShape2D" parent="TeethArea"]
-position = Vector2( 0, -16.9667 )
+position = Vector2( -1.36239e-07, -0.0887069 )
 scale = Vector2( 1.675, 1 )
 shape = SubResource( 1 )
 disabled = true
@@ -279,7 +348,7 @@ shape = SubResource( 4 )
 [node name="BiteSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
 volume_db = 5.0
-pitch_scale = 0.93
+pitch_scale = 0.63
 max_distance = 800.0
 attenuation = 1.62451
 
@@ -290,7 +359,7 @@ volume_db = -25.0
 [node name="BossArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BossArea"]
-position = Vector2( 0, -100 )
+position = Vector2( 5.07143, -100 )
 scale = Vector2( 6, 13 )
 shape = SubResource( 5 )
 
@@ -301,6 +370,26 @@ wait_time = 0.25
 [node name="AttackWaitTimer" type="Timer" parent="."]
 process_mode = 0
 one_shot = true
+
+[node name="BossSpit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = 15.0
+pitch_scale = 0.73
+max_distance = 800.0
+attenuation = 1.62451
+
+[node name="BubblingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = 15.0
+max_distance = 800.0
+attenuation = 1.62451
+
+[node name="BossDeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
+volume_db = 24.0
+pitch_scale = 0.88
+max_distance = 800.0
+attenuation = 1.62451
 
 [connection signal="animation_finished" from="GeneralAnimation" to="." method="_on_GeneralAnimation_animation_finished"]
 [connection signal="body_entered" from="BubbleArea" to="." method="_on_BubbleArea_body_entered"]

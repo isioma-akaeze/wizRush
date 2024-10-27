@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/BossSpitSound.mp3-f2c8b2a8baf1dff1f987e21d2bbb3260.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/BossSpitSound.mp3"
+dest_files=[ "res://.import/BossSpitSound.mp3-f2c8b2a8baf1dff1f987e21d2bbb3260.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

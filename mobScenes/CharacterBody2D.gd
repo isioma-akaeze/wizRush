@@ -234,15 +234,23 @@ func _physics_process(delta) -> void:
 	if hasWon == true:
 		set_physics_process(false)
 		var currentScene := (get_tree().get_current_scene().filename)
-		if currentScene == "res://levelScenes/Green Groves.tscn": 
+		if currentScene == "res://levelScenes/Green Groves.tscn":
+			levelCheck.levelOneCoins = coinCounter
+			levelCheck.levelOneKills = enemiesKilled
 			if difficulty.difficulty == 0:
+				levelCheck.levelOneTime = (330.0 - stopwatch)
 				$WinMenu/Clock/WinStopwatch.text = str(330.0 - (stopwatch)).pad_decimals(1)
 			elif difficulty.difficulty == 1:
+				levelCheck.levelOneTime = (225.0 - stopwatch)
 				$WinMenu/Clock/WinStopwatch.text = str(225.0 - (stopwatch)).pad_decimals(1)
 		elif currentScene == "res://levelScenes/Ash Apocalypse.tscn":
+			levelCheck.levelTwoCoins = coinCounter
+			levelCheck.levelTwoKills = enemiesKilled
 			if difficulty.difficulty == 0:
+				levelCheck.levelTwoTime = (450.0 - stopwatch)
 				$WinMenu/Clock/WinStopwatch.text = str(450.0 - (stopwatch)).pad_decimals(1)
 			elif difficulty.difficulty == 1:
+				levelCheck.levelTwoTime = (315.0 - stopwatch)
 				$WinMenu/Clock/WinStopwatch.text = str(315.0 - (stopwatch)).pad_decimals(1)
 		$WinMenu/Control/WinCoinCounter/BlockedText.text = str(coinCounter)
 		$WinMenu/KillCounter/BlockedText.text = str(enemiesKilled)

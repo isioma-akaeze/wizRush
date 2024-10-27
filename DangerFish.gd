@@ -14,6 +14,12 @@ onready var nibbleSound := $NibbleSound
 var bodyToDamage : Node = null
 var health := 75
 var takingDamage = false
+var isSpawned := false
+var inBossArea := false
+var isInvincible := false
+var slowedDown := false
+var startSlow := false
+onready var despawnTimer := $Timer
 
 func _ready():		
 	sprite.self_modulate = Color(0.917647,0.235294,0.235294,1)
@@ -23,16 +29,42 @@ func _ready():
 		randomSpeed = rand_range(64.8, 80.2)
 	pathTimer.start()
 	healthBar.max_value = 60
+
 	
 func _process(delta):
+	if isSpawned:
+		if difficulty.difficulty == 0:
+			if despawnTimer.wait_time != 0:
+				despawnTimer.wait_time = 7
+				despawnTimer.start()
+		elif difficulty.difficulty == 1:
+			if despawnTimer.wait_time != 0:
+				despawnTimer.wait_time = 12
+				despawnTimer.start()
+		
+	if inBossArea and isSpawned == false:
+		isInvincible = true
+		var health := 10000000000
+		sprite.modulate = Color(0.4, 0.4, 0.4, 1)
+		healthBar.hide() 
 	if health <= 0 and !takingDamage:
 		set_process(false)
 		animation.stop()
 		set_physics_process(false)
 		animation.play("death")
-
+	if startSlow:
+		if animation.current_animation != "shake":
+			set_process(false)
+			animation.stop()
+			set_physics_process(false)
+			animation.play("shake")
+		if not slowedDown:
+			slowedDown = true
+			startSlow = false
 
 func _physics_process(delta):
+	if slowedDown:
+		randomSpeed = 0
 	healthBar.set_value(health)
 	if takingDamage:
 		sprite.self_modulate = Color(0.5,0.5,0.75,1)
@@ -72,11 +104,11 @@ func _physics_process(delta):
 		move_and_slide(velocity, Vector2.UP)
 
 func _on_PathTimer_timeout():
-	if difficulty.difficulty == 0:
-		randomSpeed = rand_range(54.0, 64.8)
-	elif difficulty.difficulty == 1:
-		randomSpeed = rand_range(64.8, 80.2)
-
+	if not slowedDown:
+		if difficulty.difficulty == 0:
+			randomSpeed = rand_range(54.0, 64.8)
+		elif difficulty.difficulty == 1:
+			randomSpeed = rand_range(64.8, 80.2)
 
 func _on_DamageArea_body_entered(body):
 	if body.is_in_group("player"):
@@ -88,12 +120,18 @@ func _on_DamageArea_body_entered(body):
 func _on_DamageTimer_timeout():
 	if health > 0:
 		if difficulty.difficulty == 0:
-			bodyToDamage.health -= 18
+			if isSpawned:
+				bodyToDamage.health -= 6
+			else:
+				bodyToDamage.health -= 18
 			nibbleSound.play()
 		elif difficulty.difficulty == 1:
-			bodyToDamage.health -= 27
+			if isSpawned:
+				bodyToDamage.health -= 9
+			else:
+				bodyToDamage.health -= 27
 			nibbleSound.play()
-	
+				
 func _on_DamageArea_body_exited(body):
 	if body.is_in_group("player"):
 		damageTimer.stop()
@@ -103,3 +141,10 @@ func _on_DamageArea_body_exited(body):
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "death":
 		queue_free()
+	elif anim_name == "shake":
+		set_process(true)
+		set_physics_process(true)
+		slowedDown = false
+
+func _on_Timer_timeout():
+	health = 0

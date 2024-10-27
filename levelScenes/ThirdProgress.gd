@@ -5,15 +5,12 @@ onready var unlockSound := $KeyUnlocked
 
 func _ready():
 	connect("body_entered", self, "_on_body_entered")
-	print("ME")
 	
 func _on_body_entered(body: Node):
-	print("STOP")
 	if body.is_in_group("player"):
 		if body.hasKey == true:
 			if !unlockSound.is_playing():
 				unlockSound.play()
-			get_tree().change_scene("res://MainMenu.tscn")
 			
 		elif body.hasKey != true:
 			if !lockSound.is_playing():

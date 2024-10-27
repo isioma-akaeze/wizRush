@@ -28,6 +28,7 @@ onready var healthBar := $ProgressBar
 var takingDamage := false
 var hurt := preload("res://assets/images/Extra animations and enemies/Enemy sprites/fishGreen_hit.png")
 onready var swimSound := $SwimSound
+var isInvincible := false
 
 func _ready():
 	healthBar.max_value = 15

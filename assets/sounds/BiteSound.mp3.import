@@ -11,5 +11,5 @@ dest_files=[ "res://.import/BiteSound.mp3-5af3eeaa7cf6e6d9044b069b53b13707.mp3st
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

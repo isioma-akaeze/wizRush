@@ -29,10 +29,17 @@ onready var wallCheck := $RayCast2D
 var bodyToAward : Node = null
 onready var biteSound := $BiteSound
 onready var swimSound := $SwimSound
+var isSpawned := false
+var isInvincible := false
 
 func _ready():
-	healthBar.max_value = 45
-	pathTimer.start()
+	if not isSpawned:
+		healthBar.max_value = 45
+		pathTimer.start()
+	elif isSpawned:
+		healthBar.max_value = 20
+		health = 20
+		pathTimer.start()
 	
 func _process(delta):
 	if health <= 0:
@@ -53,9 +60,15 @@ func _physics_process(delta) -> void:
 		sprite.flip_h = 0
 		var difficulty := get_node("/root/GlobalOptionButton")
 		if difficulty.difficulty == 0:
-			speed = 60.0
+			if isSpawned:
+				speed = 20.0
+			else:
+				speed = 60.0
 		elif difficulty.difficulty == 1:
-			speed = 72.0
+			if isSpawned:
+				speed = 24.0
+			else:
+				speed = 72.0
 		direction = Vector2(-3, randomY)
 		wallCheck.cast_to = Vector2(-55, 0)
 		var velocity := direction * speed
@@ -170,9 +183,15 @@ func _on_DamageTimer_timeout():
 				var difficulty := get_node("/root/GlobalOptionButton")
 				if bodyToKill.is_in_group("player") and bodyToKill.health > 0:
 					if difficulty.difficulty == 0:
-						bodyToKill.health -= 7
+						if isSpawned:
+							bodyToKill.health -= 3
+						else:
+							bodyToKill.health -= 7
 					elif difficulty.difficulty == 1:
-						bodyToKill.health -= 10
+						if isSpawned:
+							bodyToKill.health -= 7
+						else:
+							bodyToKill.health -= 10
 					if !biteSound.is_playing():
 						biteSound.play()
 				elif bodyToKill.is_in_group("player") and bodyToKill.health <= 0:

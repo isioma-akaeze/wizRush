@@ -52,8 +52,18 @@ onready var stopwatchAnimation := $Stopwatch/AnimationPlayer
 onready var stopwatchSound := $Stopwatch/StopwatchSound
 export var attackingBoss := false
 onready var bossBar:= $BossBar
+var beingDragged = false
+onready var damageTimer := $DamageTimer
+var hasWon = false
+onready var statCheck := get_node("/root/LevelCheck")
+var winTimer := Timer.new()
+onready var winText := $WinMenu
 
 func _ready():
+	add_child(winTimer)
+	winTimer.wait_time = 1.5
+	winTimer.one_shot = true
+	winTimer.connect("timeout", self, "_on_winTimer_timeout")
 	bossBar.hide()
 	bossBar.max_value = 300
 	globalKillCount.enemiesKilled = 0
@@ -71,8 +81,27 @@ func _ready():
 	elif difficulty.difficulty == 1:
 		stopwatch = 395.0
 	deathMenu.hide()
+	winText.hide()
 	
-func _process(delta):
+func _process(delta):	
+	if beingDragged:
+		takingDamage = true
+		if damageTimer.is_stopped():
+			damageTimer.start()
+		maximumSinkGravity = 600
+		sinkGravity = 600
+		swimGravity = -15
+		maximumSwimGravity= -15
+	else:
+		if !damageTimer.is_stopped():
+			damageTimer.stop()
+		takingDamage = false
+		maximumSinkGravity = 80
+		sinkGravity = 80
+		swimGravity = -120
+		maximumSwimGravity= -120
+		
+	
 	if attackingBoss == true:
 		bossBar.show()
 	else:
@@ -101,6 +130,28 @@ func _process(delta):
 		deathTimer.start()
 
 func _physics_process(delta) -> void:
+	if hasWon:
+		set_physics_process(false)
+		statCheck.levelThreeCoins = coinCounter
+		statCheck.levelThreeKills = enemiesKilled
+		if difficulty.difficulty == 0:
+			statCheck.levelThreeTime = 570.0 - stopwatch
+			#1350.0 -
+			statCheck.totalTime = (statCheck.levelOneTime + statCheck.levelTwoTime + statCheck.levelThreeTime) # + " / 1350s")
+			$WinMenu/Clock/WinStopwatch.text =str(str(statCheck.totalTime).pad_decimals(1) + "/1350.0")
+		elif difficulty.difficulty == 1:
+			statCheck.levelThreeTime = (395.0 - stopwatch)
+			 #935.0 -
+			statCheck.totalTime = (statCheck.levelOneTime + statCheck.levelTwoTime + statCheck.levelThreeTime) # + " / 935s")
+			$WinMenu/Clock/WinStopwatch.text = str(str(statCheck.totalTime).pad_decimals(1) + "/935.0")
+		statCheck.totalCoins = statCheck.levelOneCoins + statCheck.levelTwoCoins + statCheck.levelThreeCoins # + " " + "/" + "387")
+		$WinMenu/Control/WinCoinCounter/BlockedText.text =str(str(statCheck.totalCoins) + "/387")
+		$WinMenu/KillCounter/BlockedText.text = str(statCheck.totalKills)
+		var winTimerStart := $WinMenu.timer as Timer
+		winTimerStart.start()
+		winTimer.start()
+	elif not hasWon:
+		winText.hide()
 	stopwatch -= delta
 	stopwatchText.text = str(stopwatch).pad_decimals(1)
 	
@@ -276,3 +327,22 @@ func _when_pause_button_pressed():
 		$PauseMenu/ControlDepths.paused = false
 		$PauseMenu/ControlDepths/Resume2.grab_focus()
 		pauseMenu.show()
+
+
+func _on_DamageTimer_timeout():
+	if difficulty.difficulty == 0:
+		health -= 4
+	elif difficulty.difficulty == 1:
+		health -= 5
+		
+func _on_winTimer_timeout():
+	var soundTimer := 1
+	get_tree().paused = true
+	$WinMenu/Control/NextLevelButton.grab_focus()
+	winText.show()
+	if soundTimer == 1:
+		if not $WinMenu/WinSound.playing:
+			$WinMenu/WinSound.play()
+		soundTimer = 2
+	else:
+		$WinMenu/WinSound.stop()
