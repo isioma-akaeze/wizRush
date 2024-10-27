@@ -35,11 +35,11 @@ func _process(delta):
 	if isSpawned:
 		if difficulty.difficulty == 0:
 			if despawnTimer.wait_time != 0:
-				despawnTimer.wait_time = 7
+				despawnTimer.wait_time = 4
 				despawnTimer.start()
 		elif difficulty.difficulty == 1:
 			if despawnTimer.wait_time != 0:
-				despawnTimer.wait_time = 12
+				despawnTimer.wait_time = 7
 				despawnTimer.start()
 		
 	if inBossArea and isSpawned == false:

@@ -11,6 +11,6 @@ func _on_body_entered(body: Node):
 		if not biteSound.is_playing() and body.health > 0:
 			biteSound.play()
 		if difficulty.difficulty == 0:
-			body.health -= 25
-		else:
 			body.health -= 50
+		else:
+			body.health -= 100

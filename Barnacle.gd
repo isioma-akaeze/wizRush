@@ -61,7 +61,7 @@ func _on_GeneralAnimation_animation_finished(anim_name):
 		var xOffset := 0
 		var spawns := 0
 		if randomMob == 0:
-			for i in range(2):
+			for i in range(1):
 				var piranhaSceneInstance : KinematicBody2D = piranhaScene.instance()
 				var piranhaX := self.position.x - rand_range(-20, 23.0) +  xOffset
 				var piranhaY := self.position.y - rand_range(100.0, 320.0)
@@ -69,7 +69,7 @@ func _on_GeneralAnimation_animation_finished(anim_name):
 				piranhaSceneInstance.position = Vector2(piranhaX, piranhaY)
 				get_tree().current_scene.add_child(piranhaSceneInstance)
 				xOffset += 120
-				spawns += 1
+				spawns += 2
 		elif randomMob == 1:
 			for i in range(1):
 				var piranhaSceneInstance : KinematicBody2D = piranhaScene.instance()
@@ -151,10 +151,10 @@ func _on_TeethArea_body_entered(body):
 func _on_DamageTimerBoss_timeout():
 	if difficulty.difficulty == 0:
 		if !bodyToDamage == null:
-			bodyToDamage.health -= 3
+			bodyToDamage.health -= 2
 	elif difficulty.difficulty == 1:
 		if !bodyToDamage == null:
-			bodyToDamage.health -= 5
+			bodyToDamage.health -= 4
 			
 func _randomAttack():
 	var spitSoundPlayed := false

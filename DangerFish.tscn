@@ -159,7 +159,7 @@ attenuation = 1.62451
 
 [node name="Timer" type="Timer" parent="."]
 process_mode = 0
-wait_time = 7.0
+wait_time = 4.0
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_DamageArea_body_entered"]
 [connection signal="body_exited" from="DamageArea" to="." method="_on_DamageArea_body_exited"]

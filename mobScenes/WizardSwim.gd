@@ -331,9 +331,9 @@ func _when_pause_button_pressed():
 
 func _on_DamageTimer_timeout():
 	if difficulty.difficulty == 0:
-		health -= 4
+		health -= 3
 	elif difficulty.difficulty == 1:
-		health -= 5
+		health -= 4
 		
 func _on_winTimer_timeout():
 	var soundTimer := 1
