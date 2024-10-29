@@ -61,21 +61,25 @@ focus_neighbour_bottom = NodePath("../QuitMenuCredits")
 focus_mode = 1
 theme = SubResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.333333 )
-text = "			 Programming: 
+text = "			 
+			 Programming:
 			 Isioma Akaeze
 		
 			   Artwork:
-			Placeholder By: 
-	  Placeholder on Kenny.nl
+	  Asset Libary (Kenny.nl)
 
-		Green Groves Music: 
-	Placeholder by: PlaceHolder
+		 Green Groves Music: 
+	Grasslands 2 - Z. Parisoto
 
 		Ash Apocalypse Music:
-    Placeholder by: Placeholder
+	  Adventure - V. Krakhmal
 
 			Dire Depths Music:
-	Placeholder by: Placeholder
+	      Deep Sea - Fez Sound
+				  
+				Boss Music:
+	        Thunder Unision-
+			  Keys of Moon
 
 "
 script = ExtResource( 5 )

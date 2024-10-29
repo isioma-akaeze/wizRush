@@ -1267,13 +1267,13 @@ position = Vector2( 4900, 2265 )
 position = Vector2( 4407, 2145 )
 
 [node name="DangerFish28" parent="." instance=ExtResource( 23 )]
-position = Vector2( 5362, 2166 )
+position = Vector2( 5362, 2022 )
 
 [node name="DangerFish29" parent="." instance=ExtResource( 23 )]
-position = Vector2( 5477, 2311 )
+position = Vector2( 5518, 2188 )
 
 [node name="DangerFish31" parent="." instance=ExtResource( 23 )]
-position = Vector2( 5776, 2637 )
+position = Vector2( 5776, 2482 )
 
 [node name="DangerFish13" parent="." instance=ExtResource( 23 )]
 position = Vector2( 1412, 2495 )
@@ -1301,11 +1301,9 @@ position = Vector2( 5564, 3155 )
 
 [node name="Spike Drag" parent="BarnacleBoss" instance=ExtResource( 26 )]
 position = Vector2( -27.5716, -11.7142 )
-scale = Vector2( 0.25, 0.25 )
 
 [node name="Spike Drag2" parent="BarnacleBoss" instance=ExtResource( 26 )]
 position = Vector2( 28.0002, -11.5714 )
-scale = Vector2( 0.25, 0.25 )
 
 [node name="DangerFish36" parent="." instance=ExtResource( 23 )]
 position = Vector2( 5363, 2772 )

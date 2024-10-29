@@ -20,6 +20,7 @@ var isInvincible := false
 var slowedDown := false
 var startSlow := false
 onready var despawnTimer := $Timer
+var despawnStarted := false
 
 func _ready():		
 	sprite.self_modulate = Color(0.917647,0.235294,0.235294,1)
@@ -34,13 +35,15 @@ func _ready():
 func _process(delta):
 	if isSpawned:
 		if difficulty.difficulty == 0:
-			if despawnTimer.wait_time != 0:
-				despawnTimer.wait_time = 4
+			despawnTimer.wait_time = 4
+			if not despawnStarted:
 				despawnTimer.start()
+				despawnStarted = true
 		elif difficulty.difficulty == 1:
-			if despawnTimer.wait_time != 0:
-				despawnTimer.wait_time = 7
+			despawnTimer.wait_time = 7
+			if not despawnStarted:
 				despawnTimer.start()
+				despawnStarted = true
 		
 	if inBossArea and isSpawned == false:
 		isInvincible = true
@@ -106,9 +109,15 @@ func _physics_process(delta):
 func _on_PathTimer_timeout():
 	if not slowedDown:
 		if difficulty.difficulty == 0:
-			randomSpeed = rand_range(54.0, 64.8)
+			if not isSpawned:
+				randomSpeed = rand_range(54.0, 64.8)
+			elif isSpawned:
+				randomSpeed = rand_range(40.5, 48.6)
 		elif difficulty.difficulty == 1:
-			randomSpeed = rand_range(64.8, 80.2)
+			if not isSpawned:
+				randomSpeed = rand_range(64.8, 80.2)
+			elif isSpawned:
+				randomSpeed = rand_range(48.6, 60.15)
 
 func _on_DamageArea_body_entered(body):
 	if body.is_in_group("player"):
@@ -121,15 +130,15 @@ func _on_DamageTimer_timeout():
 	if health > 0:
 		if difficulty.difficulty == 0:
 			if isSpawned:
-				bodyToDamage.health -= 6
+				bodyToDamage.health -= 4
 			else:
-				bodyToDamage.health -= 18
+				bodyToDamage.health -= 16
 			nibbleSound.play()
 		elif difficulty.difficulty == 1:
 			if isSpawned:
-				bodyToDamage.health -= 9
+				bodyToDamage.health -= 6
 			else:
-				bodyToDamage.health -= 27
+				bodyToDamage.health -= 24
 			nibbleSound.play()
 				
 func _on_DamageArea_body_exited(body):
